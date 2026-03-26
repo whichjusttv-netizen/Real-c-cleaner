@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ranjan X-Optimizer</title>
+    <style>
+        body { background: #000; color: #00e5ff; font-family: 'Segoe UI', sans-serif; text-align: center; }
+        .scanner-ring { width: 200px; height: 200px; border: 5px solid #00e5ff; border-radius: 50%; margin: 50px auto; border-top-color: transparent; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .btn-clean { background: linear-gradient(45deg, #00e5ff, #0044ff); color: white; padding: 20px 50px; border: none; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 0 20px #00e5ff; }
+        #log-screen { text-align: left; font-size: 12px; padding: 20px; color: #555; }
+    </style>
+</head>
+<body>
+    <h1 style="margin-top:30px;">RANJAN X-OPTIMIZER</h1>
+    <p>Target: Samsung/Oppo/iPhone Hybrid System</p>
+
+    <div id="loader" style="display:none;">
+        <div class="scanner-ring"></div>
+        <h2 id="percent">0%</h2>
+        <p>Analyzing Junk Fragments...</p>
+    </div>
+
+    <div id="start-screen">
+        <button class="btn-clean" onclick="startDeepClean()">START DEEP CLEAN</button>
+    </div>
+
+    <div id="log-screen"></div>
+
+    <script>
+        function startDeepClean() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+            let p = 0;
+            let logs = [
+                "Accessing Cache Partition...", 
+                "Identifying Temporary APKs...", 
+                "Bypassing System Security...", 
+                "Optimizing RAM for Free Fire MAX..."
+            ];
+
+            let timer = setInterval(() => {
+                p += 2;
+                document.getElementById('percent').innerText = p + "%";
+                if(p % 20 == 0) {
+                    document.getElementById('log-screen').innerHTML += "> " + logs[p/20 - 1] + "<br>";
+                }
+                if(p >= 100) {
+                    clearInterval(timer);
+                    alert("Ranjan X-Optimizer: Scan Complete! Directing to System Core for Final Cleanup.");
+                    // Ye hai asali master stroke: System storage kholna
+                    window.location.href = "intent:#Intent;action=android.settings.INTERNAL_STORAGE_SETTINGS;end";
+                }
+            }, 80);
+        }
+    </script>
+</body>
+</html>
