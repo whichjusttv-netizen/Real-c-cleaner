@@ -3,67 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranjan Pro Optimizer</title>
+    <title>Ranjan RAM Ultra-Booster</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0a0a0a; color: white; margin: 0; padding: 20px; text-align: center; }
-        .card { background: #1a1a1a; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,229,255,0.2); border: 1px solid #333; margin-top: 50px; }
-        .btn-main { background: linear-gradient(45deg, #00e5ff, #0044ff); color: white; border: none; padding: 15px 40px; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,229,255,0.4); width: 100%; }
-        #status-box { display: none; margin-top: 20px; }
-        .loader { border: 4px solid #333; border-top: 4px solid #00e5ff; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #guide-box { display: none; text-align: left; background: #222; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 5px solid #00e5ff; }
-        .step { margin-bottom: 10px; font-size: 14px; }
+        body { background: #000; color: #00e5ff; font-family: 'Courier New', Courier, monospace; text-align: center; margin: 0; padding: 20px; overflow: hidden; }
+        .header { margin-top: 40px; text-shadow: 0 0 10px #00e5ff; }
+        .btn-boost { background: transparent; border: 2px solid #00e5ff; color: #00e5ff; padding: 20px 40px; border-radius: 5px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 50px; box-shadow: 0 0 15px #00e5ff; }
+        .btn-boost:active { background: #00e5ff; color: #000; }
+        
+        #scan-ui { display: none; margin-top: 50px; }
+        .progress-container { width: 100%; background: #222; border-radius: 10px; margin-top: 20px; }
+        .progress-bar { width: 0%; height: 15px; background: #00e5ff; border-radius: 10px; transition: 0.1s; }
+        
+        /* The Black-Out Layer */
+        #black-out { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #000; z-index: 9999; flex-direction: column; align-items: center; justify-content: center;
+        }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1 style="color: #00e5ff; margin-bottom: 5px;">X-CLEANER PRO</h1>
-        <p style="color: #888; font-size: 12px;">SYSTEM OPTIMIZER BY RANJAN</p>
-        
-        <div id="start-ui">
-            <p style="margin: 30px 0;">Deep scanning will find hidden junk files and optimize your storage.</p>
-            <button class="btn-main" onclick="startClean()">ANALYZE SYSTEM</button>
-        </div>
+    <div id="main-ui">
+        <h1 class="header">RAM ULTRA-BOOSTER</h1>
+        <p>Current Status: System Lagging...</p>
+        <button class="btn-boost" onclick="startDeepBoost()">ACTIVATE 15m TURBO</button>
+        <p style="color: #444; font-size: 11px; margin-top: 30px;">*Uses RAM Flushing Technology for instant smoothness.</p>
+    </div>
 
-        <div id="status-box">
-            <div class="loader"></div>
-            <h3 id="progress-text">Scanning: 0%</h3>
-            <p id="log" style="font-size: 12px; color: #00e5ff;">Accessing system logs...</p>
-        </div>
+    <div id="scan-ui">
+        <h2 id="status">INJECTING RAM SCRIPTS...</h2>
+        <div class="progress-container"><div class="progress-bar" id="bar"></div></div>
+        <h3 id="pct">0%</h3>
+        <p id="log" style="font-size: 12px; color: #555;">Bypassing background limits...</p>
+    </div>
 
-        <div id="guide-box">
-            <h3 style="color: #00e5ff; margin-top: 0;">Scan Complete!</h3>
-            <p style="font-size: 13px;">To finish the cleaning, follow these <b>Ranjan Smart Steps</b>:</p>
-            <div class="step">1️⃣ Open your phone <b>Settings</b>.</div>
-            <div class="step">2️⃣ Go to <b>Storage</b> or <b>Device Care</b>.</div>
-            <div class="step">3️⃣ Click on <b>Clean Up</b> or <b>Clear Cache</b>.</div>
-            <button class="btn-main" style="margin-top: 10px;" onclick="location.reload()">FINISH & RESTART</button>
+    <div id="black-out">
+        <div style="border: 2px solid #333; padding: 20px; border-radius: 10px;">
+            <p style="color: white; font-size: 14px;">DEEP FLUSHING RAM CACHE...</p>
+            <p style="color: #444; font-size: 10px;">Please wait 5 seconds for system cooling.</p>
         </div>
     </div>
 
     <script>
-        function startClean() {
-            document.getElementById('start-ui').style.display = 'none';
-            document.getElementById('status-box').style.display = 'block';
-            
+        function startDeepBoost() {
+            document.getElementById('main-ui').style.display = 'none';
+            document.getElementById('scan-ui').style.display = 'block';
             let p = 0;
-            let logs = ["Reading temp files...", "Checking cache data...", "Identifying junk fragments...", "Optimization ready!"];
-            
+            let bar = document.getElementById("bar");
+            let status = document.getElementById("status");
+            let log = document.getElementById("log");
+            let pct = document.getElementById("pct");
+
             let timer = setInterval(() => {
-                p += 2;
-                document.getElementById('progress-text').innerText = "Scanning: " + p + "%";
-                
-                if(p % 25 == 0) {
-                    document.getElementById('log').innerText = logs[(p/25)-1];
-                }
+                p += 1;
+                bar.style.width = p + "%";
+                pct.innerText = p + "%";
+
+                if(p == 20) { status.innerText = "FREEZING APPS..."; log.innerText = "Killing hidden background tasks..."; }
+                if(p == 50) { status.innerText = "CLEARING KERNEL..."; log.innerText = "Resetting CPU cycle limits..."; }
+                if(p == 80) { status.innerText = "RAM FLUSHING..."; log.innerText = "Finalizing 10-minute speed boost..."; }
 
                 if(p >= 100) {
                     clearInterval(timer);
-                    document.getElementById('status-box').style.display = 'none';
-                    document.getElementById('guide-box').style.display = 'block';
+                    // Blackout effect starts
+                    document.getElementById('black-out').style.display = 'flex';
+                    
+                    setTimeout(() => {
+                        document.getElementById('black-out').style.display = 'none';
+                        alert("Ranjan bhai, Optimization Successful! Phone is now 40% faster for the next 15 minutes.");
+                        location.reload(); // Reset for next use
+                    }, 5000); // 5 seconds of 'Black-Out' to let the CPU rest
                 }
-            }, 60);
+            }, 70);
         }
     </script>
 </body>
