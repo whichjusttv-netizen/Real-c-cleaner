@@ -3,76 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranjan System Optimizer</title>
+    <title>Ranjan Pro Optimizer</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #000; color: white; margin: 0; text-align: center; }
-        
-        /* Permission Box Styling */
-        #permission-box {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 100;
-        }
-        .window { background: #fff; color: #333; width: 85%; padding: 25px; border-radius: 12px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .window h3 { margin: 0 0 10px 0; font-size: 18px; color: #000; }
-        .window p { font-size: 14px; color: #555; line-height: 1.4; }
-        .actions { display: flex; justify-content: flex-end; margin-top: 20px; gap: 20px; }
-        .btn-link { background: none; border: none; font-weight: bold; font-size: 15px; cursor: pointer; text-transform: uppercase; }
-        
-        /* Main Cleaner UI */
-        #app-content { display: none; padding-top: 50px; }
-        .scan-circle { width: 150px; height: 150px; border: 6px solid #007bff; border-radius: 50%; margin: 30px auto; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; border-top-color: transparent; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .status-text { color: #007bff; font-weight: bold; margin-top: 15px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0a0a0a; color: white; margin: 0; padding: 20px; text-align: center; }
+        .card { background: #1a1a1a; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,229,255,0.2); border: 1px solid #333; margin-top: 50px; }
+        .btn-main { background: linear-gradient(45deg, #00e5ff, #0044ff); color: white; border: none; padding: 15px 40px; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,229,255,0.4); width: 100%; }
+        #status-box { display: none; margin-top: 20px; }
+        .loader { border: 4px solid #333; border-top: 4px solid #00e5ff; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #guide-box { display: none; text-align: left; background: #222; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 5px solid #00e5ff; }
+        .step { margin-bottom: 10px; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <div id="permission-box">
-        <div class="window">
-            <h3>System Access Required</h3>
-            <p>Allow <b>Ranjan Optimizer</b> to access system storage and cache logs to clean junk files on your device?</p>
-            <div class="actions">
-                <button class="btn-link" style="color: #777;" onclick="alert('Access Denied. App will close.')">DENY</button>
-                <button class="btn-link" style="color: #007bff;" onclick="startApp()">ALLOW</button>
-            </div>
+    <div class="card">
+        <h1 style="color: #00e5ff; margin-bottom: 5px;">X-CLEANER PRO</h1>
+        <p style="color: #888; font-size: 12px;">SYSTEM OPTIMIZER BY RANJAN</p>
+        
+        <div id="start-ui">
+            <p style="margin: 30px 0;">Deep scanning will find hidden junk files and optimize your storage.</p>
+            <button class="btn-main" onclick="startClean()">ANALYZE SYSTEM</button>
+        </div>
+
+        <div id="status-box">
+            <div class="loader"></div>
+            <h3 id="progress-text">Scanning: 0%</h3>
+            <p id="log" style="font-size: 12px; color: #00e5ff;">Accessing system logs...</p>
+        </div>
+
+        <div id="guide-box">
+            <h3 style="color: #00e5ff; margin-top: 0;">Scan Complete!</h3>
+            <p style="font-size: 13px;">To finish the cleaning, follow these <b>Ranjan Smart Steps</b>:</p>
+            <div class="step">1️⃣ Open your phone <b>Settings</b>.</div>
+            <div class="step">2️⃣ Go to <b>Storage</b> or <b>Device Care</b>.</div>
+            <div class="step">3️⃣ Click on <b>Clean Up</b> or <b>Clear Cache</b>.</div>
+            <button class="btn-main" style="margin-top: 10px;" onclick="location.reload()">FINISH & RESTART</button>
         </div>
     </div>
 
-    <div id="app-content">
-        <h2 style="color:#007bff">SYSTEM SCANNING...</h2>
-        <div class="scan-circle" id="circle-text">0%</div>
-        <p id="log-info">> Locating junk fragments...</p>
-    </div>
-
     <script>
-        function startApp() {
-            document.getElementById('permission-box').style.display = 'none';
-            document.getElementById('app-content').style.display = 'block';
+        function startClean() {
+            document.getElementById('start-ui').style.display = 'none';
+            document.getElementById('status-box').style.display = 'block';
             
-            let percent = 0;
-            let logs = ["> Scanning Cache...", "> Deleting Temp Files...", "> RAM Optimization...", "> System Shield Active"];
+            let p = 0;
+            let logs = ["Reading temp files...", "Checking cache data...", "Identifying junk fragments...", "Optimization ready!"];
             
             let timer = setInterval(() => {
-                percent += 2;
-                document.getElementById('circle-text').innerText = percent + "%";
+                p += 2;
+                document.getElementById('progress-text').innerText = "Scanning: " + p + "%";
                 
-                if(percent % 25 == 0) {
-                    document.getElementById('log-info').innerText = logs[(percent/25)-1];
+                if(p % 25 == 0) {
+                    document.getElementById('log').innerText = logs[(p/25)-1];
                 }
 
-                if(percent >= 100) {
+                if(p >= 100) {
                     clearInterval(timer);
-                    document.getElementById('circle-text').innerText = "DONE";
-                    document.getElementById('circle-text').style.animation = "none";
-                    document.getElementById('circle-text').style.borderColor = "#00ff00";
-                    
-                    setTimeout(() => {
-                        alert("Ranjan bhai, scan poora ho gaya! Ab asali safai ka rasta khul raha hai.");
-                        // ASALI JADOO: Ye phone ki settings khol dega
-                        window.location.href = "intent:#Intent;action=android.settings.INTERNAL_STORAGE_SETTINGS;end";
-                    }, 1000);
+                    document.getElementById('status-box').style.display = 'none';
+                    document.getElementById('guide-box').style.display = 'block';
                 }
-            }, 80);
+            }, 60);
         }
     </script>
 </body>
