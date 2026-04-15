@@ -1,80 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Supreme Game Engine - Ranjan Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supreme Engine V2 - Fixed</title>
     <style>
-        body { margin: 0; background: #1a1a1a; color: white; font-family: 'Segoe UI', sans-serif; display: flex; height: 100vh; overflow: hidden; }
-        #sidebar { width: 300px; background: #252525; border-right: 2px solid #ff4444; padding: 20px; display: flex; flex-direction: column; }
-        #main-view { flex-grow: 1; display: flex; flex-direction: column; }
-        #game-canvas-container { flex-grow: 1; background: #000; display: flex; align-items: center; justify-content: center; position: relative; }
-        canvas { border: 2px solid #555; background: #333; box-shadow: 0 0 20px rgba(255,68,68,0.3); }
-        textarea { width: 100%; height: 200px; background: #111; color: #0f0; border: 1px solid #444; font-family: monospace; resize: none; margin-top: 10px; }
-        .btn { background: #ff4444; color: white; border: none; padding: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; border-radius: 5px; }
-        .btn:hover { background: #cc0000; }
-        h2 { color: #ff4444; margin-top: 0; }
-        .status { font-size: 12px; color: #aaa; margin-top: 10px; }
+        body { margin: 0; background: #000; color: #0f0; font-family: monospace; display: flex; flex-direction: column; height: 100vh; }
+        #header { background: #111; padding: 10px; border-bottom: 2px solid red; text-align: center; font-weight: bold; }
+        
+        /* Layout for Mobile */
+        #editor-container { flex: 1; display: flex; flex-direction: column; padding: 10px; }
+        textarea { flex: 1; background: #050505; color: #0f0; border: 1px solid #333; padding: 10px; font-size: 14px; border-radius: 5px; }
+        
+        #game-preview { height: 300px; background: #222; position: relative; overflow: hidden; border-top: 2px solid red; }
+        canvas { width: 100%; height: 100%; display: block; }
+        
+        .status-bar { background: #111; font-size: 12px; padding: 5px; color: #888; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
 
-<div id="sidebar">
-    <h2>SUPREME ENGINE</h2>
-    <label>Game Logic (JavaScript):</label>
-    <textarea id="code-editor">
-// Edit your game here!
-player.x += 2; 
-if(player.x > canvas.width) player.x = 0;
-    </textarea>
-    <button class="btn" onclick="updateGameLogic()">RUN ENGINE 🚀</button>
-    
-    <div class="status">
-        System: Online <br>
-        Mode: GitHub Live <br>
-        Dev: Ranjan (Boss)
-    </div>
+<div id="header">SUPREME ENGINE V2.0 (STABLE)</div>
+
+<div id="game-preview">
+    <canvas id="screen"></canvas>
 </div>
 
-<div id="main-view">
-    <div id="game-canvas-container">
-        <canvas id="gameCanvas" width="600" height="400"></canvas>
-    </div>
+<div class="status-bar">
+    <span>Dev: Ranjan Boss</span>
+    <span id="fps">FPS: 60</span>
+</div>
+
+<div id="editor-container">
+    <label>Live Script (JS):</label>
+    <textarea id="code" spellcheck="false">
+// AUTO-RUNNING LIVE CODE
+// Use 'obj' to move the square
+obj.x += 2;
+obj.size = 50;
+
+if(obj.x > canvas.width) obj.x = -obj.size;
+    </textarea>
 </div>
 
 <script>
-    const canvas = document.getElementById('gameCanvas');
+    const canvas = document.getElementById('screen');
     const ctx = canvas.getContext('2d');
-    let player = { x: 50, y: 180, size: 40, color: '#ff4444' };
-    let gameRunning = true;
-    let customLogic = "";
+    const codeArea = document.getElementById('code');
+    const fpsDisplay = document.getElementById('fps');
 
-    function updateGameLogic() {
-        customLogic = document.getElementById('code-editor').value;
-        console.log("Logic Updated by Boss!");
+    let obj = { x: 0, y: 100, size: 50, color: 'red' };
+    
+    function resize() {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
     }
+    window.onresize = resize;
+    resize();
 
-    function gameLoop() {
-        // Clear Canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Smooth Game Loop
+    function update() {
+        // Clear screen with a slight trail effect
+        ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw Player (Katta King)
-        ctx.fillStyle = player.color;
-        ctx.fillRect(player.x, player.y, player.size, player.size);
-        
-        // Draw Text
-        ctx.fillStyle = "white";
-        ctx.fillText("ENGINE LIVE PREVIEW", 10, 20);
+        // Draw Object
+        ctx.fillStyle = obj.color;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = obj.color;
+        ctx.fillRect(obj.x, obj.y, obj.size, obj.size);
+        ctx.shadowBlur = 0;
 
-        // Execute Custom Code
+        // Try to run the user's code smoothly
         try {
-            eval(customLogic);
-        } catch(e) {}
+            eval(codeArea.value);
+        } catch (e) {
+            // Silence errors to keep engine running
+        }
 
-        requestAnimationFrame(gameLoop);
+        requestAnimationFrame(update);
     }
 
-    updateGameLogic();
-    gameLoop();
+    update(); // Start the engine
 </script>
 
 </body>
