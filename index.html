@@ -2,80 +2,80 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranjan RAM Ultra-Booster</title>
+    <title>Supreme Game Engine - Ranjan Edition</title>
     <style>
-        body { background: #000; color: #00e5ff; font-family: 'Courier New', Courier, monospace; text-align: center; margin: 0; padding: 20px; overflow: hidden; }
-        .header { margin-top: 40px; text-shadow: 0 0 10px #00e5ff; }
-        .btn-boost { background: transparent; border: 2px solid #00e5ff; color: #00e5ff; padding: 20px 40px; border-radius: 5px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 50px; box-shadow: 0 0 15px #00e5ff; }
-        .btn-boost:active { background: #00e5ff; color: #000; }
-        
-        #scan-ui { display: none; margin-top: 50px; }
-        .progress-container { width: 100%; background: #222; border-radius: 10px; margin-top: 20px; }
-        .progress-bar { width: 0%; height: 15px; background: #00e5ff; border-radius: 10px; transition: 0.1s; }
-        
-        /* The Black-Out Layer */
-        #black-out { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #000; z-index: 9999; flex-direction: column; align-items: center; justify-content: center;
-        }
+        body { margin: 0; background: #1a1a1a; color: white; font-family: 'Segoe UI', sans-serif; display: flex; height: 100vh; overflow: hidden; }
+        #sidebar { width: 300px; background: #252525; border-right: 2px solid #ff4444; padding: 20px; display: flex; flex-direction: column; }
+        #main-view { flex-grow: 1; display: flex; flex-direction: column; }
+        #game-canvas-container { flex-grow: 1; background: #000; display: flex; align-items: center; justify-content: center; position: relative; }
+        canvas { border: 2px solid #555; background: #333; box-shadow: 0 0 20px rgba(255,68,68,0.3); }
+        textarea { width: 100%; height: 200px; background: #111; color: #0f0; border: 1px solid #444; font-family: monospace; resize: none; margin-top: 10px; }
+        .btn { background: #ff4444; color: white; border: none; padding: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; border-radius: 5px; }
+        .btn:hover { background: #cc0000; }
+        h2 { color: #ff4444; margin-top: 0; }
+        .status { font-size: 12px; color: #aaa; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="main-ui">
-        <h1 class="header">RAM ULTRA-BOOSTER</h1>
-        <p>Current Status: System Lagging...</p>
-        <button class="btn-boost" onclick="startDeepBoost()">ACTIVATE 15m TURBO</button>
-        <p style="color: #444; font-size: 11px; margin-top: 30px;">*Uses RAM Flushing Technology for instant smoothness.</p>
+<div id="sidebar">
+    <h2>SUPREME ENGINE</h2>
+    <label>Game Logic (JavaScript):</label>
+    <textarea id="code-editor">
+// Edit your game here!
+player.x += 2; 
+if(player.x > canvas.width) player.x = 0;
+    </textarea>
+    <button class="btn" onclick="updateGameLogic()">RUN ENGINE 🚀</button>
+    
+    <div class="status">
+        System: Online <br>
+        Mode: GitHub Live <br>
+        Dev: Ranjan (Boss)
     </div>
+</div>
 
-    <div id="scan-ui">
-        <h2 id="status">INJECTING RAM SCRIPTS...</h2>
-        <div class="progress-container"><div class="progress-bar" id="bar"></div></div>
-        <h3 id="pct">0%</h3>
-        <p id="log" style="font-size: 12px; color: #555;">Bypassing background limits...</p>
+<div id="main-view">
+    <div id="game-canvas-container">
+        <canvas id="gameCanvas" width="600" height="400"></canvas>
     </div>
+</div>
 
-    <div id="black-out">
-        <div style="border: 2px solid #333; padding: 20px; border-radius: 10px;">
-            <p style="color: white; font-size: 14px;">DEEP FLUSHING RAM CACHE...</p>
-            <p style="color: #444; font-size: 10px;">Please wait 5 seconds for system cooling.</p>
-        </div>
-    </div>
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let player = { x: 50, y: 180, size: 40, color: '#ff4444' };
+    let gameRunning = true;
+    let customLogic = "";
 
-    <script>
-        function startDeepBoost() {
-            document.getElementById('main-ui').style.display = 'none';
-            document.getElementById('scan-ui').style.display = 'block';
-            let p = 0;
-            let bar = document.getElementById("bar");
-            let status = document.getElementById("status");
-            let log = document.getElementById("log");
-            let pct = document.getElementById("pct");
+    function updateGameLogic() {
+        customLogic = document.getElementById('code-editor').value;
+        console.log("Logic Updated by Boss!");
+    }
 
-            let timer = setInterval(() => {
-                p += 1;
-                bar.style.width = p + "%";
-                pct.innerText = p + "%";
+    function gameLoop() {
+        // Clear Canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                if(p == 20) { status.innerText = "FREEZING APPS..."; log.innerText = "Killing hidden background tasks..."; }
-                if(p == 50) { status.innerText = "CLEARING KERNEL..."; log.innerText = "Resetting CPU cycle limits..."; }
-                if(p == 80) { status.innerText = "RAM FLUSHING..."; log.innerText = "Finalizing 10-minute speed boost..."; }
+        // Draw Player (Katta King)
+        ctx.fillStyle = player.color;
+        ctx.fillRect(player.x, player.y, player.size, player.size);
+        
+        // Draw Text
+        ctx.fillStyle = "white";
+        ctx.fillText("ENGINE LIVE PREVIEW", 10, 20);
 
-                if(p >= 100) {
-                    clearInterval(timer);
-                    // Blackout effect starts
-                    document.getElementById('black-out').style.display = 'flex';
-                    
-                    setTimeout(() => {
-                        document.getElementById('black-out').style.display = 'none';
-                        alert("Ranjan bhai, Optimization Successful! Phone is now 40% faster for the next 15 minutes.");
-                        location.reload(); // Reset for next use
-                    }, 5000); // 5 seconds of 'Black-Out' to let the CPU rest
-                }
-            }, 70);
-        }
-    </script>
+        // Execute Custom Code
+        try {
+            eval(customLogic);
+        } catch(e) {}
+
+        requestAnimationFrame(gameLoop);
+    }
+
+    updateGameLogic();
+    gameLoop();
+</script>
+
 </body>
 </html>
