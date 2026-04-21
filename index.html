@@ -3,85 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supreme Engine V2 - Fixed</title>
+    <title>X-Store | Official Apps</title>
     <style>
-        body { margin: 0; background: #000; color: #0f0; font-family: monospace; display: flex; flex-direction: column; height: 100vh; }
-        #header { background: #111; padding: 10px; border-bottom: 2px solid red; text-align: center; font-weight: bold; }
-        
-        /* Layout for Mobile */
-        #editor-container { flex: 1; display: flex; flex-direction: column; padding: 10px; }
-        textarea { flex: 1; background: #050505; color: #0f0; border: 1px solid #333; padding: 10px; font-size: 14px; border-radius: 5px; }
-        
-        #game-preview { height: 300px; background: #222; position: relative; overflow: hidden; border-top: 2px solid red; }
-        canvas { width: 100%; height: 100%; display: block; }
-        
-        .status-bar { background: #111; font-size: 12px; padding: 5px; color: #888; display: flex; justify-content: space-between; }
+        :root {
+            --accent-color: #01875f; /* Professional Green */
+            --bg-color: #ffffff;
+            --card-bg: #fdfdfd;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: #f1f3f4;
+            color: #202124;
+        }
+        /* Top Navigation Bar */
+        .navbar {
+            background: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        /* Professional Search Bar */
+        .search-container {
+            padding: 15px;
+            background: white;
+            text-align: center;
+        }
+        #searchBar {
+            width: 90%;
+            max-width: 500px;
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: 1px solid #dfe1e5;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+            background-color: #f1f3f4;
+        }
+        #searchBar:focus {
+            background-color: white;
+            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+            border-color: transparent;
+        }
+        /* Grid Layout */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 15px;
+            text-align: center;
+            transition: 0.2s;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+        }
+        .app-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+            object-fit: cover;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .app-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .app-size {
+            font-size: 12px;
+            color: #5f6368;
+            margin-bottom: 12px;
+        }
+        .download-btn {
+            display: block;
+            background: #e8f0fe;
+            color: var(--accent-color);
+            text-decoration: none;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .download-btn:hover {
+            background: var(--accent-color);
+            color: white;
+        }
     </style>
 </head>
 <body>
 
-<div id="header">SUPREME ENGINE V2.0 (STABLE)</div>
-
-<div id="game-preview">
-    <canvas id="screen"></canvas>
+<div class="navbar">
+    <div class="logo">X-Store</div>
+    <div style="font-size: 20px;">👤</div>
 </div>
 
-<div class="status-bar">
-    <span>Dev: Ranjan Boss</span>
-    <span id="fps">FPS: 60</span>
+<div class="search-container">
+    <input type="text" id="searchBar" placeholder="Search for apps & games..." onkeyup="searchApps()">
 </div>
 
-<div id="editor-container">
-    <label>Live Script (JS):</label>
-    <textarea id="code" spellcheck="false">
-// AUTO-RUNNING LIVE CODE
-// Use 'obj' to move the square
-obj.x += 2;
-obj.size = 50;
+<div class="app-grid" id="appGrid">
+    <div class="app-card" data-name="Free Fire Mod">
+        <img src="https://via.placeholder.com/80?text=FF" class="app-icon">
+        <div class="app-name">Free Fire Tool</div>
+        <div class="app-size">12 MB</div>
+        <a href="URL_HERE" class="download-btn" download>Install</a>
+    </div>
 
-if(obj.x > canvas.width) obj.x = -obj.size;
-    </textarea>
+    <div class="app-card" data-name="Termux Pro">
+        <img src="https://via.placeholder.com/80?text=TX" class="app-icon">
+        <div class="app-name">Termux Pro</div>
+        <div class="app-size">45 MB</div>
+        <a href="URL_HERE" class="download-btn" download>Install</a>
+    </div>
+
+    <div class="app-card" data-name="Cyber Guard">
+        <img src="https://via.placeholder.com/80?text=CG" class="app-icon">
+        <div class="app-name">Cyber Guard</div>
+        <div class="app-size">8 MB</div>
+        <a href="URL_HERE" class="download-btn" download>Install</a>
+    </div>
 </div>
 
 <script>
-    const canvas = document.getElementById('screen');
-    const ctx = canvas.getContext('2d');
-    const codeArea = document.getElementById('code');
-    const fpsDisplay = document.getElementById('fps');
+    function searchApps() {
+        let input = document.getElementById('searchBar').value.toLowerCase();
+        let cards = document.getElementsByClassName('app-card');
 
-    let obj = { x: 0, y: 100, size: 50, color: 'red' };
-    
-    function resize() {
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
-    }
-    window.onresize = resize;
-    resize();
-
-    // Smooth Game Loop
-    function update() {
-        // Clear screen with a slight trail effect
-        ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Draw Object
-        ctx.fillStyle = obj.color;
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = obj.color;
-        ctx.fillRect(obj.x, obj.y, obj.size, obj.size);
-        ctx.shadowBlur = 0;
-
-        // Try to run the user's code smoothly
-        try {
-            eval(codeArea.value);
-        } catch (e) {
-            // Silence errors to keep engine running
+        for (let i = 0; i < cards.length; i++) {
+            let name = cards[i].getAttribute('data-name').toLowerCase();
+            if (name.includes(input)) {
+                cards[i].style.display = "block";
+            } else {
+                cards[i].style.display = "none";
+            }
         }
-
-        requestAnimationFrame(update);
     }
-
-    update(); // Start the engine
 </script>
 
 </body>
