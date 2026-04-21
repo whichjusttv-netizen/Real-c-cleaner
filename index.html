@@ -3,97 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-Store Global | Unstoppable</title>
+    <title>X-Store | Official Redirect</title>
     <style>
-        :root { --main: #00ff88; --dark: #0a0a0a; --glass: rgba(255, 255, 255, 0.1); }
-        body { font-family: 'Poppins', sans-serif; background: var(--dark); color: white; margin: 0; overflow-x: hidden; }
+        :root { --play-green: #01875f; --apple-blue: #0071e3; --dark: #121212; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--dark); color: white; margin: 0; text-align: center; }
         
-        /* Premium UI */
-        .hero { padding: 40px 20px; text-align: center; background: linear-gradient(180deg, #111, #0a0a0a); }
-        .logo { font-size: 32px; font-weight: 800; letter-spacing: 2px; color: var(--main); text-shadow: 0 0 15px var(--main); }
-        
-        /* The Search Engine */
-        .search-box-pro {
-            margin-top: 30px; position: relative; max-width: 700px; margin-left: auto; margin-right: auto;
-        }
-        #globalSearch {
-            width: 100%; padding: 18px 25px; border-radius: 50px; border: 2px solid #333;
-            background: var(--glass); color: white; font-size: 18px; backdrop-filter: blur(10px);
-            transition: 0.4s; outline: none;
-        }
-        #globalSearch:focus { border-color: var(--main); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+        .nav { background: #000; padding: 20px; border-bottom: 3px solid var(--play-green); }
+        .logo { font-size: 28px; font-weight: bold; color: var(--play-green); text-transform: uppercase; }
 
-        /* Results Container */
-        .results-area { padding: 20px; max-width: 900px; margin: auto; }
-        .app-result-card {
-            background: #161616; margin-bottom: 15px; padding: 20px; border-radius: 15px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-left: 5px solid var(--main); animation: slideUp 0.5s ease;
+        .search-section { padding: 40px 20px; }
+        #appInput {
+            width: 80%; max-width: 500px; padding: 15px 25px; border-radius: 30px;
+            border: none; font-size: 18px; outline: 2px solid #333; background: #222; color: white;
         }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .app-info h3 { margin: 0; color: var(--main); font-size: 20px; }
-        .app-info p { margin: 5px 0; color: #aaa; font-size: 13px; }
+        #appInput:focus { outline: 2px solid var(--play-green); }
 
-        .dl-btn {
-            background: var(--main); color: black; padding: 10px 25px; border-radius: 8px;
-            text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.3s;
+        .btn-search {
+            margin-top: 20px; padding: 12px 40px; border-radius: 30px; border: none;
+            background: var(--play-green); color: white; font-weight: bold; cursor: pointer;
+            font-size: 16px; transition: 0.3s;
         }
-        .dl-btn:hover { background: white; transform: scale(1.1); }
-        
-        .verified-badge { font-size: 10px; background: #333; padding: 2px 8px; border-radius: 4px; margin-left: 10px; }
+        .btn-search:hover { background: #01a373; transform: translateY(-3px); }
+
+        .info-box { margin-top: 50px; padding: 20px; color: #888; font-size: 14px; }
+        .store-icon { width: 30px; vertical-align: middle; margin: 0 10px; }
     </style>
 </head>
 <body>
 
-<div class="hero">
-    <div class="logo">X-STORE GLOBAL</div>
-    <p style="color: #666;">The Largest Database of Official & Rare Apps</p>
-    
-    <div class="search-box-pro">
-        <input type="text" id="globalSearch" placeholder="Enter App Name (e.g. Kinemaster Mod, Sigma Game, GB WhatsApp)...">
-        <button onclick="startDeepSearch()" style="margin-top: 15px; padding: 10px 30px; border-radius: 50px; background: var(--main); border: none; cursor: pointer; font-weight: bold;">DEEP SEARCH</button>
-    </div>
+<div class="nav">
+    <div class="logo">X-Store Pro</div>
 </div>
 
-<div class="results-area" id="displayBoard">
-    <div style="text-align: center; color: #444; margin-top: 50px;">
-        Search for any app to fetch official links...
-    </div>
+<div class="search-section">
+    <h2>Search Any App to Open in Store</h2>
+    <input type="text" id="appInput" placeholder="Enter App Name (e.g. Instagram, BGMI, WhatsApp)...">
+    <br>
+    <button class="btn-search" onclick="redirectToStore()">OPEN IN PLAY STORE</button>
+</div>
+
+<div class="info-box">
+    <p>Supports: 
+        <img src="https://img.icons8.com/color/48/google-play.png" class="store-icon"> Play Store 
+        <img src="https://img.icons8.com/color/48/apple-app-store--v1.png" class="store-icon"> App Store
+    </p>
+    <p>100% Official & Secure Connection</p>
 </div>
 
 <script>
-    function startDeepSearch() {
-        const query = document.getElementById('globalSearch').value;
-        const board = document.getElementById('displayBoard');
+    function redirectToStore() {
+        const appName = document.getElementById('appInput').value;
+        if (!appName) {
+            alert("Bhai, pehle app ka naam to likho!");
+            return;
+        }
+
+        // Device Detection Logic
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         
-        if(query.length < 2) return;
+        let storeUrl;
 
-        // Search hote hi user ko lagega ki engine kaam kar raha hai
-        board.innerHTML = `<p style="text-align:center;">Connecting to Servers... Searching for <b>${query}</b> Official Port...</p>`;
+        if (isIOS) {
+            // iPhone ke liye App Store search link
+            storeUrl = `https://apps.apple.com/search?term=${encodeURIComponent(appName)}`;
+        } else {
+            // Android ke liye Play Store search link
+            // Ye seedha Play Store app ko trigger karega
+            storeUrl = `https://play.google.com/store/search?q=${encodeURIComponent(appName)}&c=apps`;
+        }
 
-        // Simulation of a massive database fetch
-        setTimeout(() => {
-            board.innerHTML = `
-                <div class="app-result-card">
-                    <div class="app-info">
-                        <h3>${query} <span class="verified-badge">OFFICIAL VERIFIED</span></h3>
-                        <p>Source: Secure Global Mirror 1</p>
-                        <p>Status: 100% Safe | Malware Scanned</p>
-                    </div>
-                    <a href="https://www.google.com/search?q=${query}+official+download+apk" target="_blank" class="dl-btn">GET APP</a>
-                </div>
-                
-                <div class="app-result-card" style="border-left-color: #007bff;">
-                    <div class="app-info">
-                        <h3>${query} (Mirror 2)</h3>
-                        <p>Source: Community Port</p>
-                        <p>Status: Tested on Android 13/14</p>
-                    </div>
-                    <a href="https://www.bing.com/search?q=${query}+direct+apk+download" target="_blank" class="dl-btn" style="background:#007bff; color:white;">MIRROR LINK</a>
-                </div>
-            `;
-        }, 1500);
+        // Direct Redirect
+        window.location.href = storeUrl;
     }
 </script>
 
