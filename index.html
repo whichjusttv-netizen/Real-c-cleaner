@@ -3,77 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-Store | Official Redirect</title>
+    <title>X-Store | Pro Edition</title>
     <style>
-        :root { --play-green: #01875f; --apple-blue: #0071e3; --dark: #121212; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--dark); color: white; margin: 0; text-align: center; }
+        :root { --primary: #01875f; --dark: #0f172a; --uptodown: #00a0e1; }
+        body { font-family: 'Inter', sans-serif; background: var(--dark); color: white; margin: 0; text-align: center; }
         
-        .nav { background: #000; padding: 20px; border-bottom: 3px solid var(--play-green); }
-        .logo { font-size: 28px; font-weight: bold; color: var(--play-green); text-transform: uppercase; }
+        .header { background: #000; padding: 25px; border-bottom: 3px solid var(--primary); }
+        .logo { font-size: 30px; font-weight: 900; color: var(--primary); }
 
-        .search-section { padding: 40px 20px; }
-        #appInput {
-            width: 80%; max-width: 500px; padding: 15px 25px; border-radius: 30px;
-            border: none; font-size: 18px; outline: 2px solid #333; background: #222; color: white;
+        .search-container { padding: 50px 20px; }
+        #mainSearch {
+            width: 85%; max-width: 550px; padding: 18px 25px; border-radius: 50px;
+            border: 2px solid #334155; background: #1e293b; color: white; font-size: 18px; outline: none;
         }
-        #appInput:focus { outline: 2px solid var(--play-green); }
 
-        .btn-search {
-            margin-top: 20px; padding: 12px 40px; border-radius: 30px; border: none;
-            background: var(--play-green); color: white; font-weight: bold; cursor: pointer;
-            font-size: 16px; transition: 0.3s;
+        /* Secret Upload Icon Style */
+        #uploadIcon {
+            display: none; /* Pehle hide rahega */
+            margin-top: 30px;
+            cursor: pointer;
+            animation: bounce 1s infinite;
         }
-        .btn-search:hover { background: #01a373; transform: translateY(-3px); }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
 
-        .info-box { margin-top: 50px; padding: 20px; color: #888; font-size: 14px; }
-        .store-icon { width: 30px; vertical-align: middle; margin: 0 10px; }
+        .upload-text { color: var(--uptodown); font-weight: bold; margin-top: 10px; display: none; }
+
+        .footer { margin-top: 100px; color: #444; font-size: 12px; }
     </style>
 </head>
 <body>
 
-<div class="nav">
-    <div class="logo">X-Store Pro</div>
+<div class="header">
+    <div class="logo">X-STORE GLOBAL</div>
 </div>
 
-<div class="search-section">
-    <h2>Search Any App to Open in Store</h2>
-    <input type="text" id="appInput" placeholder="Enter App Name (e.g. Instagram, BGMI, WhatsApp)...">
-    <br>
-    <button class="btn-search" onclick="redirectToStore()">OPEN IN PLAY STORE</button>
+<div class="search-container">
+    <h2>Duniya Ke Saare Apps Ek Jagah</h2>
+    <input type="text" id="mainSearch" placeholder="Search apps..." onkeyup="checkSecretKey()">
+    
+    <div id="secretSection">
+        <div id="uploadIcon" onclick="goToUptodown()">
+            <img src="https://img.icons8.com/fluency/96/upload-to-cloud.png" alt="Upload">
+            <div class="upload-text" id="upText">PUBLISH TO UPTODOWN</div>
+        </div>
+    </div>
 </div>
 
-<div class="info-box">
-    <p>Supports: 
-        <img src="https://img.icons8.com/color/48/google-play.png" class="store-icon"> Play Store 
-        <img src="https://img.icons8.com/color/48/apple-app-store--v1.png" class="store-icon"> App Store
-    </p>
-    <p>100% Official & Secure Connection</p>
-</div>
+<div class="footer">© 2026 X-Store Portal | Secure Gateway</div>
 
 <script>
-    function redirectToStore() {
-        const appName = document.getElementById('appInput').value;
-        if (!appName) {
-            alert("Bhai, pehle app ka naam to likho!");
-            return;
-        }
+    function checkSecretKey() {
+        const input = document.getElementById('mainSearch').value.toUpperCase(); // PRK handle karne ke liye
+        const icon = document.getElementById('uploadIcon');
+        const text = document.getElementById('upText');
 
-        // Device Detection Logic
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        
-        let storeUrl;
-
-        if (isIOS) {
-            // iPhone ke liye App Store search link
-            storeUrl = `https://apps.apple.com/search?term=${encodeURIComponent(appName)}`;
+        // Agar user "PRK" search karega
+        if (input === "PRK") {
+            icon.style.display = "inline-block";
+            text.style.display = "block";
         } else {
-            // Android ke liye Play Store search link
-            // Ye seedha Play Store app ko trigger karega
-            storeUrl = `https://play.google.com/store/search?q=${encodeURIComponent(appName)}&c=apps`;
+            icon.style.display = "none";
+            text.style.display = "none";
         }
+    }
 
-        // Direct Redirect
-        window.location.href = storeUrl;
+    function goToUptodown() {
+        // Direct link to Uptodown Developers/Publishing Section
+        window.location.href = "https://developers.uptodown.com/";
     }
 </script>
 
