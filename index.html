@@ -1,103 +1,107 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-Store | Official & Creator Portal</title>
+    <title>X-Store | Global App Portal</title>
     <style>
-        :root { --primary: #01875f; --dark: #0f172a; --uptodown: #00a0e1; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; margin: 0; text-align: center; }
+        :root { --primary: #01875f; --dark: #0f172a; --accent: #00a0e1; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--dark); color: #ffffff; margin: 0; text-align: center; }
         
-        .header { background: #000; padding: 20px; border-bottom: 3px solid var(--primary); }
-        .logo { font-size: 28px; font-weight: bold; color: var(--primary); letter-spacing: 1px; }
+        /* Header Section */
+        .navbar { background: #000000; padding: 25px; border-bottom: 3px solid var(--primary); }
+        .brand { font-size: 32px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
 
-        .container { padding: 40px 20px; max-width: 600px; margin: auto; }
-        #mainSearch {
-            width: 100%; padding: 18px 25px; border-radius: 50px;
-            border: 2px solid #334155; background: #1e293b; color: white; font-size: 18px; outline: none;
-            box-sizing: border-box;
+        .main-content { padding: 45px 20px; max-width: 650px; margin: auto; }
+        #appSearchBar {
+            width: 100%; padding: 20px 25px; border-radius: 50px;
+            border: 2px solid #334155; background: #1e293b; color: #ffffff; font-size: 18px; outline: none;
+            box-sizing: border-box; transition: 0.3s;
         }
-        #mainSearch:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(1, 135, 95, 0.3); }
+        #appSearchBar:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(1, 135, 95, 0.4); }
 
-        /* Normal Search Button */
-        #normalSearchArea { margin-top: 25px; display: block; }
-        .btn-store {
-            width: 100%; padding: 15px; border-radius: 50px; border: none;
-            background: var(--primary); color: white; font-weight: bold; cursor: pointer;
-            font-size: 16px; text-transform: uppercase;
+        /* Store Access Button */
+        #storeAccessArea { margin-top: 30px; display: block; }
+        .btn-launch {
+            width: 100%; padding: 18px; border-radius: 50px; border: none;
+            background: var(--primary); color: #ffffff; font-weight: bold; cursor: pointer;
+            font-size: 18px; text-transform: uppercase; transition: 0.3s;
         }
+        .btn-launch:hover { background: #01a373; transform: translateY(-2px); }
 
-        /* Secret Upload Section (Hidden by Default) */
-        #secretUploadArea {
+        /* Secret Publisher Panel */
+        #secretPublisherPanel {
             display: none; 
-            margin-top: 30px;
-            padding: 20px;
+            margin-top: 35px;
+            padding: 30px;
             background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            border: 1px dashed var(--uptodown);
+            border-radius: 25px;
+            border: 2px dashed var(--accent);
+            cursor: pointer;
         }
-        .upload-icon { width: 80px; cursor: pointer; animation: bounce 1.5s infinite; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .cloud-icon { width: 100px; animation: hoverPulse 2s infinite; }
+        @keyframes hoverPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
         
-        .upload-label { color: var(--uptodown); font-weight: bold; margin-top: 10px; display: block; cursor: pointer; }
+        .panel-title { color: var(--accent); font-weight: 800; font-size: 20px; margin-top: 15px; display: block; }
 
-        .footer { margin-top: 50px; color: #444; font-size: 12px; }
+        .app-footer { margin-top: 60px; color: #475569; font-size: 13px; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <div class="logo">X-STORE PRO</div>
+<div class="navbar">
+    <div class="brand">X-STORE PRO</div>
 </div>
 
-<div class="container">
-    <h2>Lakhon Apps Official Store Se</h2>
-    <input type="text" id="mainSearch" placeholder="Search any app (Secret code: PRK)..." onkeyup="handleSearchLogic()">
+<div class="main-content">
+    <h2 style="font-weight: 500; color: #cbd5e1;">Global Digital Repository</h2>
+    <input type="text" id="appSearchBar" placeholder="Search millions of apps..." onkeyup="syncAppLogic()">
     
-    <div id="normalSearchArea">
-        <button class="btn-store" onclick="redirectToOfficialStore()">Open in Official Store</button>
-        <p style="font-size: 12px; color: #666; margin-top: 10px;">Safe & Secure Deep Linking</p>
+    <div id="storeAccessArea">
+        <button class="btn-launch" onclick="launchOfficialStore()">Open Official Store</button>
+        <p style="font-size: 12px; color: #64748b; margin-top: 12px;">Secure Connection Verified</p>
     </div>
 
-    <div id="secretUploadArea" onclick="goToUptodown()">
-        <img src="https://img.icons8.com/fluency/96/upload-to-cloud.png" class="upload-icon">
-        <span class="upload-label">SECRET: PUBLISH TO UPTODOWN</span>
+    <div id="secretPublisherPanel" onclick="openPublisherPortal()">
+        <img src="https://img.icons8.com/fluency/144/cloud-lighting.png" class="cloud-icon">
+        <span class="panel-title">PUBLISHER DASHBOARD</span>
+        <p style="color: #94a3b8; font-size: 14px;">Upload & Distribute Your Content</p>
     </div>
 </div>
 
-<div class="footer">Verified by X-Store Security Protocol</div>
+<div class="app-footer">ENCRYPTED GATEWAY | POWERED BY X-CORE</div>
 
 <script>
-    function handleSearchLogic() {
-        const query = document.getElementById('mainSearch').value.trim().toUpperCase();
-        const normalArea = document.getElementById('normalSearchArea');
-        const secretArea = document.getElementById('secretUploadArea');
+    function syncAppLogic() {
+        const inputVal = document.getElementById('appSearchBar').value.trim().toUpperCase();
+        const standardUI = document.getElementById('storeAccessArea');
+        const secretUI = document.getElementById('secretPublisherPanel');
 
-        if (query === "PRK") {
-            // Secret Mode On
-            normalArea.style.display = "none";
-            secretArea.style.display = "block";
+        // Secret Trigger: PRK
+        if (inputVal === "PRK") {
+            standardUI.style.display = "none";
+            secretUI.style.display = "block";
         } else {
-            // Normal Mode On
-            normalArea.style.display = "block";
-            secretArea.style.display = "none";
+            standardUI.style.display = "block";
+            secretUI.style.display = "none";
         }
     }
 
-    function redirectToOfficialStore() {
-        const appName = document.getElementById('mainSearch').value.trim();
-        if (!appName) { alert("Bhai, app ka naam toh dalo!"); return; }
+    function launchOfficialStore() {
+        const query = document.getElementById('appSearchBar').value.trim();
+        if (!query) { alert("Please enter an application name."); return; }
 
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        let url = isIOS 
-            ? `https://apps.apple.com/search?term=${encodeURIComponent(appName)}` 
-            : `https://play.google.com/store/search?q=${encodeURIComponent(appName)}&c=apps`;
+        const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        let storeLink = isApple 
+            ? `https://apps.apple.com/search?term=${encodeURIComponent(query)}` 
+            : `https://play.google.com/store/search?q=${encodeURIComponent(query)}&c=apps`;
         
-        window.location.href = url;
+        window.location.href = storeLink;
     }
 
-    function goToUptodown() {
-        window.location.href = "https://developers.uptodown.com/";
+    function openPublisherPortal() {
+        // Updated stable link to prevent "Name Not Resolved" error
+        window.location.href = "https://en.uptodown.com/publish";
     }
 </script>
 
