@@ -3,73 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-TUBE PRO | Fixed Version</title>
+    <title>X-TUBE PRO | Multi-Video Feed</title>
     <style>
-        :root { --red: #ff0000; --dark: #0f0f0f; }
-        body { background: var(--dark); color: white; font-family: sans-serif; margin: 0; text-align: center; }
+        :root { --yt-red: #ff0000; --bg: #0f0f0f; --card-bg: #1a1a1a; }
+        body { background: var(--bg); color: white; font-family: 'Roboto', Arial, sans-serif; margin: 0; padding-bottom: 30px; }
         
-        .user-bar { background: #1a1a1a; padding: 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #333; }
-        .avatar { width: 30px; height: 30px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-
-        .header { padding: 20px; }
-        .search-box { width: 90%; max-width: 500px; margin: auto; }
-        input { width: 80%; padding: 12px; border-radius: 25px; border: none; background: #222; color: white; margin-bottom: 10px; }
+        /* Header Section */
+        .header { background: #000; padding: 15px; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #333; }
+        .user-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .avatar-box { display: flex; align-items: center; gap: 10px; }
+        .avatar { width: 32px; height: 32px; background: var(--yt-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1.5px solid gold; }
         
-        .btn-container { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
-        .go-btn { padding: 12px 25px; border-radius: 25px; border: none; font-weight: bold; cursor: pointer; color: white; }
-        .long { background: var(--red); }
-        .shorts { background: #fff; color: #000; }
+        /* Search Bar */
+        .search-container { display: flex; gap: 8px; max-width: 500px; margin: auto; }
+        input { flex: 1; padding: 12px 18px; border-radius: 25px; border: 1px solid #333; background: #121212; color: white; outline: none; }
+        .search-btn { background: var(--yt-red); border: none; padding: 10px 20px; border-radius: 25px; color: white; font-weight: bold; cursor: pointer; }
 
-        .status-box { margin-top: 30px; padding: 20px; border: 1px dashed #444; border-radius: 15px; width: 80%; margin-left: auto; margin-right: auto; }
+        /* Multi-Video Feed */
+        .feed { padding: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .video-card { background: var(--card-bg); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .video-thumb { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
+        .shorts-thumb { padding-bottom: 177%; max-width: 300px; margin: auto; }
+        iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        
+        .video-meta { padding: 12px; }
+        .video-title { font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #efefef; }
+        .video-tag { font-size: 11px; color: var(--yt-red); font-weight: bold; text-transform: uppercase; }
+
+        .loader { text-align: center; padding: 20px; color: var(--yt-red); display: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="user-bar">
-    <div style="display:flex; align-items:center; gap:10px;">
-        <div class="avatar">R</div>
-        <div style="text-align:left; font-size:12px;"><b>Ranjan</b><br><span style="color:#888;">ID: XT-2026-PRO</span></div>
-    </div>
-    <div style="font-size:10px; background:gold; color:black; padding:2px 5px; border-radius:3px; font-weight:bold;">X-STORE PRO</div>
-</div>
-
 <div class="header">
-    <h1 style="color:var(--red); margin:0;">X-TUBE <span style="color:white">PRO</span></h1>
-    <p style="font-size:12px; color:#666;">Global Search Engine - v3.0 (Fixed)</p>
-</div>
-
-<div class="search-box">
-    <input type="text" id="query" placeholder="Type Movie Name or Channel...">
-    <div class="btn-container">
-        <button class="go-btn long" onclick="openVideo('long')">WATCH LONG</button>
-        <button class="go-btn shorts" onclick="openVideo('shorts')">WATCH SHORTS</button>
+    <div class="user-info">
+        <div class="avatar-box">
+            <div class="avatar">R</div>
+            <div style="font-size: 12px;"><b>Ranjan</b><br><span style="color:#888;">Owner ID: XT-2026</span></div>
+        </div>
+        <div style="font-size: 10px; background: gold; color: black; padding: 3px 8px; border-radius: 4px; font-weight: bold;">X-STORE PRO</div>
+    </div>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search Movies, Games, Shorts...">
+        <button class="search-btn" onclick="generateFeed()">SEARCH</button>
     </div>
 </div>
 
-<div class="status-box">
-    <p id="msg">Ready to stream... Enter keywords above.</p>
+<div id="loading" class="loader">SYNCHRONIZING WITH YOUTUBE SERVERS...</div>
+
+<div class="feed" id="videoFeed">
+    <p style="grid-column: 1/-1; text-align: center; color: #555; margin-top: 50px;">Enter a topic to generate your personal video feed.</p>
 </div>
 
 <script>
-    function openVideo(type) {
-        const val = document.getElementById('query').value;
-        if(!val) { alert("Pehle kuch likho bhai!"); return; }
+    function generateFeed() {
+        const query = document.getElementById('searchInput').value;
+        const feed = document.getElementById('videoFeed');
+        const loader = document.getElementById('loading');
 
-        document.getElementById('msg').innerText = "Connecting to Global Servers...";
+        if(!query) { alert("Bhai, search toh likho!"); return; }
 
-        let finalUrl = "";
-        if(type === 'long') {
-            // Official YouTube Search Redirect (Works 100% in Apps)
-            finalUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(val)}`;
-        } else {
-            // Official Shorts Redirect
-            finalUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(val + " shorts")}`;
-        }
+        loader.style.display = "block";
+        feed.innerHTML = "";
 
-        // Direct redirection taaki "Unable" wala error na aaye
+        // Yeh system alag-alag videos fetch karne ki koshish karega
+        // Hum 4 alag variations create kar rahe hain jo alag-alag content dikhayenge
+        const variations = [
+            { title: "Trending Now", filter: "" },
+            { title: "Top Results", filter: " official" },
+            { title: "Shorts Feed", filter: " shorts", type: 'shorts' },
+            { title: "Recommended", filter: " latest" }
+        ];
+
         setTimeout(() => {
-            window.location.href = finalUrl;
-        }, 1000);
+            loader.style.display = "none";
+            
+            variations.forEach(v => {
+                const card = document.createElement('div');
+                card.className = "video-card";
+                
+                const frameClass = (v.type === 'shorts') ? "video-thumb shorts-thumb" : "video-thumb";
+                const streamUrl = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query + v.filter)}`;
+
+                card.innerHTML = `
+                    <div class="${frameClass}">
+                        <iframe src="${streamUrl}" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-meta">
+                        <div class="video-tag">${v.title}</div>
+                        <div class="video-title">${query.toUpperCase()} - Global Stream</div>
+                    </div>
+                `;
+                feed.appendChild(card);
+            });
+        }, 1200);
     }
 </script>
 
