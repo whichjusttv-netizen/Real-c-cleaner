@@ -3,187 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-PRO ULTIMATE CONSOLE</title>
+    <title>X-PRO ULTIMATE</title>
     <script src="https://cdn.jsdelivr.net/npm/unity-ads-sdk@4.0.0/dist/unity-ads.min.js"></script>
     <style>
-        :root { --neon: #00ff9d; --yt: #ff0000; --bg: #05060f; --card: #12141d; --blue: #0084ff; }
-        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        :root { --neon: #00ff9d; --yt: #ff0000; --bg: #05060f; --card: #12141d; --gold: #ffd700; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; text-align: center; }
+        
+        /* Lock Screen */
+        #gate { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .box { background: var(--card); padding: 30px; border: 2px solid var(--neon); border-radius: 20px; width: 85%; }
 
-        /* Login Screen */
-        #login-screen { background: var(--card); padding: 35px; border-radius: 25px; border: 1px solid var(--neon); text-align: center; width: 300px; z-index: 1000; box-shadow: 0 0 30px rgba(0,255,157,0.1); }
-        .pass-input { width: 100%; padding: 12px; margin: 20px 0; background: #000; border: 1px solid #333; color: var(--neon); border-radius: 10px; text-align: center; outline: none; font-weight: bold; }
-        .login-btn { background: var(--neon); color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 10px; cursor: pointer; width: 100%; }
+        /* Main View */
+        #app { display: none; }
+        .wallet { background: #000; padding: 20px; border-radius: 20px; border: 1px solid #333; margin: 10px 0; }
+        .balance { font-size: 45px; font-weight: bold; color: var(--gold); }
 
-        /* Main Dashboard */
-        #main-dashboard { display: none; width: 100%; height: 100vh; padding: 15px; box-sizing: border-box; overflow-y: auto; text-align: center; }
-        .header { display: flex; justify-content: space-between; font-size: 10px; color: #666; margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        .online { color: var(--neon) !important; text-shadow: 0 0 8px var(--neon); font-weight: bold; }
-        .offline { color: var(--yt) !important; }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }
+        .t-btn { padding: 18px 5px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; font-size: 12px; }
+        .u-btn { background: var(--neon); color: #000; }
+        .y-btn { background: var(--yt); color: #fff; }
 
-        .wallet-card { background: linear-gradient(180deg, #000, #12141d); border-radius: 20px; padding: 25px; border: 1px solid #333; margin: 10px 0; }
-        .balance { font-size: 45px; font-weight: bold; color: gold; display: block; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        /* Video Task Section */
+        .video-sec { background: #1a1c25; padding: 15px; border-radius: 15px; border: 1.5px solid var(--gold); margin-bottom: 20px; }
+        .input-f { width: 90%; padding: 10px; margin: 10px 0; border-radius: 8px; border: none; background: #000; color: #fff; text-align: center; font-size: 12px; }
 
-        /* Unity & YT Buttons Fix */
-        .task-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
-        .btn { padding: 20px 10px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.3s; }
-        .btn-reward { background: var(--neon); color: #000; box-shadow: 0 4px 15px rgba(0,255,157,0.2); }
-        .btn-mono { background: var(--yt); color: #fff; box-shadow: 0 4px 15px rgba(255,0,0,0.2); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* Premium Apps Vault */
-        .app-vault { background: #161b22; border-radius: 15px; padding: 15px; text-align: left; border: 1px solid #30363d; margin-bottom: 25px; }
-        .vault-title { color: gold; font-weight: bold; font-size: 14px; margin: 0 0 15px 0; border-left: 3px solid gold; padding-left: 10px; }
-        .app-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #222; }
-        .app-info { display: flex; flex-direction: column; }
-        .app-name { font-size: 14px; font-weight: bold; }
-        .app-cost { font-size: 10px; color: #888; }
-        .get-btn { background: var(--blue); color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer; }
+        /* Store - Hard Pricing */
+        .store { background: var(--card); border-radius: 15px; padding: 15px; text-align: left; border: 1px solid #333; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222; }
+        .buy-b { background: #0084ff; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="login-screen">
-        <h2 style="margin:0; color:var(--neon)">X-PRO SECURE</h2>
-        <p style="font-size:10px; color:#888;">AARTI-X AUTHORIZATION REQUIRED</p>
-        <input type="password" id="passkey" class="pass-input" placeholder="Enter 'Aarti X'">
-        <button class="login-btn" onclick="checkPassword()">UNLOCK CONSOLE</button>
+    <div id="gate">
+        <div class="box">
+            <h2 style="color:var(--neon); margin:0;">X-SYSTEM</h2>
+            <p style="font-size:10px; color:#888;">ENTER: Aarti X</p>
+            <input type="password" id="pk" placeholder="Password" style="width:90%; padding:10px; margin:15px 0; border-radius:8px; border:none; text-align:center;">
+            <button onclick="access()" style="width:100%; padding:12px; background:var(--neon); border:none; border-radius:10px; font-weight:bold;">ACCESS DASHBOARD</button>
+        </div>
     </div>
 
-    <div id="main-dashboard">
-        <div class="header">
-            <span id="unity-stat" class="offline">● UNITY DISCONNECTED</span>
-            <span>ID: 6096974</span>
+    <div id="app">
+        <div style="font-size:10px; display:flex; justify-content:space-between; color:#555;">
+            <span id="u-info">UNITY: SCANNING...</span>
+            <span>AARTI X SECURE</span>
         </div>
 
-        <div class="wallet-card">
-            <span style="font-size: 10px; color: #888; letter-spacing: 2px;">TOTAL CREDITS</span>
-            <span class="balance" id="coin-txt">0000</span>
+        <div class="wallet">
+            <div style="font-size:10px; color:#888;">CURRENT COINS</div>
+            <div class="balance" id="coin-disp">0000</div>
         </div>
 
-        <div class="task-grid">
-            <button id="reward-btn" class="btn btn-reward" onclick="runUnityAd()" disabled>⚡ LOADING <br>REWARDS...</button>
-            <button class="btn btn-mono" onclick="ytMonetize()">📺 YT <br>MONETIZE</button>
+        <div class="btn-grid">
+            <button class="t-btn u-btn" onclick="runU()">⚡ UNITY AD<br>+50 COINS</button>
+            <button class="t-btn y-btn" onclick="runY()">📺 WATCH YT<br>+50 COINS</button>
         </div>
 
-        <div class="app-vault">
-            <p class="vault-title">PREMIUM MODS (CHROME DOWNLOADS)</p>
-            
-            <div class="app-item">
-                <div class="app-info"><span class="app-name">GB WhatsApp Pro</span><span class="app-cost">Cost: 100 Cr</span></div>
-                <button class="get-btn" onclick="openApp('https://androidwaves.com/', 100)">GET LINK</button>
-            </div>
-
-            <div class="app-item">
-                <div class="app-info"><span class="app-name">Vidmate Premium</span><span class="app-cost">Cost: 80 Cr</span></div>
-                <button class="get-btn" onclick="openApp('https://www.vidmateapp.com/', 80)">GET LINK</button>
-            </div>
-
-            <div class="app-item">
-                <div class="app-info"><span class="app-name">Instagram Pro Mod</span><span class="app-cost">Cost: 120 Cr</span></div>
-                <button class="get-btn" onclick="openApp('https://instamod.net/', 120)">GET LINK</button>
-            </div>
-
-            <div class="app-item">
-                <div class="app-info"><span class="app-name">FF Headshot Mod</span><span class="app-cost">Cost: 200 Cr</span></div>
-                <button class="get-btn" onclick="openApp('https://google.com/search?q=FF+Headshot+Mod+APK', 200)">GET LINK</button>
-            </div>
-
-            <div class="app-item">
-                <div class="app-info"><span class="app-name">Spotify Premium Mod</span><span class="app-cost">Cost: 150 Cr</span></div>
-                <button class="get-btn" onclick="openApp('https://spotify.com/', 150)">GET LINK</button>
-            </div>
-            
-            <div class="app-item">
-                <div class="app-info"><span class="app-name">Kinemaster Pro</span><span class="app-cost">Cost: 150 Cr</span></div>
-                <button class="get-btn" onclick="openApp('https://kinemaster.com/', 150)">GET LINK</button>
-            </div>
+        <div class="video-sec">
+            <div style="color:var(--gold); font-weight:bold; font-size:14px;">📤 VIDEO TASK (200 COINS)</div>
+            <p style="font-size:10px; color:#aaa; margin:5px 0;">Apni video upload karke link yahan dalein!</p>
+            <input type="text" id="v-link" class="input-f" placeholder="YouTube Link Paste Karein">
+            <button onclick="subV()" style="width:100%; padding:10px; background:var(--gold); border:none; border-radius:8px; font-weight:bold; cursor:pointer;">SUBMIT & EARN</button>
         </div>
-        
-        <p style="font-size: 9px; color: #444;">SYSTEM SECURED BY AARTI X | UNITY ID: 6096974</p>
+
+        <div class="store">
+            <p style="font-size:13px; font-weight:bold; color:var(--neon); margin-top:0;">PREMIUM STORE (500 COINS EACH)</p>
+            <div class="item"><span>GB WhatsApp Pro</span> <button class="buy-b" onclick="buy('https://androidwaves.com/')">500 Cr</button></div>
+            <div class="item"><span>FF Headshot Mod</span> <button class="buy-b" onclick="buy('https://google.com/')">500 Cr</button></div>
+            <div class="item"><span>Instagram Pro</span> <button class="buy-b" onclick="buy('https://instamod.net/')">500 Cr</button></div>
+            <div class="item"><span>Spotify Premium</span> <button class="buy-b" onclick="buy('http://google.com')">500 Cr</button></div>
+        </div>
     </div>
 
 <script>
-    const API_ID = "6096974";
-    const PASS = "Aarti X";
-    let coins = parseInt(localStorage.getItem('sys_coins')) || 0;
-    let unityInitialized = false;
+    let sc = parseInt(localStorage.getItem('user_sc')) || 0;
+    let ur = false;
 
-    // --- LOGIN SYSTEM ---
-    function checkPassword() {
-        let input = document.getElementById('passkey').value;
-        if(input === PASS) {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-dashboard').style.display = 'block';
-            updateUI();
-            startUnityEngine(); // Initialization start
-        } else {
-            alert("❌ Galat Password! (Hint: Aarti X)");
-        }
+    function access() {
+        if(document.getElementById('pk').value === "Aarti X") {
+            document.getElementById('gate').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            initU(); update();
+        } else { alert("Galat Password!"); }
     }
 
-    // --- UNITY SUPER-FIX ENGINE ---
-    function startUnityEngine() {
-        console.log("Connecting to Unity Server...");
-        // true = Test Mode (Development ke liye), false = Real Ads (Public ke liye)
-        UnityAds.initialize(API_ID, false, (success) => {
-            if(success) {
-                unityInitialized = true;
-                console.log("Unity Ready!");
-                let stat = document.getElementById('unity-stat');
-                stat.innerText = "● UNITY CONNECTED";
-                stat.className = "online";
-                
-                let btn = document.getElementById('reward-btn');
-                btn.innerText = "⚡ UNITY REWARDS";
-                btn.disabled = false;
-            } else {
-                console.log("Unity Error. Retrying...");
-                setTimeout(startUnityEngine, 5000); // 5 sec retry loop
-            }
+    function initU() {
+        UnityAds.initialize("6096974", false, (s) => {
+            if(s) { 
+                ur = true; 
+                document.getElementById('u-info').innerText = "UNITY: ONLINE"; 
+                document.getElementById('u-info').style.color = "#00ff9d";
+            } else { setTimeout(initU, 3000); }
         });
     }
 
-    function runUnityAd() {
-        if(unityInitialized) {
-            UnityAds.show('Rewarded_Android', {
-                onStart: (id) => console.log("Ad Started"),
-                onComplete: (id, state) => {
-                    if (state === 'COMPLETED') {
-                        coins += 50;
-                        updateUI();
-                        alert("Success! 50 Credits Added.");
-                    }
-                },
-                onError: (id, error, message) => {
-                    alert("Unity Ad Error: " + message);
-                    startUnityEngine(); // Re-init on error
-                }
-            });
-        }
+    function runU() {
+        if(ur) { 
+            UnityAds.show('Rewarded_Android'); 
+            setTimeout(()=>{ sc+=50; update(); alert("Ad Complete: +50 Coins!"); }, 5000);
+        } else { alert("Unity connect ho raha hai, rukiye!"); initU(); }
     }
 
-    // --- OTHER FEATURES ---
-    function ytMonetize() {
-        window.open('https://www.youtube.com/', '_blank');
-        setTimeout(() => { coins += 100; updateUI(); alert("100 Monetization Credits Added!"); }, 5000);
+    function runY() {
+        window.open('https://youtube.com', '_blank');
+        setTimeout(()=>{ sc+=50; update(); alert("Watch Complete: +50 Coins!"); }, 8000);
     }
 
-    function openApp(url, cost) {
-        if(coins >= cost) {
-            coins -= cost;
-            updateUI();
-            alert("Access Granted! Chrome is opening...");
-            window.open(url, '_blank');
-        } else {
-            alert("Bhai, thode aur credits kamao!");
-        }
+    function subV() {
+        let l = document.getElementById('v-link').value;
+        if(l.includes("youtu")) {
+            alert("Video Reviewing... Please wait 3 seconds.");
+            setTimeout(()=>{ sc+=200; update(); document.getElementById('v-link').value=""; alert("Verification Success! +200 Coins Added."); }, 3000);
+        } else { alert("Pehle sahi YouTube link dalo!"); }
     }
 
-    function updateUI() {
-        document.getElementById('coin-txt').innerText = coins.toString().padStart(4, '0');
-        localStorage.setItem('sys_coins', coins);
+    function buy(u) {
+        if(sc >= 500) { sc-=500; update(); alert("Opening Official Link!"); window.open(u, '_blank'); }
+        else { alert("Bhai, 500 coins chahiye! Tasks karo."); }
+    }
+
+    function update() {
+        document.getElementById('coin-disp').innerText = sc.toString().padStart(4, '0');
+        localStorage.setItem('user_sc', sc);
     }
 </script>
-
 </body>
 </html>
