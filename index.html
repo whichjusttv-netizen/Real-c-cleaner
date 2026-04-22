@@ -3,78 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-VOICE | Force Mic Access</title>
+    <title>X-VOICE | FINAL MASTER</title>
     <style>
-        :root { --red: #ff0040; --black: #000; }
-        body { background: var(--black); color: white; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
-        
-        .studio-frame { border: 2px solid var(--red); padding: 30px; border-radius: 20px; background: #0a0a0a; }
-        .main-btn { 
-            width: 90px; height: 90px; border-radius: 50%; border: none; 
-            background: var(--red); color: white; font-size: 30px; 
-            cursor: pointer; box-shadow: 0 0 20px var(--red); 
-        }
-        .status-light { width: 15px; height: 15px; background: #333; border-radius: 50%; margin: 15px auto; }
-        .active-light { background: #00ff00; box-shadow: 0 0 10px #00ff00; }
+        body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .studio-box { border: 3px solid #ff0000; padding: 40px; border-radius: 30px; display: inline-block; background: #050505; box-shadow: 0 0 30px #ff0000; }
+        #micBtn { width: 100px; height: 100px; border-radius: 50%; border: none; background: #ff0000; color: white; font-size: 40px; cursor: pointer; transition: 0.3s; }
+        .pulse { animation: pulse-red 1s infinite; background: #00ff00 !important; box-shadow: 0 0 20px #00ff00; }
+        @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .info { margin-top: 20px; font-weight: bold; color: #ff0000; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-<div class="studio-frame">
-    <h2 style="color:var(--red);">X-VOICE <span style="color:white">PRO</span></h2>
-    <p id="msg" style="font-size:12px; color:#888;">PERMISSION STATUS: WAITING...</p>
+<div class="studio-box">
+    <h1 style="margin-top:0;">X-VOICE <span style="color:#ff0000">PRO</span></h1>
+    <p style="font-size:10px; color:#555;">SYSTEM: SECURE AUDIO BYPASS v6.0</p>
     
-    <div id="light" class="status-light"></div>
+    <button id="micBtn" onclick="initStudio()">🎤</button>
     
-    <button id="masterBtn" class="main-btn" onclick="askPermissionFirst()">🎤</button>
-    
-    <div style="margin-top:20px;">
-        <p style="font-size:10px;">ID: XV-2026-OWNER-RANJAN</p>
-    </div>
+    <div id="status" class="info">TAP MIC TO ENABLE SPEAKER</div>
+    <p id="subStatus" style="font-size:10px; color:#444;">WAITING FOR OWNER: RANJAN</p>
 </div>
 
 <script>
-    let audioContext;
-    let stream;
+    let audioCtx = null;
+    let micStream = null;
 
-    // Sabse pehle Permission mangne ka system
-    async function askPermissionFirst() {
-        const msg = document.getElementById('msg');
-        const light = document.getElementById('light');
-        const btn = document.getElementById('masterBtn');
+    async function initStudio() {
+        const btn = document.getElementById('micBtn');
+        const status = document.getElementById('status');
 
-        try {
-            // Ye line browser ko majboor karegi popup dikhane ke liye
-            stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            
-            if (stream) {
-                msg.innerText = "PERMISSION GRANTED! MIC ACTIVE";
-                msg.style.color = "#00ff00";
-                light.classList.add('active-light');
-                btn.style.background = "#00ff00";
-                btn.onclick = startLiveStudio; // Permission milte hi function badal jayega
+        if (!audioCtx) {
+            try {
+                // 1. Force Browser to ask for MIC
+                micStream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: false,
+                        noiseSuppression: false,
+                        autoGainControl: false
+                    } 
+                });
+
+                // 2. Start Audio Engine
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioCtx.createMediaStreamSource(micStream);
                 
-                // Sound test
-                const synth = window.speechSynthesis;
-                synth.speak(new SpeechSynthesisUtterance("Mic access successful. Ready for Ranjan."));
-            }
-        } catch (err) {
-            msg.innerText = "ERROR: CLICK 'ALLOW' ON POPUP!";
-            msg.style.color = "red";
-            alert("Bhai, screen ke upar 'Allow' ka button aaya hoga, usse click karo!");
-        }
-    }
+                // 3. Connect MIC directly to SPEAKER
+                source.connect(audioCtx.destination);
 
-    async function startLiveStudio() {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const source = audioContext.createMediaStreamSource(stream);
-        
-        // Direct Speaker Connection
-        source.connect(audioContext.destination);
-        
-        document.getElementById('msg').innerText = "LIVE ON SPEAKER!";
-        document.getElementById('masterBtn').innerText = "🛑";
-        document.getElementById('masterBtn').onclick = () => location.reload();
+                // 4. UI Update
+                btn.classList.add('pulse');
+                btn.innerText = "🔊";
+                status.innerText = "LIVE ON SPEAKER!";
+                status.style.color = "#00ff00";
+                
+                // Voice confirmation
+                window.speechSynthesis.speak(new SpeechSynthesisUtterance("Speaker active. Hello Ranjan."));
+
+            } catch (err) {
+                alert("Permission Error! Settings mein jaakar Mic ko ALLOW karo.");
+                status.innerText = "PERMISSION DENIED";
+                console.error(err);
+            }
+        } else {
+            // STOP EVERYTHING
+            location.reload(); 
+        }
     }
 </script>
 
