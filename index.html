@@ -3,115 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-DIAMOND | TASK TERMINAL</title>
+    <title>VIRAL BOOSTER | RANJAN PRO</title>
     <script src="https://cdn.jsdelivr.net/npm/unity-ads-sdk@4.0.0/dist/unity-ads.min.js"></script>
     <style>
-        body { background: #000; color: #00ff00; font-family: 'Courier New', Courier, monospace; text-align: center; }
-        .terminal { border: 2px solid #00ff00; padding: 20px; margin: 20px auto; max-width: 350px; border-radius: 15px; background: #0a0a0a; }
-        .credit-box { font-size: 35px; color: #fff; text-shadow: 0 0 10px #00ff00; margin: 15px 0; }
-        .task-card { background: #1a1a1a; border-left: 5px solid #00ff00; padding: 10px; margin: 10px 0; border-radius: 5px; cursor: pointer; transition: 0.3s; }
-        .task-card:active { background: #333; }
-        .btn-unity { background: #00ff00; color: #000; border: none; padding: 18px; width: 100%; font-weight: bold; border-radius: 10px; margin-top: 20px; font-size: 16px; display: none; }
-        #copy-section { display: none; margin-top: 20px; border: 1px dashed white; padding: 10px; }
-        .timer { color: red; font-size: 12px; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; }
+        .warning-board { background: #ff00551a; border: 1px solid #ff0055; padding: 15px; margin: 10px; border-radius: 10px; color: #ff0055; font-weight: bold; font-size: 14px; }
+        .main-card { border: 2px solid #00ff00; padding: 25px; margin: 20px auto; max-width: 360px; border-radius: 20px; background: #000; box-shadow: 0 0 30px rgba(0,255,0,0.1); }
+        .btn-ad { background: #00ff00; color: #000; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-bottom: 15px; }
+        .input-box { width: 90%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #111; color: #fff; margin-top: 15px; display: none; }
+        #submit-btn { display: none; background: cyan; color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; margin-top: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="terminal">
-        <h3 style="margin: 0;">WORKER ID: 6096974</h3>
-        <p style="font-size: 10px; color: #888;">Complete hard tasks to earn Credits</p>
+    <div class="warning-board">
+        ⚠️ DHAYAN SE PADHEIN: <br>
+        Bina Ads dekhe aap Viral Booster use nahi kar sakte. <br>
+        2 Ads = 100 Coins = 10 Comments + Shares + Promotion!
+    </div>
 
-        <div class="credit-box" id="user-cr">0000</div>
-        <div style="font-size: 12px; margin-bottom: 20px;">TOTAL EARNED CREDITS</div>
+    <div class="main-card">
+        <h2 style="color:#00ff00; margin-top:0;">X-BOOSTER</h2>
+        <div style="font-size: 18px; color: gold;">Coins: <span id="c-count">0</span></div>
+        
+        <p style="font-size: 12px; color:#888; margin: 20px 0;">Ads dekh kar 100 Coins jama karein aur apni video viral karein!</p>
+        
+        <button class="btn-ad" onclick="playUnityAd()">WATCH AD (+50 COINS)</button>
 
-        <div class="task-card" onclick="startHardTask(500, 30)">
-            <strong>SERVER MINING (30s)</strong><br>
-            <span style="font-size:11px; color:cyan;">Earn +500 Credits (Mehnat Level: Low)</span>
-        </div>
+        <input type="text" id="v-link" class="input-box" placeholder="Video Link Paste Karein...">
+        <button id="submit-btn" onclick="sendToRanjan()">SUBMIT FOR PROMOTION</button>
 
-        <div class="task-card" onclick="startHardTask(1500, 60)">
-            <strong>DATABASE SYNC (60s)</strong><br>
-            <span style="font-size:11px; color:cyan;">Earn +1500 Credits (Mehnat Level: High)</span>
-        </div>
-
-        <div id="lock-msg" style="color: grey; font-size: 12px; margin-top: 20px;">
-            🔒 Locked! Need 5000 Credits to Unlock Reward API
-        </div>
-        <button class="btn-unity" id="unity-btn" onclick="showUnityAd()">WATCH AD & GET REDEEM CODE</button>
-
-        <div id="copy-section">
-            <div style="font-size:12px;">YOUR CODE:</div>
-            <div id="generated-code" style="font-size:22px; color:yellow; margin: 10px 0;">---</div>
-            <button onclick="copyCode()" style="padding: 5px 15px; cursor:pointer;">CLICK TO COPY</button>
-        </div>
+        <div id="status" style="font-size: 10px; color: #444; margin-top: 20px;">API STATUS: 6096974 ACTIVE</div>
     </div>
 
 <script>
-    const RANJAN_API = "6096974";
-    let credits = parseInt(localStorage.getItem('ranjan_credits')) || 0;
+    const UNITY_ID = "6096974";
+    let myCoins = parseInt(localStorage.getItem('booster_coins')) || 0;
 
-    function refresh() {
-        document.getElementById('user-cr').innerText = credits.toString().padStart(4, '0');
-        localStorage.setItem('ranjan_credits', credits);
+    function refreshUI() {
+        document.getElementById('c-count').innerText = myCoins;
+        localStorage.setItem('booster_coins', myCoins);
         
-        // Agar 5000 credit ho gaye toh Unity button dikhao
-        if(credits >= 5000) {
-            document.getElementById('unity-btn').style.display = "block";
-            document.getElementById('lock-msg').style.display = "none";
+        if(myCoins >= 100) {
+            document.getElementById('v-link').style.display = "block";
+            document.getElementById('submit-btn').style.display = "block";
         }
     }
-    refresh();
+    refreshUI();
 
-    // MEHNAT WALA TASK LOGIC
-    function startHardTask(amount, seconds) {
-        alert("Task Shuru! Aapko website par " + seconds + " seconds tak mehnat karni hogi.");
-        window.open('https://google.com', '_blank'); // Yahan apni website ka link dalna
-
-        let timeLeft = seconds;
-        const btn = event.currentTarget;
-        btn.style.pointerEvents = "none";
-        btn.style.opacity = "0.5";
-
-        let timerInterval = setInterval(() => {
-            timeLeft--;
-            btn.innerHTML = "WAITING... " + timeLeft + "s";
-            
-            if(timeLeft <= 0) {
-                clearInterval(timerInterval);
-                credits += amount;
-                refresh();
-                btn.innerHTML = "TASK COMPLETED! ✅";
-                btn.style.opacity = "1";
-                alert("Shaabash! " + amount + " Credits add ho gaye.");
-            }
-        }, 1000);
-    }
-
-    // UNITY ADS LOGIC
-    function showUnityAd() {
-        UnityAds.initialize(RANJAN_API, true, (success) => {
+    function playUnityAd() {
+        // Unity Ads Initialize and Show
+        UnityAds.initialize(UNITY_ID, true, (success) => {
             if(success) {
                 UnityAds.show('Rewarded_Android');
                 
+                // Reward logic (Ad dekhne ke baad)
                 setTimeout(() => {
-                    credits -= 5000;
-                    refresh();
-                    
-                    const code = "D-FREE-" + Math.floor(100000 + Math.random() * 900000);
-                    document.getElementById('generated-code').innerText = code;
-                    document.getElementById('copy-section').style.display = "block";
-                    alert("Verification Success! Code generate ho gaya hai.");
-                }, 5000);
+                    myCoins += 50;
+                    refreshUI();
+                    alert("Shabash! 50 Coins add ho gaye.");
+                }, 5000); 
+            } else {
+                alert("API Error! Connection check karein.");
             }
         });
     }
 
-    // COPY LOGIC
-    function copyCode() {
-        const c = document.getElementById('generated-code').innerText;
-        navigator.clipboard.writeText(c);
-        alert("Code Copy Ho Gaya! Ab FF mein use karo.");
+    function sendToRanjan() {
+        let link = document.getElementById('v-link').value;
+        if(link.length > 5) {
+            // Success Message
+            alert("✅ Link Submitted!\nRanjan Bhai ko aapka link mil gaya hai. Agle 24 ghante mein promotion shuru ho jayega.");
+            
+            // Coins katna
+            myCoins -= 100;
+            refreshUI();
+            
+            // Link ko console ya database mein bhejna (Abhi ke liye alert)
+            console.log("Promotion for: " + link);
+        } else {
+            alert("Pehle sahi video link dalo!");
+        }
     }
 </script>
 
