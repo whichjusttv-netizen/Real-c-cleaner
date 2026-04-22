@@ -3,101 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-PRO TERMINAL</title>
+    <title>X-PRO ULTIMATE CONSOLE</title>
     <script src="https://cdn.jsdelivr.net/npm/unity-ads-sdk@4.0.0/dist/unity-ads.min.js"></script>
     <style>
-        :root { --neon: #00ff9d; --bg: #050505; --card: #121212; --pink: #ff0055; }
-        body { background: var(--bg); color: #fff; font-family: 'Courier New', monospace; padding: 20px; text-align: center; }
-        
-        .container { max-width: 380px; margin: auto; border: 1px solid #333; border-radius: 15px; padding: 15px; background: var(--card); box-shadow: 0 0 20px rgba(0,255,157,0.1); }
-        .header { border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; color: var(--neon); }
-        
-        .wallet { background: #1a1a1a; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 5px solid var(--neon); }
-        .coins { font-size: 32px; color: gold; font-weight: bold; }
+        :root { --neon: #00ff9d; --yt: #ff0000; --blue: #0084ff; --bg: #05060f; --card: #12141d; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
 
-        .task-btn { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid var(--neon); background: transparent; color: var(--neon); font-weight: bold; cursor: pointer; border-radius: 8px; text-transform: uppercase; }
-        .task-btn:active { background: var(--neon); color: #000; }
+        /* Login Screen */
+        #login-gate { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; }
+        .gate-box { background: var(--card); padding: 30px; border-radius: 25px; border: 1px solid var(--neon); text-align: center; width: 80%; max-width: 320px; }
+        .gate-input { width: 100%; padding: 12px; margin: 20px 0; background: #000; border: 1px solid #333; color: var(--neon); border-radius: 10px; text-align: center; outline: none; }
+        .gate-btn { background: var(--neon); color: #000; font-weight: bold; padding: 12px 30px; border: none; border-radius: 10px; cursor: pointer; width: 100%; }
+
+        /* Main Dashboard */
+        #app-content { display: none; padding: 15px; }
         
-        .inst-box { font-size: 11px; color: #aaa; margin: 10px 0; background: #222; padding: 10px; border-radius: 5px; border: 1px dashed var(--pink); }
+        /* Top Header */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .status-light { font-size: 10px; color: var(--neon); }
+
+        /* Center: Reward & App Vault Section */
+        .vault-container { background: linear-gradient(180deg, #1a1c25, #000); border-radius: 20px; padding: 15px; border: 1px solid #333; margin-bottom: 20px; }
+        .wallet { font-size: 40px; color: gold; font-weight: 800; margin: 10px 0; display: block; }
+        
+        /* Side-by-Side Task Buttons */
+        .task-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .t-btn { padding: 15px; border-radius: 15px; border: none; font-weight: bold; font-size: 12px; cursor: pointer; transition: 0.2s; }
+        .t-reward { background: var(--neon); color: #000; }
+        .t-mono { background: var(--yt); color: #fff; }
+        .t-btn:active { transform: scale(0.95); }
+
+        /* Secret Apps Section (The "Bich wala" Reward System) */
+        .app-list { text-align: left; background: #000; border-radius: 15px; padding: 10px; border: 1px solid #222; }
+        .app-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #111; }
+        .app-icon { width: 45px; height: 45px; background: #222; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .extract-btn { background: var(--blue); color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 11px; }
+
+        .footer-info { font-size: 9px; color: #444; margin-top: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">SYSTEM STATUS: ONLINE <br> ID: 6096974</div>
-    
-    <div class="wallet">
-        <div style="font-size:10px;">TOTAL CREDITS</div>
-        <div class="coins" id="coin-txt">0000</div>
+    <div id="login-gate">
+        <div class="gate-box">
+            <h2 style="margin:0; color:var(--neon)">X-PRO SECURE</h2>
+            <p style="font-size:11px; color:#888;">AUTHORIZED ACCESS ONLY</p>
+            <input type="password" id="passkey" class="gate-input" placeholder="Enter Password">
+            <button class="gate-btn" onclick="unlock()">UNLOCK CONSOLE</button>
+        </div>
     </div>
 
-    <div class="inst-box">
-        ⚠️ <b>IMPORTANT:</b> Agar Instagram install hai toh use open karein, warna Play Store se download karna padega tabhi credit milega!
+    <div id="app-content">
+        <div class="top-bar">
+            <span style="font-weight: bold; color:var(--neon)">AARTI-X v1.0</span>
+            <span class="status-light">● SYSTEM ONLINE</span>
+        </div>
+
+        <div class="vault-container" style="text-align: center;">
+            <span style="font-size: 11px; color: #888; letter-spacing: 2px;">CREDITS BALANCE</span>
+            <span class="wallet" id="coin-txt">0000</span>
+        </div>
+
+        <div class="task-grid">
+            <button class="t-btn t-reward" onclick="unityAdTask()">⚡ REWARDS <br>(UNITY ADS)</button>
+            <button class="t-btn t-mono" onclick="monetizeTask()">📺 YOUTUBE <br>MONETIZE</button>
+        </div>
+
+        <div class="app-list">
+            <p style="margin: 0 0 10px 5px; color: gold; font-weight: bold; font-size: 13px;">VAULT: SECRET APPS (CHROME LINKS)</p>
+            
+            <div class="app-item">
+                <div class="app-icon">W</div>
+                <div style="flex-grow:1; margin-left:12px;">
+                    <div style="font-size:14px; font-weight:bold;">GB WhatsApp Pro</div>
+                    <div style="font-size:10px; color:#555;">Official Anti-Ban</div>
+                </div>
+                <button class="extract-btn" onclick="getSecretLink('https://androidwaves.com/download-gbwhatsapp-pro-apk/', 100)">EXTRACT</button>
+            </div>
+
+            <div class="app-item">
+                <div class="app-icon" style="color:red">V</div>
+                <div style="flex-grow:1; margin-left:12px;">
+                    <div style="font-size:14px; font-weight:bold;">Vidmate Premium</div>
+                    <div style="font-size:10px; color:#555;">HD Downloader</div>
+                </div>
+                <button class="extract-btn" onclick="getSecretLink('https://www.vidmateapp.com/', 80)">EXTRACT</button>
+            </div>
+
+            <div class="app-item">
+                <div class="app-icon" style="color:blue">M</div>
+                <div style="flex-grow:1; margin-left:12px;">
+                    <div style="font-size:14px; font-weight:bold;">Mod Master Tool</div>
+                    <div style="font-size:10px; color:#555;">Unlimited Coins</div>
+                </div>
+                <button class="extract-btn" onclick="getSecretLink('https://modmaster.org/', 150)">EXTRACT</button>
+            </div>
+        </div>
+
+        <div class="footer-info">POWERED BY GOOGLE CLOUD | UNITY ID: 6096974</div>
     </div>
-
-    <button class="task-btn" onclick="showAd()">Watch Ad (+50 Coins)</button>
-
-    <button class="task-btn" style="border-color:var(--pink); color:var(--pink);" onclick="handleInstagramTask()">
-        Open Instagram (+30 Coins)
-    </button>
-
-    <div id="status-log" style="font-size:10px; color:#555; margin-top:20px;">READY_</div>
-</div>
 
 <script>
-    let credits = parseInt(localStorage.getItem('hack_credits')) || 0;
+    const SECRET = "Aarti X";
     const UNITY_ID = "6096974";
+    let coins = parseInt(localStorage.getItem('sys_coins')) || 0;
 
     function updateUI() {
-        document.getElementById('coin-txt').innerText = credits.toString().padStart(4, '0');
-        localStorage.setItem('hack_credits', credits);
-    }
-    updateUI();
-
-    // Unity Ads Fixed Logic
-    function showAd() {
-        document.getElementById('status-log').innerText = "CONNECTING TO UNITY...";
-        
-        UnityAds.initialize(UNITY_ID, true, (success) => {
-            if(success) {
-                UnityAds.show('Rewarded_Android');
-                // Simulatiing reward for testing
-                setTimeout(() => {
-                    credits += 50;
-                    updateUI();
-                    document.getElementById('status-log').innerText = "AD REWARD ADDED!";
-                }, 5000);
-            } else {
-                alert("Ads Load Nahi Ho Rahe! Internet check karein.");
-            }
-        });
+        document.getElementById('coin-txt').innerText = coins.toString().padStart(4, '0');
+        localStorage.setItem('sys_coins', coins);
     }
 
-    // Instagram Task Logic
-    function handleInstagramTask() {
-        const instagramAppUrl = "instagram://app"; // App kholne ke liye
-        const playStoreUrl = "https://play.google.com/store/apps/details?id=com.instagram.android"; // Play Store link
-        
-        document.getElementById('status-log').innerText = "VERIFYING INSTAGRAM...";
-        
-        // Timer check karne ke liye ki app khula ya nahi
-        let start = Date.now();
-        window.location.href = instagramAppUrl;
+    // Password Logic
+    function unlock() {
+        let input = document.getElementById('passkey').value;
+        if(input === SECRET) {
+            document.getElementById('login-gate').style.display = 'none';
+            document.getElementById('app-content').style.display = 'block';
+            updateUI();
+            initUnity();
+        } else {
+            alert("❌ Wrong Password! Hint: Check User Name.");
+        }
+    }
 
+    // Unity Logic
+    function initUnity() {
+        UnityAds.initialize(UNITY_ID, true);
+    }
+
+    function unityAdTask() {
+        alert("Connecting Unity Ad Server...");
+        UnityAds.show('Rewarded_Android');
+        // Reward Logic
         setTimeout(() => {
-            // Agar 2 second baad bhi page focus mein hai, matlab app nahi khula
-            if (Date.now() - start < 2500) {
-                alert("Instagram install nahi hai! Play Store par ja kar download karein.");
-                window.location.href = playStoreUrl;
-            } else {
-                // App khul gaya, toh reward de do
-                credits += 30;
-                updateUI();
-                alert("Task Complete! 30 Coins Added.");
-            }
-        }, 2000);
+            coins += 50;
+            updateUI();
+            alert("50 Credits Added via Unity Ads!");
+        }, 3000);
+    }
+
+    // YouTube Monetization Logic
+    function monetizeTask() {
+        alert("Opening Monetization Target...");
+        window.open('https://www.youtube.com/c/YOUR_CHANNEL_LINK', '_blank');
+        setTimeout(() => {
+            coins += 100;
+            updateUI();
+            alert("100 Credits Added via YouTube Monetization!");
+        }, 10000);
+    }
+
+    // Chrome Redirect System
+    function getSecretLink(url, cost) {
+        if(coins >= cost) {
+            coins -= cost;
+            updateUI();
+            alert("Access Granted! Opening Chrome for Official App Page.");
+            window.open(url, '_blank');
+        } else {
+            alert("Coins Kam Hain! Task poora karo.");
+        }
     }
 </script>
-
 </body>
 </html>
