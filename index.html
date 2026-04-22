@@ -3,34 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-PRO ULTIMATE</title>
+    <title>X-PRO BRIDGE</title>
     <script src="https://cdn.jsdelivr.net/npm/unity-ads-sdk@4.0.0/dist/unity-ads.min.js"></script>
     <style>
-        :root { --neon: #00ff9d; --yt: #ff0000; --bg: #05060f; --card: #12141d; --gold: #ffd700; }
+        :root { --neon: #00ff9d; --yt: #ff0000; --bg: #05060f; --card: #12141d; --warn: #ffcc00; }
         body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; text-align: center; }
         
-        /* Lock Screen */
+        /* Lock */
         #gate { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
         .box { background: var(--card); padding: 30px; border: 2px solid var(--neon); border-radius: 20px; width: 85%; }
 
         /* Main View */
         #app { display: none; }
         .wallet { background: #000; padding: 20px; border-radius: 20px; border: 1px solid #333; margin: 10px 0; }
-        .balance { font-size: 45px; font-weight: bold; color: var(--gold); }
+        .balance { font-size: 45px; font-weight: bold; color: var(--warn); }
 
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }
         .t-btn { padding: 18px 5px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; font-size: 12px; }
         .u-btn { background: var(--neon); color: #000; }
         .y-btn { background: var(--yt); color: #fff; }
 
-        /* Video Task Section */
-        .video-sec { background: #1a1c25; padding: 15px; border-radius: 15px; border: 1.5px solid var(--gold); margin-bottom: 20px; }
-        .input-f { width: 90%; padding: 10px; margin: 10px 0; border-radius: 8px; border: none; background: #000; color: #fff; text-align: center; font-size: 12px; }
-
-        /* Store - Hard Pricing */
+        /* Store */
         .store { background: var(--card); border-radius: 15px; padding: 15px; text-align: left; border: 1px solid #333; }
         .item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222; }
-        .buy-b { background: #0084ff; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .get-l { background: #0084ff; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -38,41 +34,34 @@
     <div id="gate">
         <div class="box">
             <h2 style="color:var(--neon); margin:0;">X-SYSTEM</h2>
-            <p style="font-size:10px; color:#888;">ENTER: Aarti X</p>
+            <p style="font-size:10px; color:#888;">PASS: Aarti X</p>
             <input type="password" id="pk" placeholder="Password" style="width:90%; padding:10px; margin:15px 0; border-radius:8px; border:none; text-align:center;">
-            <button onclick="access()" style="width:100%; padding:12px; background:var(--neon); border:none; border-radius:10px; font-weight:bold;">ACCESS DASHBOARD</button>
+            <button onclick="access()" style="width:100%; padding:12px; background:var(--neon); border:none; border-radius:10px; font-weight:bold;">ENTER</button>
         </div>
     </div>
 
     <div id="app">
-        <div style="font-size:10px; display:flex; justify-content:space-between; color:#555;">
+        <div style="font-size:10px; display:flex; justify-content:space-between; color:#555; margin-bottom:10px;">
             <span id="u-info">UNITY: SCANNING...</span>
             <span>AARTI X SECURE</span>
         </div>
 
         <div class="wallet">
-            <div style="font-size:10px; color:#888;">CURRENT COINS</div>
+            <div style="font-size:10px; color:#888;">CREDITS</div>
             <div class="balance" id="coin-disp">0000</div>
         </div>
 
         <div class="btn-grid">
             <button class="t-btn u-btn" onclick="runU()">⚡ UNITY AD<br>+50 COINS</button>
-            <button class="t-btn y-btn" onclick="runY()">📺 WATCH YT<br>+50 COINS</button>
-        </div>
-
-        <div class="video-sec">
-            <div style="color:var(--gold); font-weight:bold; font-size:14px;">📤 VIDEO TASK (200 COINS)</div>
-            <p style="font-size:10px; color:#aaa; margin:5px 0;">Apni video upload karke link yahan dalein!</p>
-            <input type="text" id="v-link" class="input-f" placeholder="YouTube Link Paste Karein">
-            <button onclick="subV()" style="width:100%; padding:10px; background:var(--gold); border:none; border-radius:8px; font-weight:bold; cursor:pointer;">SUBMIT & EARN</button>
+            <button class="t-btn y-btn" onclick="runY()">📺 YT TASK<br>+50 COINS</button>
         </div>
 
         <div class="store">
-            <p style="font-size:13px; font-weight:bold; color:var(--neon); margin-top:0;">PREMIUM STORE (500 COINS EACH)</p>
-            <div class="item"><span>GB WhatsApp Pro</span> <button class="buy-b" onclick="buy('https://androidwaves.com/')">500 Cr</button></div>
-            <div class="item"><span>FF Headshot Mod</span> <button class="buy-b" onclick="buy('https://google.com/')">500 Cr</button></div>
-            <div class="item"><span>Instagram Pro</span> <button class="buy-b" onclick="buy('https://instamod.net/')">500 Cr</button></div>
-            <div class="item"><span>Spotify Premium</span> <button class="buy-b" onclick="buy('http://google.com')">500 Cr</button></div>
+            <p style="font-size:13px; font-weight:bold; color:var(--warn); margin-top:0;">EXTERNAL MOD LINKS (500 Cr)</p>
+            <div class="item"><span>GB WhatsApp Pro</span> <button class="get-l" onclick="redirect('https://androidwaves.com/')">GET LINK</button></div>
+            <div class="item"><span>FF Headshot Mod</span> <button class="get-l" onclick="redirect('https://google.com/')">GET LINK</button></div>
+            <div class="item"><span>Instagram Pro</span> <button class="get-l" onclick="redirect('https://instamod.net/')">GET LINK</button></div>
+            <div class="item"><span>Spotify Premium</span> <button class="get-l" onclick="redirect('http://spotify.com')">GET LINK</button></div>
         </div>
     </div>
 
@@ -90,37 +79,37 @@
 
     function initU() {
         UnityAds.initialize("6096974", false, (s) => {
-            if(s) { 
-                ur = true; 
-                document.getElementById('u-info').innerText = "UNITY: ONLINE"; 
-                document.getElementById('u-info').style.color = "#00ff9d";
-            } else { setTimeout(initU, 3000); }
+            if(s) { ur = true; document.getElementById('u-info').innerText = "UNITY: ONLINE"; document.getElementById('u-info').style.color = "#00ff9d"; }
+            else { setTimeout(initU, 3000); }
         });
     }
 
     function runU() {
-        if(ur) { 
-            UnityAds.show('Rewarded_Android'); 
-            setTimeout(()=>{ sc+=50; update(); alert("Ad Complete: +50 Coins!"); }, 5000);
-        } else { alert("Unity connect ho raha hai, rukiye!"); initU(); }
+        if(ur) { UnityAds.show('Rewarded_Android'); setTimeout(()=>{ sc+=50; update(); }, 5000); }
+        else { alert("Unity connecting..."); initU(); }
     }
 
     function runY() {
         window.open('https://youtube.com', '_blank');
-        setTimeout(()=>{ sc+=50; update(); alert("Watch Complete: +50 Coins!"); }, 8000);
+        setTimeout(()=>{ sc+=50; update(); }, 8000);
     }
 
-    function subV() {
-        let l = document.getElementById('v-link').value;
-        if(l.includes("youtu")) {
-            alert("Video Reviewing... Please wait 3 seconds.");
-            setTimeout(()=>{ sc+=200; update(); document.getElementById('v-link').value=""; alert("Verification Success! +200 Coins Added."); }, 3000);
-        } else { alert("Pehle sahi YouTube link dalo!"); }
-    }
-
-    function buy(u) {
-        if(sc >= 500) { sc-=500; update(); alert("Opening Official Link!"); window.open(u, '_blank'); }
-        else { alert("Bhai, 500 coins chahiye! Tasks karo."); }
+    // --- REDIRECT & WARNING SYSTEM ---
+    function redirect(url) {
+        if(sc >= 500) {
+            // English Warning as requested
+            let confirmAction = confirm("WARNING: This link is external. It may or may not be secure. X-PRO is not responsible after this point. If the page doesn't load, please try again after some time. Do you want to proceed?");
+            
+            if (confirmAction) {
+                sc -= 500;
+                update();
+                // Redirecting to external browser (Chrome)
+                window.open(url, '_blank');
+                alert("Redirecting to external store. X-PRO session ended for this link.");
+            }
+        } else {
+            alert("Bhai, 500 coins chahiye! Pehle tasks poore karo.");
+        }
     }
 
     function update() {
