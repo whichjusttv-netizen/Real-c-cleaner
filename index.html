@@ -3,105 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-Store | Global App Portal</title>
+    <title>X-TUBE PRO | User Portal</title>
     <style>
-        :root { --primary: #01875f; --dark: #0f172a; --accent: #00a0e1; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--dark); color: #ffffff; margin: 0; text-align: center; }
+        :root { --red: #ff0000; --dark: #0f0f0f; --gold: #ffd700; }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; }
         
-        /* Header Section */
-        .navbar { background: #000000; padding: 25px; border-bottom: 3px solid var(--primary); }
-        .brand { font-size: 32px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
+        /* User Profile Bar */
+        .user-bar { background: #1a1a1a; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #333; font-size: 13px; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .avatar { width: 35px; height: 35px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; border: 2px solid #fff; }
+        .badge-premium { background: var(--gold); color: #000; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
 
-        .main-content { padding: 45px 20px; max-width: 650px; margin: auto; }
-        #appSearchBar {
-            width: 100%; padding: 20px 25px; border-radius: 50px;
-            border: 2px solid #334155; background: #1e293b; color: #ffffff; font-size: 18px; outline: none;
-            box-sizing: border-box; transition: 0.3s;
-        }
-        #appSearchBar:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(1, 135, 95, 0.4); }
-
-        /* Store Access Button */
-        #storeAccessArea { margin-top: 30px; display: block; }
-        .btn-launch {
-            width: 100%; padding: 18px; border-radius: 50px; border: none;
-            background: var(--primary); color: #ffffff; font-weight: bold; cursor: pointer;
-            font-size: 18px; text-transform: uppercase; transition: 0.3s;
-        }
-        .btn-launch:hover { background: #01a373; transform: translateY(-2px); }
-
-        /* Secret Publisher Panel */
-        #secretPublisherPanel {
-            display: none; 
-            margin-top: 35px;
-            padding: 30px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 25px;
-            border: 2px dashed var(--accent);
-            cursor: pointer;
-        }
-        .cloud-icon { width: 100px; animation: hoverPulse 2s infinite; }
-        @keyframes hoverPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        /* Navigation & Search */
+        .header { background: #000; padding: 15px; position: sticky; top: 0; z-index: 100; text-align: center; }
+        .logo { font-size: 20px; font-weight: 900; color: var(--red); margin-bottom: 15px; }
+        .search-bar { display: flex; gap: 8px; max-width: 600px; margin: auto; }
+        input { flex: 1; padding: 10px; border-radius: 5px; border: none; background: #222; color: white; outline: none; }
         
-        .panel-title { color: var(--accent); font-weight: 800; font-size: 20px; margin-top: 15px; display: block; }
+        .tabs { display: flex; justify-content: center; gap: 15px; margin: 15px 0; }
+        .tab-btn { padding: 8px 15px; border-radius: 20px; border: 1px solid var(--red); background: none; color: white; cursor: pointer; font-size: 12px; }
+        .tab-btn.active { background: var(--red); }
 
-        .app-footer { margin-top: 60px; color: #475569; font-size: 13px; letter-spacing: 1px; }
+        .display-area { padding: 15px; max-width: 800px; margin: auto; }
+        .video-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; }
+        .long-frame { position: relative; padding-bottom: 56.25%; height: 0; }
+        .shorts-frame { position: relative; padding-bottom: 177%; height: 0; max-width: 350px; margin: auto; }
+        iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .label { padding: 12px; font-size: 14px; }
     </style>
 </head>
 <body>
 
-<div class="navbar">
-    <div class="brand">X-STORE PRO</div>
+<div class="user-bar">
+    <div class="user-info">
+        <div class="avatar" id="userInitial">U</div>
+        <div>
+            <div id="userName" style="font-weight: bold;">Guest User</div>
+            <div id="userId" style="font-size: 10px; color: #888;">ID: XT-8890-PRO</div>
+        </div>
+    </div>
+    <div class="badge-premium">X-STORE MEMBER</div>
 </div>
 
-<div class="main-content">
-    <h2 style="font-weight: 500; color: #cbd5e1;">Global Digital Repository</h2>
-    <input type="text" id="appSearchBar" placeholder="Search millions of apps..." onkeyup="syncAppLogic()">
+<div class="header">
+    <div class="logo">X-TUBE <span style="color:white">PRO</span></div>
+    <div class="search-bar">
+        <input type="text" id="userInput" placeholder="Search Channels or Videos...">
+        <button onclick="updateSearch()" style="background:var(--red); color:white; border:none; padding:10px 15px; border-radius:5px; cursor:pointer; font-weight:bold;">GO</button>
+    </div>
     
-    <div id="storeAccessArea">
-        <button class="btn-launch" onclick="launchOfficialStore()">Open Official Store</button>
-        <p style="font-size: 12px; color: #64748b; margin-top: 12px;">Secure Connection Verified</p>
-    </div>
-
-    <div id="secretPublisherPanel" onclick="openPublisherPortal()">
-        <img src="https://img.icons8.com/fluency/144/cloud-lighting.png" class="cloud-icon">
-        <span class="panel-title">PUBLISHER DASHBOARD</span>
-        <p style="color: #94a3b8; font-size: 14px;">Upload & Distribute Your Content</p>
+    <div class="tabs">
+        <button class="tab-btn active" id="longBtn" onclick="switchMode('long')">Long Videos</button>
+        <button class="tab-btn" id="shortsBtn" onclick="switchMode('shorts')">Shorts Mode</button>
     </div>
 </div>
 
-<div class="app-footer">ENCRYPTED GATEWAY | POWERED BY X-CORE</div>
+<div class="display-area" id="mainDisplay">
+    <p style="text-align:center; color:#666;">Welcome to the Global Network.</p>
+</div>
 
 <script>
-    function syncAppLogic() {
-        const inputVal = document.getElementById('appSearchBar').value.trim().toUpperCase();
-        const standardUI = document.getElementById('storeAccessArea');
-        const secretUI = document.getElementById('secretPublisherPanel');
-
-        // Secret Trigger: PRK
-        if (inputVal === "PRK") {
-            standardUI.style.display = "none";
-            secretUI.style.display = "block";
-        } else {
-            standardUI.style.display = "block";
-            secretUI.style.display = "none";
-        }
+    // System to Personalize User (Yeh tumhare AppsGeyser dashboard se bhi connect ho sakta hai)
+    function setupUser(name) {
+        document.getElementById('userName').innerText = name;
+        document.getElementById('userInitial').innerText = name.charAt(0).toUpperCase();
+        // Random ID generator for professional feel
+        document.getElementById('userId').innerText = "ID: XT-" + Math.floor(1000 + Math.random() * 9000) + "-PRO";
     }
 
-    function launchOfficialStore() {
-        const query = document.getElementById('appSearchBar').value.trim();
-        if (!query) { alert("Please enter an application name."); return; }
+    // Example: Launching as a specific user
+    setupUser("Ranjan"); 
 
-        const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        let storeLink = isApple 
-            ? `https://apps.apple.com/search?term=${encodeURIComponent(query)}` 
-            : `https://play.google.com/store/search?q=${encodeURIComponent(query)}&c=apps`;
-        
-        window.location.href = storeLink;
+    let currentMode = 'long';
+    function switchMode(mode) {
+        currentMode = mode;
+        document.getElementById('longBtn').classList.toggle('active', mode === 'long');
+        document.getElementById('shortsBtn').classList.toggle('active', mode === 'shorts');
+        updateSearch();
     }
 
-    function openPublisherPortal() {
-        // Updated stable link to prevent "Name Not Resolved" error
-        window.location.href = "https://en.uptodown.com/publish";
+    function updateSearch() {
+        const query = document.getElementById('userInput').value;
+        const display = document.getElementById('mainDisplay');
+        if(!query) return;
+
+        const suffix = (currentMode === 'shorts') ? " shorts" : " full video";
+        const frameClass = (currentMode === 'shorts') ? "shorts-frame" : "long-frame";
+        const searchURL = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query + suffix)}`;
+
+        display.innerHTML = `
+            <div class="video-card">
+                <div class="${frameClass}">
+                    <iframe src="${searchURL}" allowfullscreen></iframe>
+                </div>
+                <div class="label">
+                    <span style="color:red; font-weight:bold;">● SYNCING GLOBAL CONTENT</span><br>
+                    Query: ${query}
+                </div>
+            </div>
+        `;
     }
 </script>
 
