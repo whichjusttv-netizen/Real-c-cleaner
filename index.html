@@ -1,63 +1,134 @@
-<script src="https://cdn.jsdelivr.net/npm/unity-ads-sdk@4.0.0/dist/unity-ads.min.js"></script>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-PRO SECURE CONSOLE</title>
+    <script src="https://cdn.jsdelivr.net/npm/unity-ads-sdk@4.0.0/dist/unity-ads.min.js"></script>
+    <style>
+        :root { --neon: #00ff9d; --yt: #ff0000; --bg: #05060f; --card: #12141d; --blue: #0084ff; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+
+        /* Login Screen (Aarti X Password) */
+        #login-screen { background: var(--card); padding: 35px; border-radius: 25px; border: 1px solid var(--neon); text-align: center; width: 300px; z-index: 1000; box-shadow: 0 0 20px rgba(0,255,157,0.2); }
+        .pass-input { width: 100%; padding: 12px; margin: 20px 0; background: #000; border: 1px solid #333; color: var(--neon); border-radius: 10px; text-align: center; outline: none; font-weight: bold; }
+        .login-btn { background: var(--neon); color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 10px; cursor: pointer; width: 100%; box-shadow: 0 4px 10px rgba(0,255,157,0.3); }
+
+        /* Main Dashboard (Hidden initially) */
+        #main-dashboard { display: none; width: 100%; height: 100vh; padding: 15px; box-sizing: border-box; overflow-y: auto; text-align: center; }
+        .header { display: flex; justify-content: space-between; font-size: 10px; color: #666; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .online { color: var(--neon) !important; text-shadow: 0 0 5px var(--neon); }
+
+        .wallet-card { background: #000; border-radius: 20px; padding: 25px; border: 1px solid #333; margin: 15px 0; }
+        .balance { font-size: 45px; font-weight: bold; color: gold; display: block; }
+
+        .task-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .btn { padding: 18px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 13px; }
+        .btn-reward { background: var(--neon); color: #000; }
+        .btn-mono { background: var(--yt); color: #fff; }
+
+        .app-vault { background: #161b22; border-radius: 15px; padding: 15px; text-align: left; border: 1px solid #30363d; }
+        .app-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222; }
+        .get-btn { background: var(--blue); color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 11px; }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <h2 style="margin:0; color:var(--neon)">X-PRO SECURE</h2>
+        <p style="font-size:10px; color:#888;">ENTER SYSTEM PASSWORD</p>
+        <input type="password" id="passkey" class="pass-input" placeholder="Password Here">
+        <button class="login-btn" onclick="checkPassword()">ACCESS SYSTEM</button>
+    </div>
+
+    <div id="main-dashboard">
+        <div class="header">
+            <span id="unity-stat">● UNITY CONNECTING...</span>
+            <span>ID: 6096974</span>
+        </div>
+
+        <div class="wallet-card">
+            <span style="font-size: 10px; color: #888; letter-spacing: 2px;">CREDITS BALANCE</span>
+            <span class="balance" id="coin-txt">0000</span>
+        </div>
+
+        <div class="task-grid">
+            <button class="btn btn-reward" onclick="runUnityAd()">⚡ UNITY <br>REWARDS</button>
+            <button class="btn btn-mono" onclick="ytMonetize()">📺 YT <br>MONETIZE</button>
+        </div>
+
+        <div class="app-vault">
+            <p style="color: gold; font-weight: bold; font-size: 13px; margin: 0 0 10px 0;">OFFICIAL REWARD APPS</p>
+            <div class="app-item"><span>GB WhatsApp Pro</span> <button class="get-btn" onclick="openApp('https://androidwaves.com/', 100)">GET LINK</button></div>
+            <div class="app-item"><span>Vidmate Premium</span> <button class="get-btn" onclick="openApp('https://www.vidmateapp.com/', 80)">GET LINK</button></div>
+        </div>
+        
+        <p style="font-size: 9px; color: #333; margin-top: 20px;">AUTHORIZED BY GOOGLE CLOUD | AARTI X</p>
+    </div>
 
 <script>
-    const UNITY_ID = "6096974"; // Aapki ID
-    let isUnityReady = false;
+    const API_ID = "6096974";
+    const PASS = "Aarti X";
     let coins = parseInt(localStorage.getItem('sys_coins')) || 0;
+    let unityReady = false;
 
-    // --- UNITY FIX LOGIC START ---
-    function initUnitySystem() {
-        console.log("Connecting to Unity Server...");
-        
-        // Unity ko initialize karna
-        UnityAds.initialize(UNITY_ID, true, (success) => {
-            if (success) {
-                console.log("Unity Ready ✅");
-                isUnityReady = true;
-                document.getElementById('stat-text').innerText = "● UNITY CONNECTED";
-                document.getElementById('stat-text').style.color = "#00ff9d";
+    // --- PASSWORD CHECK ---
+    function checkPassword() {
+        let input = document.getElementById('passkey').value;
+        if(input === PASS) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-dashboard').style.display = 'block';
+            startUnityEngine(); // Login ke baad hi Unity start hoga
+            updateUI();
+        } else {
+            alert("Galat Password! (Hint: Aarti X)");
+        }
+    }
+
+    // --- UNITY FORCE FIX ---
+    function startUnityEngine() {
+        UnityAds.initialize(API_ID, true, (success) => {
+            if(success) {
+                unityReady = true;
+                let stat = document.getElementById('unity-stat');
+                stat.innerText = "● UNITY CONNECTED";
+                stat.classList.add('online');
             } else {
-                console.log("Unity Failed ❌. Retrying in 2 seconds...");
-                isUnityReady = false;
-                // Retry loop: Jab tak connect na ho, koshish karte raho
-                setTimeout(initUnitySystem, 2000);
+                setTimeout(startUnityEngine, 2000); // Retry loop
             }
         });
     }
 
-    // App khulte hi connection shuru
-    window.onload = () => {
-        initUnitySystem();
-        updateUI();
-    };
-
-    function unityAdTask() {
-        if (isUnityReady) {
-            // "Rewarded_Android" aapka default placement ID hona chahiye
-            UnityAds.show('Rewarded_Android', {
-                onStart: (placementId) => console.log("Ad Started"),
-                onComplete: (placementId, state) => {
-                    if (state === 'COMPLETED') {
-                        coins += 50;
-                        updateUI();
-                        alert("Success! 50 Coins Added.");
-                    }
-                },
-                onError: (error) => {
-                    alert("Ad Error: " + error);
-                    // Agar error aaye toh dubara initialize karo
-                    initUnitySystem();
-                }
-            });
+    function runUnityAd() {
+        if(unityReady) {
+            UnityAds.show('Rewarded_Android');
+            setTimeout(() => { coins += 50; updateUI(); alert("50 Coins Added!"); }, 4000);
         } else {
-            alert("Unity abhi connect ho raha hai... 1 second rukiye!");
-            initUnitySystem(); // Force reconnect
+            alert("Unity server se connect ho raha hai... Wait karein!");
+            startUnityEngine();
         }
     }
-    // --- UNITY FIX LOGIC END ---
+
+    function ytMonetize() {
+        window.open('https://www.youtube.com/', '_blank');
+        setTimeout(() => { coins += 100; updateUI(); }, 5000);
+    }
+
+    function openApp(url, cost) {
+        if(coins >= cost) {
+            coins -= cost;
+            updateUI();
+            window.open(url, '_blank');
+        } else {
+            alert("Bhai, thode coins aur kamao!");
+        }
+    }
 
     function updateUI() {
         document.getElementById('coin-txt').innerText = coins.toString().padStart(4, '0');
         localStorage.setItem('sys_coins', coins);
     }
 </script>
+
+</body>
+</html>
