@@ -3,87 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIRAL BOOSTER | RANJAN PRO</title>
+    <title>X-PRO TERMINAL</title>
     <script src="https://cdn.jsdelivr.net/npm/unity-ads-sdk@4.0.0/dist/unity-ads.min.js"></script>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; }
-        .warning-board { background: #ff00551a; border: 1px solid #ff0055; padding: 15px; margin: 10px; border-radius: 10px; color: #ff0055; font-weight: bold; font-size: 14px; }
-        .main-card { border: 2px solid #00ff00; padding: 25px; margin: 20px auto; max-width: 360px; border-radius: 20px; background: #000; box-shadow: 0 0 30px rgba(0,255,0,0.1); }
-        .btn-ad { background: #00ff00; color: #000; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-bottom: 15px; }
-        .input-box { width: 90%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #111; color: #fff; margin-top: 15px; display: none; }
-        #submit-btn { display: none; background: cyan; color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; margin-top: 10px; font-weight: bold; }
+        :root { --neon: #00ff9d; --bg: #050505; --card: #121212; --pink: #ff0055; }
+        body { background: var(--bg); color: #fff; font-family: 'Courier New', monospace; padding: 20px; text-align: center; }
+        
+        .container { max-width: 380px; margin: auto; border: 1px solid #333; border-radius: 15px; padding: 15px; background: var(--card); box-shadow: 0 0 20px rgba(0,255,157,0.1); }
+        .header { border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; color: var(--neon); }
+        
+        .wallet { background: #1a1a1a; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 5px solid var(--neon); }
+        .coins { font-size: 32px; color: gold; font-weight: bold; }
+
+        .task-btn { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid var(--neon); background: transparent; color: var(--neon); font-weight: bold; cursor: pointer; border-radius: 8px; text-transform: uppercase; }
+        .task-btn:active { background: var(--neon); color: #000; }
+        
+        .inst-box { font-size: 11px; color: #aaa; margin: 10px 0; background: #222; padding: 10px; border-radius: 5px; border: 1px dashed var(--pink); }
     </style>
 </head>
 <body>
 
-    <div class="warning-board">
-        ⚠️ DHAYAN SE PADHEIN: <br>
-        Bina Ads dekhe aap Viral Booster use nahi kar sakte. <br>
-        2 Ads = 100 Coins = 10 Comments + Shares + Promotion!
+<div class="container">
+    <div class="header">SYSTEM STATUS: ONLINE <br> ID: 6096974</div>
+    
+    <div class="wallet">
+        <div style="font-size:10px;">TOTAL CREDITS</div>
+        <div class="coins" id="coin-txt">0000</div>
     </div>
 
-    <div class="main-card">
-        <h2 style="color:#00ff00; margin-top:0;">X-BOOSTER</h2>
-        <div style="font-size: 18px; color: gold;">Coins: <span id="c-count">0</span></div>
-        
-        <p style="font-size: 12px; color:#888; margin: 20px 0;">Ads dekh kar 100 Coins jama karein aur apni video viral karein!</p>
-        
-        <button class="btn-ad" onclick="playUnityAd()">WATCH AD (+50 COINS)</button>
-
-        <input type="text" id="v-link" class="input-box" placeholder="Video Link Paste Karein...">
-        <button id="submit-btn" onclick="sendToRanjan()">SUBMIT FOR PROMOTION</button>
-
-        <div id="status" style="font-size: 10px; color: #444; margin-top: 20px;">API STATUS: 6096974 ACTIVE</div>
+    <div class="inst-box">
+        ⚠️ <b>IMPORTANT:</b> Agar Instagram install hai toh use open karein, warna Play Store se download karna padega tabhi credit milega!
     </div>
+
+    <button class="task-btn" onclick="showAd()">Watch Ad (+50 Coins)</button>
+
+    <button class="task-btn" style="border-color:var(--pink); color:var(--pink);" onclick="handleInstagramTask()">
+        Open Instagram (+30 Coins)
+    </button>
+
+    <div id="status-log" style="font-size:10px; color:#555; margin-top:20px;">READY_</div>
+</div>
 
 <script>
+    let credits = parseInt(localStorage.getItem('hack_credits')) || 0;
     const UNITY_ID = "6096974";
-    let myCoins = parseInt(localStorage.getItem('booster_coins')) || 0;
 
-    function refreshUI() {
-        document.getElementById('c-count').innerText = myCoins;
-        localStorage.setItem('booster_coins', myCoins);
-        
-        if(myCoins >= 100) {
-            document.getElementById('v-link').style.display = "block";
-            document.getElementById('submit-btn').style.display = "block";
-        }
+    function updateUI() {
+        document.getElementById('coin-txt').innerText = credits.toString().padStart(4, '0');
+        localStorage.setItem('hack_credits', credits);
     }
-    refreshUI();
+    updateUI();
 
-    function playUnityAd() {
-        // Unity Ads Initialize and Show
+    // Unity Ads Fixed Logic
+    function showAd() {
+        document.getElementById('status-log').innerText = "CONNECTING TO UNITY...";
+        
         UnityAds.initialize(UNITY_ID, true, (success) => {
             if(success) {
                 UnityAds.show('Rewarded_Android');
-                
-                // Reward logic (Ad dekhne ke baad)
+                // Simulatiing reward for testing
                 setTimeout(() => {
-                    myCoins += 50;
-                    refreshUI();
-                    alert("Shabash! 50 Coins add ho gaye.");
-                }, 5000); 
+                    credits += 50;
+                    updateUI();
+                    document.getElementById('status-log').innerText = "AD REWARD ADDED!";
+                }, 5000);
             } else {
-                alert("API Error! Connection check karein.");
+                alert("Ads Load Nahi Ho Rahe! Internet check karein.");
             }
         });
     }
 
-    function sendToRanjan() {
-        let link = document.getElementById('v-link').value;
-        if(link.length > 5) {
-            // Success Message
-            alert("✅ Link Submitted!\nRanjan Bhai ko aapka link mil gaya hai. Agle 24 ghante mein promotion shuru ho jayega.");
-            
-            // Coins katna
-            myCoins -= 100;
-            refreshUI();
-            
-            // Link ko console ya database mein bhejna (Abhi ke liye alert)
-            console.log("Promotion for: " + link);
-        } else {
-            alert("Pehle sahi video link dalo!");
-        }
+    // Instagram Task Logic
+    function handleInstagramTask() {
+        const instagramAppUrl = "instagram://app"; // App kholne ke liye
+        const playStoreUrl = "https://play.google.com/store/apps/details?id=com.instagram.android"; // Play Store link
+        
+        document.getElementById('status-log').innerText = "VERIFYING INSTAGRAM...";
+        
+        // Timer check karne ke liye ki app khula ya nahi
+        let start = Date.now();
+        window.location.href = instagramAppUrl;
+
+        setTimeout(() => {
+            // Agar 2 second baad bhi page focus mein hai, matlab app nahi khula
+            if (Date.now() - start < 2500) {
+                alert("Instagram install nahi hai! Play Store par ja kar download karein.");
+                window.location.href = playStoreUrl;
+            } else {
+                // App khul gaya, toh reward de do
+                credits += 30;
+                updateUI();
+                alert("Task Complete! 30 Coins Added.");
+            }
+        }, 2000);
     }
 </script>
 
