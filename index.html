@@ -3,105 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-VOICE | Studio Player</title>
+    <title>X-VOICE | Speaker Fixed</title>
     <style>
-        :root { --neon: #00f2ff; --dark: #050505; --gold: #ffd700; }
-        body { background: var(--dark); color: white; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
-        
-        /* Studio Player Styling */
-        .player-card { 
-            background: #111; border-radius: 25px; padding: 30px; 
-            border: 2px solid var(--neon); display: none; 
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
-            margin-top: 20px;
-        }
-        
-        .disc-art { 
-            width: 120px; height: 120px; background: radial-gradient(circle, #222 20%, #000 100%);
-            border-radius: 50%; margin: 0 auto 20px; border: 4px solid var(--neon);
-            display: flex; align-items: center; justify-content: center;
-            animation: spin 4s linear infinite; animation-play-state: paused;
-        }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .controls { display: flex; justify-content: center; gap: 20px; margin: 20px 0; }
-        .play-btn { background: var(--neon); border: none; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; font-size: 20px; }
-        
-        .action-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-        .save-btn { background: var(--gold); color: black; padding: 15px; border-radius: 10px; font-weight: bold; border: none; cursor: pointer; }
-        .retry-btn { background: #333; color: white; padding: 10px; border-radius: 10px; border: none; cursor: pointer; }
+        :root { --neon: #00ff41; --dark: #050505; }
+        body { background: var(--dark); color: white; font-family: sans-serif; text-align: center; padding: 20px; }
+        .studio-card { background: #111; padding: 30px; border-radius: 25px; border: 2px solid var(--neon); box-shadow: 0 0 20px var(--neon); }
+        .mic-btn { width: 80px; height: 80px; border-radius: 50%; border: none; background: red; color: white; font-size: 30px; cursor: pointer; margin-bottom: 20px; }
+        .playing { animation: pulse 1s infinite; background: var(--neon); color: black; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .status { color: var(--neon); font-family: monospace; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-<h2 style="color:var(--neon)">X-VOICE <span style="color:white">STUDIO</span></h2>
+<h2 style="color:var(--neon)">X-VOICE <span style="color:white">LIVE STUDIO</span></h2>
+<p style="font-size:10px; color:gray;">FIXED VERSION 4.5 | OWNER: RANJAN</p>
 
-<div id="recSection" style="background:#111; padding:30px; border-radius:20px; border:1px dashed #444;">
-    <p id="statusMsg">Your Studio is Ready</p>
-    <button onclick="startMixing()" id="mainBtn" style="padding:15px 30px; border-radius:30px; background:var(--neon); border:none; font-weight:bold;">🎤 RECORD & MIX</button>
-</div>
-
-<div class="player-card" id="studioPlayer">
-    <div class="disc-art" id="disc">💿</div>
-    <h3 id="songName" style="margin:0;">Ranjan Mix_Final.mp3</h3>
-    <p style="color:var(--neon); font-size:12px;">X-STORE DIGITAL MASTERING</p>
-
-    <div class="controls">
-        <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
-    </div>
-
-    <div class="action-btns">
-        <button class="save-btn" onclick="downloadToGallery()">💾 SAVE TO GALLERY</button>
-        <button class="retry-btn" onclick="location.reload()">🔄 RECORD AGAIN</button>
+<div class="studio-card">
+    <button id="recBtn" class="mic-btn" onclick="toggleStudio()">🎤</button>
+    <div id="status" class="status">SYSTEM IDLE: PRESS MIC TO START</div>
+    
+    <div style="margin-top:20px; padding:15px; background:#222; border-radius:10px;">
+        <p style="font-size:12px; margin:0;">Speaker Output: <span id="out">OFF</span></p>
     </div>
 </div>
 
 <script>
-    let isPlaying = false;
+    let audioContext;
+    let microphone;
+    let isRecording = false;
 
-    function startMixing() {
-        const btn = document.getElementById('mainBtn');
-        const status = document.getElementById('statusMsg');
-        
-        btn.innerText = "RECORDING...";
-        btn.style.background = "red";
-        
-        setTimeout(() => {
-            status.innerText = "Mixing AI Vocals & Beats...";
-            btn.style.display = "none";
-            
-            setTimeout(() => {
-                document.getElementById('recSection').style.display = "none";
-                document.getElementById('studioPlayer').style.display = "block";
+    async function toggleStudio() {
+        const btn = document.getElementById('recBtn');
+        const status = document.getElementById('status');
+        const out = document.getElementById('out');
+
+        if (!isRecording) {
+            try {
+                // Mic aur Speaker ki permission mangega
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 
+                microphone = audioContext.createMediaStreamSource(stream);
+                
+                // Ye hai asli "Mixing" jisse speaker par awaz aayegi
+                microphone.connect(audioContext.destination);
+
+                btn.classList.add('playing');
+                btn.innerText = "🛑";
+                status.innerText = "RECORDING & PLAYING LIVE...";
+                out.innerText = "LIVE ON SPEAKER";
+                isRecording = true;
+
                 // AI Intro
-                const msg = new SpeechSynthesisUtterance("Mixing complete. You can now preview your song in the X-Voice player.");
+                const msg = new SpeechSynthesisUtterance("Live monitoring enabled. Your voice is now on speaker.");
                 window.speechSynthesis.speak(msg);
-            }, 2000);
-        }, 3000);
-    }
 
-    function togglePlay() {
-        const disc = document.getElementById('disc');
-        const btn = document.getElementById('playBtn');
-        
-        if (!isPlaying) {
-            disc.style.animationPlayState = "running";
-            btn.innerText = "⏸";
-            isPlaying = true;
-            // Yahan gaana bajne ka logic aayega
-            const msg = new SpeechSynthesisUtterance("Now playing your recorded track with background beats.");
-            window.speechSynthesis.speak(msg);
+            } catch (err) {
+                alert("Bhai, Mic ki permission toh dedo! Settings check karo.");
+                console.log(err);
+            }
         } else {
-            disc.style.animationPlayState = "paused";
-            btn.innerText = "▶";
-            isPlaying = false;
-            window.speechSynthesis.cancel();
+            // Sab band karo
+            if (audioContext) audioContext.close();
+            btn.classList.remove('playing');
+            btn.innerText = "🎤";
+            status.innerText = "STUDIO STOPPED. READY TO SYNC.";
+            out.innerText = "OFF";
+            isRecording = false;
         }
-    }
-
-    function downloadToGallery() {
-        alert("Success! Your song has been exported to Gallery/Music/X-Voice.");
     }
 </script>
 
