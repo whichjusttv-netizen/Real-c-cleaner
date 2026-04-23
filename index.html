@@ -2,146 +2,155 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTX PRO v30.0 - REAL ENGINE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RTX ULTIMATE v34.0</title>
     <style>
-        :root { --neon: #00f2ff; --bg: #000000; --card: #111; --gold: #ffcc00; }
-        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: 0.3s; }
-        body { background: var(--bg); color: white; margin: 0; overflow-x: hidden; height: 100vh; }
+        :root { --neon: #00f2ff; --bg: #000; --gold: #ffcc00; --card: #121212; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* 🔐 FULL SCREEN LOCK (No Leakage) */
+        /* 🔐 LOCK SCREEN */
         #lock-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 9999;
+            position: fixed; inset: 0; background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000;
         }
-        .system-title { color: var(--neon); font-size: 24px; letter-spacing: 3px; margin-bottom: 30px; font-weight: bold; }
-        .rtx-input {
-            background: rgba(255,255,255,0.05); border: 1px solid #333;
-            padding: 15px; color: white; text-align: center;
-            font-size: 18px; border-radius: 12px; width: 85%; outline: none;
+        .rtx-input { background: #111; border: 1px solid #333; padding: 15px; color: white; text-align: center; border-radius: 12px; width: 85%; font-size: 18px; outline: none; }
+        .init-btn { margin-top: 20px; width: 85%; background: var(--neon); padding: 15px; border-radius: 12px; font-weight: bold; border: none; cursor: pointer; }
+
+        /* 📱 MAIN DASHBOARD */
+        #main-app { display: none; height: 100vh; flex-direction: column; padding: 10px; position: relative; width: 100%; }
+
+        /* 🔍 TOP: SEARCH & LB TRIGGER */
+        .top-nav { display: flex; gap: 10px; padding: 5px 0; margin-bottom: 10px; }
+        .s-bar { background: #111; border: 1px solid var(--neon); flex: 1; padding: 12px; border-radius: 10px; color: white; outline: none; font-size: 14px; }
+        .lb-btn { background: var(--neon); border: none; width: 50px; border-radius: 10px; font-size: 20px; cursor: pointer; }
+
+        /* 🏆 SIDE LEADERBOARD (Right Slide) */
+        #side-lb {
+            position: fixed; top: 0; right: -100%; width: 85%; height: 100%;
+            background: rgba(5, 5, 5, 0.98); border-left: 2px solid var(--neon);
+            z-index: 5000; transition: 0.5s ease-in-out; padding: 20px;
+            display: flex; flex-direction: column;
         }
-        .init-btn {
-            margin-top: 25px; width: 85%; background: var(--neon); 
-            color: black; border: none; padding: 15px; border-radius: 12px;
-            font-weight: bold; font-size: 16px; cursor: pointer;
+        #side-lb.active { right: 0; }
+        .lb-card { background: #111; padding: 15px; margin-bottom: 10px; border-radius: 10px; border-left: 4px solid var(--neon); display: flex; justify-content: space-between; }
+        .close-lb { margin-top: auto; background: #ff3333; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; }
+
+        /* 📦 CENTER: SCROLLING APP LIST */
+        #app-list-container { flex-grow: 1; overflow-y: auto; padding: 5px; scrollbar-width: none; }
+        #app-list-container::-webkit-scrollbar { display: none; }
+        .app-item { background: var(--card); border: 1px solid #222; border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; }
+        .unlock-btn { margin-left: auto; background: var(--neon); color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 12px; }
+
+        /* 💰 BOTTOM: PKG BORDER UI */
+        .bottom-border-ui { 
+            border-top: 2px solid var(--gold); 
+            padding: 15px 10px; 
+            background: #050505; 
+            margin-top: auto;
+            border-radius: 20px 20px 0 0;
         }
-
-        /* 📱 MAIN CONTENT (Initially Hidden) */
-        #main-app { display: none; padding: 15px; }
-
-        /* 🏆 REAL-TIME LEADERBOARD */
-        .lb-panel {
-            background: #0a0a0a; border-radius: 15px; border: 1px solid #222;
-            padding: 15px; margin-top: 10px;
-        }
-        .lb-head { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 10px; }
-        .lb-item { 
-            display: flex; justify-content: space-between; padding: 12px; 
-            background: #111; margin-bottom: 5px; border-radius: 8px; border-left: 3px solid var(--neon);
-            animation: slideIn 0.4s ease;
-        }
-        .scanning-text { color: var(--neon); text-align: center; font-size: 12px; padding: 10px; }
-
-        /* 🔍 SEARCH & CREDITS (Now inside main-app) */
-        .bottom-ui { margin-top: 20px; }
-        .credit-box { border: 1px solid var(--gold); color: var(--gold); padding: 5px 15px; border-radius: 10px; display: inline-block; }
-        .search-row { display: flex; gap: 10px; margin-top: 15px; }
-        .search-bar { background: #111; border: 1px solid var(--neon); padding: 12px; border-radius: 10px; color: white; flex: 1; outline: none; }
-        .mic-btn { background: var(--neon); border: none; padding: 10px; border-radius: 10px; width: 50px; }
-
-        .pkg-row { display: flex; gap: 10px; margin-top: 20px; border-top: 1px solid #222; padding-top: 20px; }
-        .pkg-input { background: #111; border: 1px solid var(--gold); padding: 10px; border-radius: 8px; color: white; flex: 1; outline: none; }
-        .claim-btn { background: var(--gold); border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .coin-display { color: var(--gold); font-weight: bold; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+        
+        .pkg-row { display: flex; gap: 8px; }
+        .pkg-field { background: #111; border: 1px solid var(--gold); flex: 1; padding: 12px; border-radius: 10px; color: white; outline: none; font-size: 14px; letter-spacing: 1px; }
+        .claim-btn { background: var(--gold); color: black; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .claim-btn:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
 
     <div id="lock-screen">
-        <div class="system-title">SYSTEM ACCESS</div>
-        <input type="password" id="pass-input" class="rtx-input" placeholder="RTX or PIN">
-        <button class="init-btn" onclick="unlock()">INITIALIZE</button>
-        <p id="err" style="color: red; font-size: 12px; margin-top: 15px;"></p>
+        <h2 style="color:var(--neon); margin-bottom:25px; letter-spacing:4px;">RTX SYSTEM</h2>
+        <input type="password" id="pass" class="rtx-input" placeholder="RTX or PIN">
+        <button class="init-btn" onclick="check()">INITIALIZE</button>
     </div>
 
     <div id="main-app">
-        <div class="lb-head">
-            <span style="color: var(--neon);">LIVE AI ENGINE</span>
-            <span onclick="location.reload()" style="cursor:pointer">REFRESH ↻</span>
+        <div class="top-nav">
+            <input type="text" class="s-bar" placeholder="Search Apps..." id="find" onkeyup="search()">
+            <button class="lb-btn" onclick="openLB()">🏆</button>
         </div>
 
-        <div class="lb-panel" id="lb-panel">
-            <div class="scanning-text">CONNECTING TO NETWORK... 📡</div>
+        <div id="side-lb">
+            <h3 style="color:var(--neon); margin-bottom:20px;">📡 TRENDING ENGINE</h3>
+            <div id="lb-data"></div>
+            <button class="close-lb" onclick="closeLB()">← BACK TO SYSTEM</button>
         </div>
 
-        <div class="bottom-ui">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="credit-box"><span id="bal">1500</span> CREDITS</div>
-                <div style="font-size: 12px; color: var(--gold);">LEADERBOARD →</div>
+        <div id="app-list-container">
+            <div class="app-item" data-name="Free Fire MAX Mod">
+                <div style="font-size:28px">🔫</div>
+                <div><h4>Free Fire MAX Mod</h4><span style="color:var(--gold); font-size:10px;">PREMIUM</span></div>
+                <button class="unlock-btn" onclick="buy(500)">UNLOCK</button>
             </div>
-
-            <div class="search-row">
-                <input type="text" class="search-bar" placeholder="Bolkar ya Likhkar...">
-                <button class="mic-btn">🎤</button>
+            <div class="app-item" data-name="Sigma Mod">
+                <div style="font-size:28px">🚀</div>
+                <div><h4>Sigma Battle Royale</h4><span style="color:var(--gold); font-size:10px;">PREMIUM</span></div>
+                <button class="unlock-btn" onclick="buy(800)">UNLOCK</button>
             </div>
+        </div>
 
+        <div class="bottom-border-ui">
+            <div class="coin-display">🪙 COINS: <span id="coins">1500</span></div>
             <div class="pkg-row">
-                <input type="text" id="pkg-field" class="pkg-input" placeholder="pkg code">
-                <button class="claim-btn" onclick="claim()">CLAIM</button>
+                <input type="text" id="pkg-input" class="pkg-field" placeholder="Enter PKG Code">
+                <button class="claim-btn" onclick="redeem()">CLAIM</button>
             </div>
         </div>
     </div>
 
     <script>
-        // 🔐 UNLOCK FUNCTION
-        function unlock() {
-            const pin = document.getElementById('pass-input').value;
-            if(pin.toUpperCase() === 'RTX' || pin === '1111') {
+        let totalCoins = 1500;
+
+        function check() {
+            if(document.getElementById('pass').value.toUpperCase() === 'RTX') {
                 document.getElementById('lock-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
-                fetchRealTrends(); // Unlock hote hi internet scan shuru
+                document.getElementById('main-app').style.display = 'flex';
+                updateLB();
+            }
+        }
+
+        function openLB() { document.getElementById('side-lb').classList.add('active'); }
+        function closeLB() { document.getElementById('side-lb').classList.remove('active'); }
+
+        function updateLB() {
+            const trends = ["Free Fire MAX", "Sigma Mod", "Minecraft 1.21"];
+            document.getElementById('lb-data').innerHTML = trends.map((n, i) => `
+                <div class="lb-card"><span>#${i+1} ${n}</span><span style="color:var(--neon)">HOT 🔥</span></div>
+            `).join('');
+        }
+
+        // 🎁 PKG COIN SYSTEM
+        function redeem() {
+            const code = document.getElementById('pkg-input').value.toUpperCase();
+            if(code === 'RANJAN_PRO' || code === 'PKG') {
+                totalCoins += 1000;
+                document.getElementById('coins').innerText = totalCoins;
+                // Magic Effect: Input clear ho jayega
+                document.getElementById('pkg-input').value = "";
+                alert("Boom! +1000 Coins Added.");
             } else {
-                document.getElementById('err').innerText = "ACCESS DENIED!";
+                alert("Invalid PKG Code!");
             }
         }
 
-        // 🏆 REAL-TIME TRENDING ENGINE (FETCH LOGIC)
-        async function fetchRealTrends() {
-            const panel = document.getElementById('lb-panel');
-            try {
-                // Simulation of Real Fetch (Asli network call)
-                // Note: Internet se dhoondne ka logic
-                const trendingFromNet = ["Free Fire MAX", "Sigma Lite", "Minecraft 1.21"]; 
-                const myAppList = ["Free Fire MAX", "Netflix Mod"]; // Hamare database mein kya hai
-
-                panel.innerHTML = ""; // Clear loader
-
-                trendingFromNet.forEach((app, i) => {
-                    let exists = myAppList.includes(app);
-                    panel.innerHTML += `
-                        <div class="lb-item">
-                            <span>#${i+1} ${app}</span>
-                            <small style="color: ${exists ? 'var(--neon)' : '#ffae00'}">
-                                ${exists ? '● IN VAULT' : '● ADDING...'}
-                            </small>
-                        </div>
-                    `;
-                });
-            } catch (e) {
-                panel.innerHTML = "Offline Mode Active.";
+        function search() {
+            let input = document.getElementById('find').value.toLowerCase();
+            let cards = document.getElementsByClassName('app-item');
+            for (let card of cards) {
+                let name = card.getAttribute('data-name').toLowerCase();
+                card.style.display = name.includes(input) ? "flex" : "none";
             }
         }
 
-        // 💰 CLAIM SYSTEM
-        let credits = 1500;
-        function claim() {
-            const code = document.getElementById('pkg-field').value;
-            if(code === 'RANJAN_PRO') {
-                credits += 1000;
-                document.getElementById('bal').innerText = credits;
-                alert("1000 Credits Received!");
+        function buy(cost) {
+            if(totalCoins >= cost) {
+                totalCoins -= cost;
+                document.getElementById('coins').innerText = totalCoins;
+                alert("Unlocked! Your link is ready.");
+            } else {
+                alert("Not enough coins! Use PKG code.");
             }
         }
     </script>
