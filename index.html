@@ -10,7 +10,7 @@
         
         body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* 🔒 SECRET LOGIN (Ranjan Das Edition) */
+        /* 🔒 SECRET GATE (Isse structure ko koi chot nahi pahunchegi) */
         #secret-gate {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 20000; display: flex; flex-direction: column;
@@ -21,30 +21,25 @@
             border-radius: 12px; color: var(--neon); text-align: center; font-size: 18px;
             outline: none; margin-bottom: 20px;
         }
-        .gate-btn { background: var(--neon); color: #000; border: none; padding: 15px 40px; border-radius: 50px; font-weight: 900; letter-spacing: 1px; }
+        .gate-btn { background: var(--neon); color: #000; border: none; padding: 15px 40px; border-radius: 50px; font-weight: 900; }
 
-        /* 📦 MAIN APP CONTENT (v45 Structure) */
+        /* 📱 MAIN APP (v45 ka original structure) */
         #main-container { display: none; height: 100vh; flex-direction: column; padding-top: 40px; }
         #main-app { padding: 0 15px; height: 100%; display: flex; flex-direction: column; }
         
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .search-box { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 12px; color: white; margin-bottom: 10px; outline: none; }
+        .search-box { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 12px; color: white; margin-bottom: 15px; outline: none; }
 
         #app-grid { flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-bottom: 80px; scrollbar-width: none; }
         .app-card { background: var(--card); border: 1px solid #222; border-radius: 18px; padding: 12px; text-align: center; }
-        .btn-get { background: var(--neon); color: black; border: none; padding: 8px; border-radius: 8px; font-weight: 900; width: 100%; margin-top: 8px; }
+        .btn-get { background: var(--neon); color: black; border: none; padding: 8px; border-radius: 8px; font-weight: 900; width: 100%; margin-top: 8px; font-size: 11px; }
 
-        /* 🏆 LEADERBOARD (Right Swipe) */
-        #leaderboard {
-            position: fixed; top: 0; right: -100%; width: 85%; height: 100%;
-            background: rgba(10, 10, 10, 0.98); border-left: 2px solid var(--neon); z-index: 10000;
-            transition: 0.4s; padding: 50px 20px;
-        }
-        #leaderboard.active { right: 0; }
-
-        /* 💰 PKG BAR */
+        /* 💰 PKG BAR (Wahi original jo v45 mein tha) */
         .pkg-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; padding: 15px; border-top: 1px solid var(--gold); display: flex; gap: 8px; z-index: 999; }
         
+        /* 🏆 LEADERBOARD */
+        #leaderboard { position: fixed; top: 0; right: -100%; width: 85%; height: 100%; background: rgba(10, 10, 10, 0.98); border-left: 2px solid var(--neon); z-index: 10000; transition: 0.4s; padding: 50px 20px; }
+        #leaderboard.active { right: 0; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; z-index: 9998; }
         .overlay.active { display: block; }
     </style>
@@ -52,10 +47,10 @@
 <body ontouchstart="hStart(event)" ontouchend="hEnd(event)">
 
     <div id="secret-gate">
-        <h1 style="color:var(--neon); margin-bottom:10px; font-size:28px;">RTX <span style="color:white">SECURE</span></h1>
-        <p style="color:#666; font-size:12px; margin-bottom:25px;">IDENTITY VERIFICATION REQUIRED</p>
-        <input type="text" id="master-code" class="gate-input" placeholder="Enter Developer Name">
-        <button class="gate-btn" onclick="unlock()">ACCESS TOOL</button>
+        <h1 style="color:var(--neon); margin-bottom:10px;">RTX <span style="color:white">SECURE</span></h1>
+        <p style="color:#555; font-size:12px; margin-bottom:25px;">IDENTITY VERIFICATION</p>
+        <input type="text" id="master-code" class="gate-input" placeholder="Developer Name">
+        <button class="gate-btn" onclick="unlock()">UNLOCK</button>
     </div>
 
     <div class="overlay" id="overlay" onclick="closeLB()"></div>
@@ -67,13 +62,13 @@
                 <div style="color:var(--gold); font-size:14px; font-weight:bold;">💎 <span id="cr-val">1500</span></div>
             </div>
 
-            <input type="text" class="search-box" placeholder="Search Premium Apps..." id="find" onkeyup="search()">
+            <input type="text" class="search-box" placeholder="Search 1Cr+ Premium Apps..." id="find" onkeyup="search()">
 
             <div id="app-grid"></div>
         </div>
 
         <div class="pkg-bar">
-            <input type="text" id="pkg-in" style="flex:1; background:#111; border:1px solid #444; color:white; padding:10px; border-radius:8px;" placeholder="Enter PKG">
+            <input type="text" id="pkg-in" style="flex:1; background:#111; border:1px solid #444; color:white; padding:10px; border-radius:8px;" placeholder="Enter PKG Code">
             <button onclick="claim()" style="background:var(--gold); border:none; padding:10px 15px; border-radius:8px; font-weight:bold;">CLAIM</button>
         </div>
     </div>
@@ -87,17 +82,18 @@
     <script>
         let credits = 1500;
         let sX = 0;
-        const apps = ["Free Fire MAX", "Sigma Mod", "Minecraft PE", "Netflix Mod", "GTA V", "BGMI Injector"];
+        const apps = ["Free Fire MAX", "Sigma Mod", "Minecraft PE", "Netflix Mod", "GTA V Mobile", "BGMI Injector", "Roblox Menu", "Spotify Pro"];
 
-        // 🔐 UNLOCK WITH "Ranjan Das"
+        // 🔐 UNBLOCK LOGIC (As requested)
         function unlock() {
             let input = document.getElementById('master-code').value;
+            // Password "Ranjan Das" set kar diya hai
             if(input.toLowerCase() === "ranjan das") {
                 document.getElementById('secret-gate').style.display = "none";
                 document.getElementById('main-container').style.display = "flex";
                 load();
             } else {
-                alert("ACCESS DENIED: Unauthorized Developer!");
+                alert("ACCESS DENIED: Unauthorized!");
             }
         }
 
@@ -110,36 +106,39 @@
                     <div class="app-card" data-name="${name}">
                         <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}" style="width:40px; margin-bottom:8px;">
                         <div style="font-size:10px; font-weight:bold;">${name}</div>
-                        <button class="btn-get" onclick="secureRedir('${name}')">GET LINK</button>
+                        <button class="btn-get" onclick="redir('${name}')">GET LINK</button>
                     </div>
                 `;
                 lb.innerHTML += `<div style="padding:10px; border-bottom:1px solid #222; font-size:11px;">🛡️ ${name} Secured</div>`;
             });
         }
 
-        // 🛡️ SECURE REDIRECTION
-        function secureRedir(name) {
-            if(credits >= 500) {
-                credits -= 500;
-                document.getElementById('cr-val').innerText = credits;
-                // Double protection logic
-                let query = encodeURIComponent(name + " 100% working direct download");
-                window.location.href = `https://www.google.com/search?q=${query}&btnI=1`;
-            } else { alert("Insufficient Credits!"); }
-        }
-
-        // NAVIGATION & FEATURES
-        function hStart(e) { sX = e.touches[0].clientX; }
-        function hEnd(e) { if (sX - e.changedTouches[0].clientX > 100) { document.getElementById('leaderboard').classList.add('active'); document.getElementById('overlay').classList.add('active'); } }
-        function closeLB() { document.getElementById('leaderboard').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
-        
         function search() {
             let q = document.getElementById('find').value.toLowerCase();
             let cards = document.getElementsByClassName('app-card');
             for(let c of cards) { c.style.display = c.getAttribute('data-name').toLowerCase().includes(q) ? "block" : "none"; }
         }
-        
-        function claim() { if(document.getElementById('pkg-in').value.toUpperCase() === 'PKG') { credits += 1000; document.getElementById('cr-val').innerText = credits; document.getElementById('pkg-in').value=""; } }
+
+        function claim() {
+            if(document.getElementById('pkg-in').value.toUpperCase() === 'PKG') {
+                credits += 1000;
+                document.getElementById('cr-val').innerText = credits;
+                document.getElementById('pkg-in').value="";
+            }
+        }
+
+        function redir(name) {
+            if(credits >= 500) {
+                credits -= 500;
+                document.getElementById('cr-val').innerText = credits;
+                window.location.href = `https://www.google.com/search?q=${name}+direct+download&btnI=1`;
+            } else { alert("Need Credits!"); }
+        }
+
+        // Navigation
+        function hStart(e) { sX = e.touches[0].clientX; }
+        function hEnd(e) { if (sX - e.changedTouches[0].clientX > 100) { document.getElementById('leaderboard').classList.add('active'); document.getElementById('overlay').classList.add('active'); } }
+        function closeLB() { document.getElementById('leaderboard').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
     </script>
 </body>
 </html>
