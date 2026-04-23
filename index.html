@@ -3,42 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX SECRET v46.0</title>
+    <title>RTX PRO v47.0</title>
     <style>
         :root { --neon: #00f2ff; --bg: #050505; --gold: #ffcc00; --card: #111; }
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
         
-        body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; padding-top: 40px; }
 
-        /* 🔒 SECRET GATE (Isse structure ko koi chot nahi pahunchegi) */
-        #secret-gate {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 20000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; padding: 20px;
-        }
-        .gate-input { 
-            background: #111; border: 1px solid #333; padding: 15px; width: 85%; 
-            border-radius: 12px; color: var(--neon); text-align: center; font-size: 18px;
-            outline: none; margin-bottom: 20px;
-        }
-        .gate-btn { background: var(--neon); color: #000; border: none; padding: 15px 40px; border-radius: 50px; font-weight: 900; }
-
-        /* 📱 MAIN APP (v45 ka original structure) */
-        #main-container { display: none; height: 100vh; flex-direction: column; padding-top: 40px; }
+        /* 🔍 SEARCH & HEADER (Vaisa hi jaisa v45 mein tha) */
         #main-app { padding: 0 15px; height: 100%; display: flex; flex-direction: column; }
-        
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .search-box { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 12px; color: white; margin-bottom: 15px; outline: none; }
+        .search-box:focus { border-color: var(--neon); }
 
+        /* 📦 APP GRID */
         #app-grid { flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-bottom: 80px; scrollbar-width: none; }
         .app-card { background: var(--card); border: 1px solid #222; border-radius: 18px; padding: 12px; text-align: center; }
         .btn-get { background: var(--neon); color: black; border: none; padding: 8px; border-radius: 8px; font-weight: 900; width: 100%; margin-top: 8px; font-size: 11px; }
 
-        /* 💰 PKG BAR (Wahi original jo v45 mein tha) */
+        /* 💰 PKG BOX (Fixed at Bottom) */
         .pkg-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; padding: 15px; border-top: 1px solid var(--gold); display: flex; gap: 8px; z-index: 999; }
-        
-        /* 🏆 LEADERBOARD */
-        #leaderboard { position: fixed; top: 0; right: -100%; width: 85%; height: 100%; background: rgba(10, 10, 10, 0.98); border-left: 2px solid var(--neon); z-index: 10000; transition: 0.4s; padding: 50px 20px; }
+        .pkg-input { flex: 1; background: #111; border: 1px solid #444; padding: 10px; border-radius: 8px; color: white; font-size: 12px; }
+        .pkg-btn { background: var(--gold); border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 12px; }
+
+        /* 🏆 LEADERBOARD (Right Swipe Feature) */
+        #leaderboard {
+            position: fixed; top: 0; right: -100%; width: 85%; height: 100%;
+            background: rgba(10, 10, 10, 0.98); border-left: 2px solid var(--neon); z-index: 10000;
+            transition: 0.4s; padding: 50px 20px;
+        }
         #leaderboard.active { right: 0; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; z-index: 9998; }
         .overlay.active { display: block; }
@@ -46,32 +39,7 @@
 </head>
 <body ontouchstart="hStart(event)" ontouchend="hEnd(event)">
 
-    <div id="secret-gate">
-        <h1 style="color:var(--neon); margin-bottom:10px;">RTX <span style="color:white">SECURE</span></h1>
-        <p style="color:#555; font-size:12px; margin-bottom:25px;">IDENTITY VERIFICATION</p>
-        <input type="text" id="master-code" class="gate-input" placeholder="Developer Name">
-        <button class="gate-btn" onclick="unlock()">UNLOCK</button>
-    </div>
-
     <div class="overlay" id="overlay" onclick="closeLB()"></div>
-
-    <div id="main-container">
-        <div id="main-app">
-            <div class="top-bar">
-                <h2 style="font-size:18px;">RTX <span style="color:var(--neon)">PRO</span></h2>
-                <div style="color:var(--gold); font-size:14px; font-weight:bold;">💎 <span id="cr-val">1500</span></div>
-            </div>
-
-            <input type="text" class="search-box" placeholder="Search 1Cr+ Premium Apps..." id="find" onkeyup="search()">
-
-            <div id="app-grid"></div>
-        </div>
-
-        <div class="pkg-bar">
-            <input type="text" id="pkg-in" style="flex:1; background:#111; border:1px solid #444; color:white; padding:10px; border-radius:8px;" placeholder="Enter PKG Code">
-            <button onclick="claim()" style="background:var(--gold); border:none; padding:10px 15px; border-radius:8px; font-weight:bold;">CLAIM</button>
-        </div>
-    </div>
 
     <div id="leaderboard">
         <h2 style="color:var(--neon); margin-bottom:20px;">LIVE UPDATES</h2>
@@ -79,24 +47,28 @@
         <button onclick="closeLB()" style="margin-top:20px; width:100%; padding:12px; background:red; border:none; color:white; border-radius:10px;">BACK</button>
     </div>
 
+    <div id="main-app">
+        <div class="top-bar">
+            <h2 style="font-size:18px;">RTX <span style="color:var(--neon)">PRO</span></h2>
+            <div style="color:var(--gold); font-size:14px; font-weight:bold;">💎 <span id="cr-val">1500</span></div>
+        </div>
+
+        <input type="text" class="search-box" placeholder="Search 1Cr+ Premium Apps..." id="find" onkeyup="search()">
+
+        <div id="app-grid"></div>
+    </div>
+
+    <div class="pkg-bar">
+        <input type="text" id="pkg-in" class="pkg-input" placeholder="Enter PKG Code">
+        <button class="pkg-btn" onclick="claim()">CLAIM</button>
+    </div>
+
     <script>
         let credits = 1500;
         let sX = 0;
-        const apps = ["Free Fire MAX", "Sigma Mod", "Minecraft PE", "Netflix Mod", "GTA V Mobile", "BGMI Injector", "Roblox Menu", "Spotify Pro"];
+        const apps = ["Free Fire MAX", "Sigma Mod", "Minecraft PE", "Netflix Premium", "GTA V Mobile", "BGMI Injector", "Roblox Menu", "Spotify Pro"];
 
-        // 🔐 UNBLOCK LOGIC (As requested)
-        function unlock() {
-            let input = document.getElementById('master-code').value;
-            // Password "Ranjan Das" set kar diya hai
-            if(input.toLowerCase() === "ranjan das") {
-                document.getElementById('secret-gate').style.display = "none";
-                document.getElementById('main-container').style.display = "flex";
-                load();
-            } else {
-                alert("ACCESS DENIED: Unauthorized!");
-            }
-        }
-
+        // 🚀 LOAD APPS ON START
         function load() {
             const grid = document.getElementById('app-grid');
             const lb = document.getElementById('lb-list');
@@ -109,24 +81,29 @@
                         <button class="btn-get" onclick="redir('${name}')">GET LINK</button>
                     </div>
                 `;
-                lb.innerHTML += `<div style="padding:10px; border-bottom:1px solid #222; font-size:11px;">🛡️ ${name} Secured</div>`;
+                lb.innerHTML += `<div style="padding:10px; border-bottom:1px solid #222; font-size:11px;">🛡️ ${name} Ready</div>`;
             });
         }
 
+        // 🔍 SEARCH LOGIC
         function search() {
             let q = document.getElementById('find').value.toLowerCase();
             let cards = document.getElementsByClassName('app-card');
-            for(let c of cards) { c.style.display = c.getAttribute('data-name').toLowerCase().includes(q) ? "block" : "none"; }
+            for(let c of cards) {
+                c.style.display = c.getAttribute('data-name').toLowerCase().includes(q) ? "block" : "none";
+            }
         }
 
+        // 💰 PKG CLAIM
         function claim() {
             if(document.getElementById('pkg-in').value.toUpperCase() === 'PKG') {
                 credits += 1000;
                 document.getElementById('cr-val').innerText = credits;
-                document.getElementById('pkg-in').value="";
+                document.getElementById('pkg-in').value = "";
             }
         }
 
+        // 🔗 REDIRECTION
         function redir(name) {
             if(credits >= 500) {
                 credits -= 500;
@@ -135,10 +112,15 @@
             } else { alert("Need Credits!"); }
         }
 
-        // Navigation
+        // 🏆 NAVIGATION (SWIPE)
         function hStart(e) { sX = e.touches[0].clientX; }
-        function hEnd(e) { if (sX - e.changedTouches[0].clientX > 100) { document.getElementById('leaderboard').classList.add('active'); document.getElementById('overlay').classList.add('active'); } }
+        function hEnd(e) {
+            let eX = e.changedTouches[0].clientX;
+            if (sX - eX > 100) { document.getElementById('leaderboard').classList.add('active'); document.getElementById('overlay').classList.add('active'); }
+        }
         function closeLB() { document.getElementById('leaderboard').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
+
+        window.onload = load;
     </script>
 </body>
 </html>
