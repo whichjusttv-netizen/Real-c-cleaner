@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v52.0</title>
+    <title>RTX BHARAT v54.0</title>
     <style>
         :root { --saffron: #FF9933; --white: #FFFFFF; --green: #138808; --bg: #050505; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
@@ -12,42 +12,47 @@
         /* MAIN UI */
         #main-app { padding: 15px; display: flex; flex-direction: column; height: 100%; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--saffron); padding-bottom: 10px; margin-bottom: 15px; }
-        .search-box { width: 100%; background: #111; border: 1px solid #333; padding: 12px; border-radius: 12px; color: white; border-bottom: 3px solid var(--saffron); margin-bottom: 15px; }
-        
-        #app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow-y: auto; flex-grow: 1; padding-bottom: 80px; }
+        #app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow-y: auto; padding-bottom: 80px; }
         .app-card { background: #111; border: 1px solid #222; border-radius: 15px; padding: 12px; text-align: center; }
-        .btn-get { background: var(--saffron); color: black; border: none; padding: 8px; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; }
+        .btn-get { background: var(--saffron); border: none; padding: 8px; border-radius: 5px; font-weight: bold; width: 100%; margin-top: 10px; }
 
-        /* 🛡️ SECURITY BRIDGE PAGE (Purana Style) */
-        #security-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; text-align: center; padding: 20px; }
-        .secure-loader { width: 50px; height: 50px; border: 5px solid #222; border-top: 5px solid var(--saffron); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .official-link { display: none; background: var(--green); color: white; padding: 15px 30px; border-radius: 10px; text-decoration: none; font-weight: bold; margin-top: 20px; border: 2px solid white; }
+        /* ⚪ OFFICIAL REDIRECT PAGE (WHITE SCREEN) */
+        #redirect-page { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: white; color: black; display: none; 
+            flex-direction: column; align-items: center; justify-content: center; z-index: 10000; padding: 30px;
+        }
+        .official-header { font-size: 14px; color: #555; margin-bottom: 10px; }
+        .company-link { color: #0066cc; font-size: 20px; font-weight: 800; text-decoration: underline; cursor: pointer; text-align: center; border: 2px solid #0066cc; padding: 15px; border-radius: 10px; width: 100%; }
+        .secure-note { margin-top: 20px; font-size: 13px; color: #444; line-height: 1.6; }
+        .btn-back { margin-top: 40px; color: gray; background: none; border: 1px solid #ccc; padding: 8px 20px; border-radius: 5px; }
 
         /* PKG BAR */
-        .pkg-bar { position: fixed; bottom: 0; width: 100%; background: #000; padding: 15px; border-top: 2px solid var(--green); display: flex; gap: 10px; }
+        .pkg-bar { position: fixed; bottom: 0; width: 100%; background: #000; padding: 12px; border-top: 2px solid var(--green); display: flex; gap: 10px; }
         .pkg-in { flex: 1; background: #111; border: 1px solid #333; padding: 10px; border-radius: 8px; color: white; }
-        .pkg-btn { background: var(--saffron); border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div id="security-page">
-        <div class="secure-loader"></div>
-        <h2 id="sec-text" style="color: var(--saffron);">SCANNING FOR SECURITY...</h2>
-        <p id="sec-desc" style="font-size: 12px; color: gray; margin-top: 10px;">RTX Bharat is checking 100% secure link for you.</p>
-        <a href="#" id="final-link" class="official-link" target="_blank">OPEN OFFICIAL WEBSITE</a>
-        <button onclick="closeSecurity()" style="margin-top: 30px; background: none; border: none; color: gray; text-decoration: underline;">Cancel</button>
+    <div id="redirect-page">
+        <p class="official-header">RTX BHARAT SECURE GATEWAY</p>
+        
+        <div class="company-link" id="target-link" onclick="goToOfficial()">
+            GOTO OFFICIAL WEBSITE
+        </div>
+
+        <div class="secure-note">
+            <b>Important:</b> Clicking above will take you to the 100% official company page. RTX Bharat has verified this source. You will find the <b>Official Download Button</b> directly on the destination page.
+        </div>
+
+        <button class="btn-back" onclick="closeRedirect()">Cancel & Go Back</button>
     </div>
 
     <div id="main-app">
         <div class="header">
             <h3>RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</h3>
-            <div style="color:var(--saffron);">💎 <span id="cr-val">1500</span></div>
+            <div style="color:var(--saffron); font-weight: bold;">💎 <span id="cr-val">1500</span></div>
         </div>
-
-        <input type="text" class="search-box" placeholder="Search Swadeshi Apps..." id="find" onkeyup="search()">
 
         <div id="app-grid">
             </div>
@@ -55,72 +60,53 @@
 
     <div class="pkg-bar">
         <input type="text" id="pkg-in" class="pkg-in" placeholder="Enter PKG">
-        <button class="pkg-btn" onclick="claim()">CLAIM</button>
+        <button onclick="claim()" style="background:var(--saffron); border:none; padding:10px 15px; border-radius:8px; font-weight:bold;">CLAIM</button>
     </div>
 
     <script>
         let credits = 1500;
-        const apps = ["Free Fire India", "BGMI", "Jio Cinema", "Airtel Xstream", "Paytm", "BHIM", "Instagram", "WhatsApp"];
+        let currentApp = "";
+
+        const apps = ["Free Fire India", "BGMI Official", "Sigma Pro", "Netflix Premium", "Minecraft Official", "GTA V Mobile"];
 
         function load() {
             const grid = document.getElementById('app-grid');
             grid.innerHTML = "";
             apps.forEach(name => {
-                grid.innerHTML += `<div class="app-card" data-name="${name}">
-                    <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}" style="width:40px; border-radius:50%;">
+                grid.innerHTML += `<div class="app-card">
+                    <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}" style="width:40px;">
                     <div style="font-size:12px; font-weight:bold; margin-top:5px;">${name}</div>
-                    <button class="btn-get" onclick="startSecureLink('${name}')">GET LINK</button>
+                    <button class="btn-get" onclick="openGate('${name}')">GET OFFICIAL</button>
                 </div>`;
             });
         }
 
-        // 🛡️ PURANA STYLE LINK OPENER
-        function startSecureLink(name) {
+        function openGate(name) {
             if(credits >= 500) {
-                // Wallet check
                 credits -= 500;
                 document.getElementById('cr-val').innerText = credits;
-
-                // Open Security Page
-                const secPage = document.getElementById('security-page');
-                const linkBtn = document.getElementById('final-link');
-                const secText = document.getElementById('sec-text');
                 
-                secPage.style.display = 'flex';
-                linkBtn.style.display = 'none';
-                secText.innerText = "SCANNING SECURITY...";
-
-                // 3 Second ka wait (Verification Feel)
-                setTimeout(() => {
-                    secText.innerText = "100% SECURE VERIFIED ✅";
-                    secText.style.color = "var(--green)";
-                    linkBtn.style.display = 'block';
-                    linkBtn.href = `https://www.google.com/search?q=${name}+official+website+secure+link`;
-                }, 3000);
-
-            } else {
-                alert("Need 500 Credits!");
-            }
+                currentApp = name;
+                document.getElementById('target-link').innerText = "OPEN " + name.toUpperCase() + " OFFICIAL PAGE";
+                document.getElementById('redirect-page').style.display = 'flex';
+            } else { alert("PKG dalo! Credits khatam."); }
         }
 
-        function closeSecurity() {
-            document.getElementById('security-page').style.display = 'none';
+        function goToOfficial() {
+            // Yeh seedha Official Page par bhejega jahan download button hota hai
+            let query = currentApp.replace(" ", "+");
+            window.location.href = `https://www.google.com/search?btnI=1&q=${query}+official+website+download`;
+        }
+
+        function closeRedirect() {
+            document.getElementById('redirect-page').style.display = 'none';
         }
 
         function claim() {
-            let val = document.getElementById('pkg-in').value.trim().toUpperCase();
-            if(val === 'PKG') {
+            if(document.getElementById('pkg-in').value.toUpperCase() === 'PKG') {
                 credits += 1000;
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('pkg-in').value = "";
-            }
-        }
-
-        function search() {
-            let q = document.getElementById('find').value.toLowerCase();
-            let cards = document.getElementsByClassName('app-card');
-            for(let c of cards) {
-                c.style.display = c.getAttribute('data-name').toLowerCase().includes(q) ? "block" : "none";
             }
         }
 
