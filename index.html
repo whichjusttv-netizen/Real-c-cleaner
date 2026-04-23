@@ -3,48 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX PRO v40.0</title>
+    <title>RTX PRO v41.0</title>
     <style>
         :root { --neon: #00f2ff; --bg: #000; --gold: #ffcc00; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         
-        /* 🌈 SLIM RGB BORDER */
         @keyframes rgb-slim {
-            0% { border-color: #ff0000; box-shadow: 0 0 5px #ff0000; }
-            50% { border-color: #00ff00; box-shadow: 0 0 5px #00ff00; }
-            100% { border-color: #0000ff; box-shadow: 0 0 5px #0000ff; }
+            0% { border-color: #ff0000; }
+            50% { border-color: #00ff00; }
+            100% { border-color: #0000ff; }
         }
 
         body { 
             background: var(--bg); color: white; height: 100vh; overflow: hidden; 
             display: flex; flex-direction: column; 
             border: 1.5px solid #ff0000; animation: rgb-slim 2s linear infinite;
-            padding-top: 35px; /* 🔋 BATTERY/NETWORK FIX: Upar se jagah chodi hai */
+            padding-top: 38px; /* 🔋 Mobile Status Bar Space */
         }
 
         #main-app { display: flex; height: 100%; flex-direction: column; padding: 10px; position: relative; }
 
-        /* 💰 TOP ROW: CREDITS & SEARCH */
+        /* TOP SECTION */
         .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .credits-tag { border: 1px solid var(--gold); color: var(--gold); padding: 4px 12px; border-radius: 50px; font-weight: bold; font-size: 13px; background: rgba(255,204,0,0.1); }
         
         .search-engine { display: flex; gap: 8px; margin-bottom: 12px; }
-        .s-input { background: #111; border: 1px solid var(--neon); flex: 1; padding: 10px; border-radius: 10px; color: white; outline: none; font-size: 14px; }
-        .lb-btn { background: var(--neon); border: none; width: 45px; border-radius: 10px; font-size: 20px; cursor: pointer; box-shadow: 0 0 8px var(--neon); }
+        .s-input { background: #111; border: 1px solid var(--neon); flex: 1; padding: 10px; border-radius: 10px; color: white; outline: none; }
+        .lb-btn { background: var(--neon); border: none; width: 45px; border-radius: 10px; font-size: 20px; }
 
-        /* 🏆 DESI STYLE LEADERBOARD (RIGHT SLIDE) */
+        /* 🏆 DESI LEADERBOARD */
         #side-lb {
             position: fixed; top: 0; right: -100%; width: 85%; height: 100%;
             background: rgba(5, 5, 5, 0.98); border-left: 2px solid var(--neon);
-            z-index: 5000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 50px 20px 20px 20px; /* Upar se extra space for status bar */
-            display: flex; flex-direction: column;
+            z-index: 5000; transition: 0.4s ease; padding: 50px 20px;
         }
         #side-lb.active { right: 0; }
-        .lb-item { background: #111; padding: 15px; margin-bottom: 10px; border-radius: 10px; border-left: 4px solid var(--neon); display: flex; justify-content: space-between; font-size: 14px; }
-        .back-btn { margin-top: auto; background: #ff3333; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; }
+        .lb-item { background: #111; padding: 15px; margin-bottom: 10px; border-radius: 10px; border-left: 4px solid var(--neon); display: flex; justify-content: space-between; }
 
-        /* 📦 1CR APPS SCROLLING GRID */
+        /* 📦 1CR APPS GRID */
         #app-grid { 
             flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
             padding-bottom: 20px; scrollbar-width: none;
@@ -55,7 +51,7 @@
             background: #0d0d0d; border: 1px solid #222; border-radius: 15px; padding: 12px; 
             text-align: center; transition: 0.3s;
         }
-        .app-logo { width: 50px; height: 50px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #333; }
+        .app-logo { width: 45px; height: 45px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #333; }
 
         /* 💰 PKG ENGINE BORDER */
         .bottom-ui { border-top: 1px solid var(--gold); padding: 12px 5px; background: #000; margin-top: auto; }
@@ -69,7 +65,7 @@
     <div id="main-app">
         <div class="top-row">
             <div class="credits-tag">💎 <span id="cr-val">1500</span> CREDITS</div>
-            <div style="font-size: 9px; color: var(--neon); letter-spacing: 1px;">RTX ULTIMATE v40</div>
+            <div style="font-size: 9px; color: var(--neon);">RTX PRECISION v41</div>
         </div>
 
         <div class="search-engine">
@@ -78,14 +74,12 @@
         </div>
 
         <div id="side-lb">
-            <h3 style="color:var(--neon); margin-bottom:20px; text-shadow: 0 0 10px var(--neon);">📡 TRENDING ENGINE</h3>
-            <div id="lb-data">
-                </div>
-            <button class="back-btn" onclick="toggleLB()">← BACK TO SYSTEM</button>
+            <h3 style="color:var(--neon); margin-bottom:20px;">TRENDING ENGINE</h3>
+            <div id="lb-data"></div>
+            <button onclick="toggleLB()" style="margin-top:auto; background:red; color:white; border:none; padding:15px; border-radius:10px; font-weight:bold;">BACK</button>
         </div>
 
-        <div id="app-grid">
-            </div>
+        <div id="app-grid"></div>
 
         <div class="bottom-ui">
             <div class="pkg-row">
@@ -98,40 +92,48 @@
     <script>
         let credits = 1500;
         const appsData = [
-            {n: "Free Fire MAX", img: "https://api.dicebear.com/7.x/identicon/svg?seed=ff1"},
-            {n: "Sigma Lite", img: "https://api.dicebear.com/7.x/identicon/svg?seed=sg2"},
-            {n: "Minecraft 1.21", img: "https://api.dicebear.com/7.x/identicon/svg?seed=mc3"},
-            {n: "Netflix Pro", img: "https://api.dicebear.com/7.x/identicon/svg?seed=nf4"},
-            {n: "GTA V Mobile", img: "https://api.dicebear.com/7.x/identicon/svg?seed=gta5"},
-            {n: "Instagram Mod", img: "https://api.dicebear.com/7.x/identicon/svg?seed=ig6"}
+            {n: "Free Fire MAX Mod", img: "https://api.dicebear.com/7.x/identicon/svg?seed=ff"},
+            {n: "Sigma Battle Royale", img: "https://api.dicebear.com/7.x/identicon/svg?seed=sg"},
+            {n: "Minecraft 1.21 Premium", img: "https://api.dicebear.com/7.x/identicon/svg?seed=mc"},
+            {n: "GTA V Mobile RTX", img: "https://api.dicebear.com/7.x/identicon/svg?seed=gta"},
+            {n: "Netflix Premium Mod", img: "https://api.dicebear.com/7.x/identicon/svg?seed=nf"},
+            {n: "BGMI Hack Tool", img: "https://api.dicebear.com/7.x/identicon/svg?seed=bgmi"}
         ];
 
         function load() {
             const grid = document.getElementById('app-grid');
             const lb = document.getElementById('lb-data');
             grid.innerHTML = "";
-            lb.innerHTML = "";
-
-            // Load 60 apps for simulation
-            for(let i=0; i<60; i++) {
+            for(let i=0; i<40; i++) {
                 let app = appsData[i % appsData.length];
                 grid.innerHTML += `
                     <div class="app-card" data-name="${app.n}">
                         <img src="${app.img}" class="app-logo">
-                        <h4 style="font-size:11px; margin-bottom:8px;">${app.n}</h4>
-                        <button onclick="redir()" style="background:var(--neon); border:none; padding:6px; border-radius:6px; font-weight:bold; font-size:10px; width:100%;">GET LINK</button>
+                        <h4 style="font-size:10px; margin-bottom:8px; height:24px; overflow:hidden;">${app.n}</h4>
+                        <button onclick="redir('${app.n}')" style="background:var(--neon); border:none; padding:6px; border-radius:6px; font-weight:bold; font-size:10px; width:100%;">GET LINK</button>
                     </div>
                 `;
             }
-
-            // Desi Leaderboard Items
-            const trends = ["FF MAX Mod", "Sigma v2", "Minecraft 1.21"];
-            lb.innerHTML = trends.map((t, i) => `
-                <div class="lb-item"><span>#${i+1} ${t}</span><span style="color:var(--neon)">HOT 🔥</span></div>
+            lb.innerHTML = appsData.slice(0,3).map((t, i) => `
+                <div class="lb-item"><span>#${i+1} ${t.n}</span><span style="color:var(--neon)">HOT</span></div>
             `).join('');
         }
 
         function toggleLB() { document.getElementById('side-lb').classList.toggle('active'); }
+
+        // ✅ FIXED SMART LINK ENGINE
+        function redir(appName) {
+            if(credits >= 500) {
+                credits -= 500;
+                document.getElementById('cr-val').innerText = credits;
+                
+                // 🚀 Logic: App name ko URL mein convert karke direct search pe bhej raha hai
+                let query = encodeURIComponent(appName + " 100% working premium download direct link");
+                window.location.href = `https://www.google.com/search?q=${query}`;
+            } else {
+                alert("Low Credits! Type 'PKG' below to get 1000.");
+            }
+        }
 
         function claim() {
             let code = document.getElementById('pkg-input').value.trim().toUpperCase();
@@ -140,15 +142,7 @@
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('pkg-input').value = "";
                 alert("Success! +1000 Credits Added.");
-            } else { alert("Invalid PKG Code!"); }
-        }
-
-        function redir() {
-            if(credits >= 500) {
-                credits -= 500;
-                document.getElementById('cr-val').innerText = credits;
-                window.location.href = "https://www.google.com/search?q=premium+mod+apps+direct+link";
-            } else { alert("Need 500 Credits!"); }
+            }
         }
 
         function search() {
