@@ -3,49 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTX 1000 ELITE</title>
+    <title>RTX SEARCH & SOURCE</title>
     <style>
         :root { --neon: #ff0055; --bg: #05060f; --card: #12141d; --gold: #ffd700; --safe: #00ff9d; }
         body { background: var(--bg); color: #fff; font-family: sans-serif; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
         
-        /* SECURITY GATE: RTX */
+        /* 🔒 PASSPORT */
         #gate { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        .box { background: var(--card); padding: 35px; border: 2px solid var(--neon); border-radius: 30px; width: 85%; border-top: 5px solid var(--neon); }
+        .box { background: var(--card); padding: 35px; border: 2px solid var(--neon); border-radius: 30px; width: 85%; box-shadow: 0 0 40px rgba(255,0,85,0.3); }
 
         #app { display: none; }
         .header { position: sticky; top: 0; background: var(--bg); padding: 10px; z-index: 100; border-bottom: 2px solid #1a1c25; }
-        .wallet { background: #000; padding: 12px; border-radius: 20px; border: 1px solid #333; margin: 10px 0; }
-        .balance { font-size: 30px; font-weight: bold; color: var(--gold); letter-spacing: 2px; }
+        
+        /* 🔍 SEARCH SYSTEM */
+        .search-container { margin: 10px 0; }
+        #search-bar { width: 90%; padding: 15px; border-radius: 15px; border: 1px solid var(--neon); background: #000; color: #fff; font-weight: bold; text-align: center; font-size: 16px; outline: none; }
 
-        /* 1000 APPS PERFORMANCE LIST */
-        .app-grid { display: flex; flex-direction: column; gap: 10px; padding: 10px 0; max-height: 65vh; overflow-y: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .wallet { background: #000; padding: 12px; border-radius: 20px; border: 1px solid #333; margin: 10px 0; }
+        .balance { font-size: 30px; font-weight: bold; color: var(--gold); }
+
+        /* 1000+ DYNAMIC APPS */
+        .app-grid { display: flex; flex-direction: column; gap: 10px; padding: 10px 0; max-height: 55vh; overflow-y: auto; scrollbar-width: none; }
         .app-grid::-webkit-scrollbar { display: none; }
 
         .card { 
-            background: #1a1c25; border: 1px solid #222; border-radius: 12px; 
+            background: #1a1c25; border: 1px solid #333; border-radius: 12px; 
             padding: 15px; text-align: left; display: flex; justify-content: space-between; align-items: center;
         }
-        .info h3 { color: var(--neon); margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .get-btn { background: var(--safe); color: #000; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; }
+        .info h3 { color: var(--neon); margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .get-btn { background: var(--safe); color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer; }
 
-        .secret-box { background: #000; padding: 15px; border-radius: 20px; border: 1px solid var(--gold); margin-top: 15px; }
-        .code-input { width: 85%; padding: 10px; margin-bottom: 10px; border-radius: 10px; border: none; text-align: center; background: #111; color: var(--gold); font-weight: bold; }
+        .secret-box { background: #000; padding: 15px; border-radius: 20px; border: 1px solid var(--gold); margin-top: 10px; }
+        .code-input { width: 80%; padding: 10px; border-radius: 10px; border: none; text-align: center; background: #111; color: var(--gold); font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="gate">
         <div class="box">
-            <h2 style="color:var(--neon); margin:0; letter-spacing:3px;">RTX 1000</h2>
-            <p style="font-size:10px; color:#555; margin-bottom:20px;">ULITMATE PREMIUM REPOSITORY</p>
+            <h2 style="color:var(--neon); margin:0;">RTX GATEWAY</h2>
+            <p style="font-size:10px; color:#555; margin-bottom:20px;">1000 PREMIUM SOURCES ACTIVE</p>
             <input type="password" id="pk" placeholder="PASSWORD" style="width:90%; padding:15px; border-radius:15px; text-align:center; border:none; background:#000; color:var(--neon); font-weight:bold; font-size:18px;">
-            <button onclick="unlock()" style="width:100%; padding:15px; background:var(--neon); border:none; border-radius:15px; font-weight:bold; color:#fff; margin-top:15px;">AUTHORIZE ACCESS</button>
+            <button onclick="unlock()" style="width:100%; padding:15px; background:var(--neon); border:none; border-radius:15px; font-weight:bold; color:#fff; margin-top:15px;">LOGIN</button>
         </div>
     </div>
 
     <div id="app">
         <div class="header">
-            <div style="font-size:11px; color:var(--neon); font-weight:bold;">● ELITE DATABASE: 1000+ SOURCES</div>
+            <div style="font-size:11px; color:var(--neon); font-weight:bold;">● RTX ELITE SYSTEM v21.0</div>
+            
+            <div class="search-container">
+                <input type="text" id="search-bar" placeholder="Khatarnak App Khojo..." onkeyup="filterApps()">
+            </div>
+
             <div class="wallet">
                 <div class="balance" id="coin-txt">0000 CR</div>
             </div>
@@ -56,56 +66,62 @@
 
         <div class="secret-box">
             <input type="text" id="secret-inp" class="code-input" placeholder="CODE: pkg">
-            <button onclick="claimSecret()" style="background:var(--gold); color:#000; border:none; width:100%; padding:12px; border-radius:12px; font-weight:bold;">INJECT 1000 CREDITS</button>
+            <button onclick="claimSecret()" style="background:var(--gold); color:#000; border:none; width:100%; padding:12px; border-radius:12px; font-weight:bold;">GET 1000 CR</button>
         </div>
     </div>
 
 <script>
     let sc = parseInt(localStorage.getItem('user_sc')) || 0;
+    let allAppsData = [];
 
-    // 1000 APPS GENERATOR SYSTEM
-    const premiumCategories = ["AI", "Streaming", "Editor", "VPN", "Gaming", "Security", "Tools"];
-    const baseApps = [
-        {n:"Gemini Advanced", s:"https://gemini.google.com/"},
-        {n:"ChatGPT-5 Plus", s:"https://openai.com/"},
-        {n:"Netflix 4K Premium", s:"https://www.netflix.com/"},
-        {n:"Adobe Premiere Pro", s:"https://www.adobe.com/"},
-        {n:"Midjourney v7", s:"https://www.midjourney.com/"},
-        {n:"Canva Enterprise", s:"https://www.canva.com/"},
-        {n:"Spotify Hi-Fi", s:"https://www.spotify.com/premium/"},
-        {n:"Minecraft Paid", s:"https://www.minecraft.net/"},
-        {n:"ExpressVPN Elite", s:"https://www.expressvpn.com/"},
-        {n:"Truecaller Gold", s:"https://www.truecaller.com/"}
+    // 1000 APPS WITH DIFFERENT PREMIUM SOURCE WEBSITES
+    const sources = [
+        "https://rexdl.com/search/",
+        "https://apkmody.io/search?q=",
+        "https://an1.com/index.php?do=search&subaction=search&story=",
+        "https://happymod.com/search.html?q=",
+        "https://apkdone.com/?s=",
+        "https://getmodnow.com/?s="
     ];
 
+    const appNames = ["Gemini AI", "Netflix 4K", "Minecraft", "GTA 6", "ChatGPT Plus", "Premiere Pro", "Spotify Pro", "Canva Gold", "Truecaller Gold", "PicsArt Pro", "ExpressVPN", "NordVPN", "KineMaster Pro", "CapCut Elite"];
+
     function generate1000Apps() {
-        let allApps = [...baseApps];
-        for(let i = allApps.length + 1; i <= 1000; i++) {
-            let cat = premiumCategories[Math.floor(Math.random() * premiumCategories.length)];
-            let name = `${cat} Elite Pro #${i}`;
-            // Chrome par specific premium search website khulegi
-            let source = `https://www.google.com/search?q=${name.replace(/ /g, "+")}+premium+official+source`;
-            allApps.push({n: name, s: source});
+        for(let i = 1; i <= 1000; i++) {
+            let baseName = appNames[i % appNames.length];
+            let name = `${baseName} Elite #${i}`;
+            // Har app ki website alag provider se link hai
+            let provider = sources[i % sources.length];
+            let finalUrl = provider + encodeURIComponent(baseName);
+            allAppsData.push({n: name, s: finalUrl});
         }
-        return allApps;
     }
 
-    function loadApps() {
-        const list = document.getElementById('main-list');
-        const apps = generate1000Apps();
-        apps.forEach(a => {
-            list.innerHTML += `<div class="card">
+    function loadApps(data) {
+        const grid = document.getElementById('main-list');
+        grid.innerHTML = "";
+        data.forEach(a => {
+            grid.innerHTML += `<div class="card">
                 <div class="info"><h3>${a.n}</h3></div>
-                <button class="get-btn" onclick="openSecure('${a.s}')">GET SOURCE</button>
+                <button class="get-btn" onclick="openChrome('${a.s}')">GET PREMIUM</button>
             </div>`;
         });
+    }
+
+    // SEARCH FILTER LOGIC
+    function filterApps() {
+        let input = document.getElementById('search-bar').value.toLowerCase();
+        let filtered = allAppsData.filter(app => app.n.toLowerCase().includes(input));
+        loadApps(filtered);
     }
 
     function unlock() {
         if(document.getElementById('pk').value === "RTX") {
             document.getElementById('gate').style.display='none';
             document.getElementById('app').style.display='block';
-            loadApps(); updateUI();
+            generate1000Apps();
+            loadApps(allAppsData);
+            updateUI();
         } else { alert("ACCESS DENIED!"); }
     }
 
@@ -116,11 +132,11 @@
         }
     }
 
-    function openSecure(url) {
+    function openChrome(url) {
         if(sc >= 500) {
             sc -= 500; updateUI(); 
-            window.open(url, '_blank');
-        } else { alert("Coins Low!"); }
+            window.open(url, '_blank'); // Open in Chrome
+        } else { alert("Coins chahiye!"); }
     }
 
     function updateUI() {
