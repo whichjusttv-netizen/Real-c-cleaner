@@ -3,137 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTX CYBER-GOD v25</title>
+    <title>RTX AUTO-SYNC v27</title>
     <style>
-        :root { --neon: #00f2ff; --danger: #ff0055; --bg: #030308; --card: rgba(15, 15, 25, 0.9); --gold: #ffd700; --rgb: linear-gradient(90deg, #ff0055, #00f2ff, #00ff9d, #ff0055); }
-        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 12px; overflow: hidden; }
+        :root { --neon: #00f2ff; --danger: #ff0055; --bg: #030308; --gold: #ffd700; --nebula: linear-gradient(45deg, #050510, #1a0b2e, #050510); }
+        body { background: var(--nebula); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 12px; overflow: hidden; height: 100vh; }
         
-        /* 🌈 RGB EDGE LIGHTING */
-        body::before { content: ""; position: fixed; inset: 0; border: 3px solid transparent; border-image: var(--rgb) 1; z-index: 10000; pointer-events: none; animation: rgb-flow 3s linear infinite; }
-        @keyframes rgb-flow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+        /* 🔒 SECURE CORE */
+        #gate { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .box { background: #0a0a14; padding: 30px; border: 1px solid var(--neon); border-radius: 20px; width: 85%; text-align: center; box-shadow: 0 0 20px var(--neon); }
 
-        /* 🔒 DUAL-VAULT LOGIN */
-        #gate { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        .box { background: #0a0a14; padding: 35px; border: 1px solid #1a1a2e; border-radius: 20px; width: 85%; text-align: center; box-shadow: 0 0 30px rgba(0,242,255,0.1); }
-
-        #app { display: none; }
+        #app { display: none; height: 100%; }
         
-        /* 🔍 PRO SEARCH & UI */
-        .header { position: sticky; top: 0; background: var(--bg); z-index: 100; border-bottom: 1px solid #1a1a2e; padding-bottom: 15px; }
-        #search-bar { width: 92%; padding: 14px; background: #000; border: 1px solid var(--neon); color: var(--neon); border-radius: 12px; outline: none; margin: 10px 0; font-weight: bold; box-shadow: 0 0 10px rgba(0,242,255,0.2); }
+        /* 📡 SYNC STATUS */
+        .sync-bar { font-size: 10px; color: var(--neon); text-align: left; margin-bottom: 5px; font-family: monospace; }
 
-        .wallet { background: #000; border: 1px solid var(--gold); padding: 12px; border-radius: 15px; margin-bottom: 15px; display: inline-block; width: 80%; }
-        .balance { font-size: 32px; color: var(--gold); font-weight: bold; text-shadow: 0 0 15px rgba(255,215,0,0.3); }
+        /* 🎤 VOICE & SEARCH */
+        .search-area { display: flex; align-items: center; gap: 8px; margin: 5px 0; }
+        #search-bar { flex: 1; padding: 14px; background: rgba(0,0,0,0.8); border: 1px solid var(--neon); color: var(--neon); border-radius: 12px; outline: none; box-shadow: inset 0 0 10px rgba(0,242,255,0.2); }
+        .mic-btn { background: var(--neon); color: #000; border: none; padding: 12px; border-radius: 12px; cursor: pointer; }
 
-        /* 🗄️ OPTIMIZED GHOST LIST */
-        #main-list { height: 58vh; overflow-y: auto; scrollbar-width: none; padding-bottom: 120px; }
-        #main-list::-webkit-scrollbar { display: none; }
-
-        .card { 
-            background: var(--card); border: 1px solid #1a1a2e; margin: 12px 0;
-            padding: 18px; border-radius: 15px; backdrop-filter: blur(15px);
-            display: flex; flex-direction: column; gap: 12px;
+        /* 🏆 TRENDING LEADERBOARD (Right Slide) */
+        #leaderboard {
+            position: fixed; top: 0; right: -100%; width: 85%; height: 100%;
+            background: rgba(5, 5, 15, 0.98); backdrop-filter: blur(20px);
+            z-index: 1000; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); padding: 25px; border-left: 2px solid var(--gold);
         }
-        .card h3 { margin: 0; font-size: 14px; color: var(--neon); letter-spacing: 1px; text-transform: uppercase; }
-        
-        .server-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .srv-btn { background: #05050a; border: 1px solid #222; color: #fff; padding: 10px; border-radius: 8px; font-size: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .srv-btn:active { background: var(--neon); color: #000; border-color: var(--neon); }
+        .lb-active #leaderboard { right: 0; }
+        .lb-item { display: flex; justify-content: space-between; padding: 15px; background: rgba(255,215,0,0.05); margin-bottom: 8px; border-radius: 8px; border: 1px solid #222; }
 
-        /* 💳 PKG FOOTER FIXED */
-        .footer { position: fixed; bottom: 0; left: 0; right: 0; background: #000; padding: 20px; border-top: 1px solid #1a1a2e; display: flex; gap: 10px; z-index: 500; }
-        .code-input { flex: 1; background: #0a0a0f; border: 1px solid var(--gold); color: var(--gold); padding: 12px; border-radius: 10px; text-align: center; font-weight: bold; outline: none; }
-        .claim-btn { background: var(--gold); color: #000; border: none; padding: 0 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        /* 🗄️ SMART DATABASE LIST */
+        #main-list { height: 52vh; overflow-y: auto; scrollbar-width: none; margin-top: 10px; padding-bottom: 100px; }
+        #main-list::-webkit-scrollbar { display: none; }
+        .card { background: rgba(255,255,255,0.03); border: 1px solid #1a1a2e; margin: 10px 0; padding: 18px; border-radius: 15px; position: relative; overflow: hidden; }
+        .card::before { content: "TRENDING"; position: absolute; top: 0; right: 0; background: var(--danger); font-size: 8px; padding: 3px 8px; border-bottom-left-radius: 8px; display: none; }
+        .card.hot::before { display: block; }
+        
+        /* FOOTER & CREDITS */
+        .footer { position: fixed; bottom: 0; left: 0; right: 0; background: #000; padding: 20px; display: flex; gap: 10px; border-top: 1px solid var(--gold); z-index: 500; }
+        .code-input { flex: 1; background: #0a0a0f; border: 1px solid var(--gold); color: var(--gold); padding: 12px; border-radius: 10px; text-align: center; font-weight: bold; }
     </style>
 </head>
-<body>
+<body id="body-main">
 
     <div id="gate">
         <div class="box">
-            <h2 style="color:var(--neon); margin:0; letter-spacing:2px;">RTX VAULT</h2>
-            <p style="font-size:10px; color:#444; margin-bottom:20px;">v25.0 CYBER-GOD SYSTEM</p>
-            <input type="password" id="pk" placeholder="ENTER ACCESS KEY" style="width:85%; padding:15px; background:#000; border:1px solid #222; color:var(--neon); border-radius:12px; text-align:center; font-size:18px;">
-            <button onclick="unlock()" style="width:90%; padding:15px; background:var(--neon); color:#000; border:none; margin-top:20px; border-radius:12px; font-weight:bold; letter-spacing:1px;">AUTHORIZE</button>
+            <h2 style="color:var(--neon); letter-spacing:2px;">RTX CORE</h2>
+            <p style="color:#444; font-size:10px;">AUTO-SYNC ENGINE v27.0</p>
+            <input type="password" id="pk" placeholder="PASSWORD" style="width:85%; padding:15px; background:#000; border:1px solid #222; color:var(--neon); border-radius:12px; text-align:center; font-size:18px;">
+            <button onclick="unlock()" style="width:90%; padding:15px; background:var(--neon); color:#000; border:none; margin-top:20px; border-radius:12px; font-weight:bold;">INITIALIZE SYSTEM</button>
         </div>
     </div>
 
-    <div id="app">
-        <div class="header">
-            <input type="text" id="search-bar" placeholder="SEARCH 1000+ PREMIUM APPS..." onkeyup="filterApps()">
-            <div class="wallet">
-                <span style="font-size:10px; color:#555;">SECURITY CREDITS</span><br>
-                <span class="balance" id="coin-txt">0000</span> <span style="color:var(--gold); font-size:12px;">CR</span>
+    <div id="leaderboard">
+        <h2 style="color:var(--gold); text-align:center; letter-spacing:2px;">🏆 WEEKLY TRENDS</h2>
+        <div id="lb-content">
             </div>
+        <button onclick="toggleLB()" style="width:100%; margin-top:30px; padding:15px; background:var(--danger); border:none; color:#fff; border-radius:12px; font-weight:bold;">CLOSE PANEL</button>
+    </div>
+
+    <div id="app">
+        <div class="sync-bar" id="sync-msg">● NETWORK CONNECTED | DATABASE: SYNCED</div>
+        <div style="text-align:right; font-size:10px; color:var(--gold); margin-bottom:5px;" onclick="toggleLB()">SWIPE FOR LEADERBOARD ➔</div>
+        
+        <div class="search-area">
+            <input type="text" id="search-bar" placeholder="Bolkar ya Likhkar Khojo..." onkeyup="filterApps()">
+            <button class="mic-btn" onclick="startVoice()">🎤</button>
+        </div>
+
+        <div style="text-align:center; background:rgba(0,0,0,0.5); padding:10px; border-radius:15px; border:1px solid #111;">
+            <span style="color:var(--gold); font-size:12px;">WALLET</span><br>
+            <span id="coin-txt" style="font-size:32px; font-weight:bold; color:#fff;">0000</span> <span style="color:var(--gold);">CR</span>
         </div>
 
         <div id="main-list"></div>
 
         <div class="footer">
-            <input type="text" id="secret-inp" class="code-input" placeholder="ENTER CODE (pkg)">
-            <button onclick="claimSecret()" class="claim-btn">CLAIM</button>
+            <input type="text" id="secret-inp" class="code-input" placeholder="CODE: pkg">
+            <button onclick="claimSecret()" style="background:var(--gold); padding:0 20px; border-radius:10px; font-weight:bold; color:#000;">CLAIM</button>
         </div>
     </div>
 
 <script>
     let sc = parseInt(localStorage.getItem('user_sc')) || 0;
     let database = [];
+    const appsList = ["Gemini AI", "Netflix 4K", "Minecraft Pro", "GTA VI", "ChatGPT-5", "Adobe Elite", "Spotify Gold", "Canva Pro", "ExpressVPN Pro", "PicsArt Premium", "Disney+ Pro", "KineMaster Gold", "CapCut Elite", "Free Fire Tools"];
 
-    // 🏗️ DATABASE GEN v25
+    // 🔄 WEEKLY AUTO-UPDATE LOGIC
     function buildDatabase() {
-        const apps = ["Gemini AI", "Netflix 4K", "Minecraft", "GTA VI", "ChatGPT-5", "Adobe Premiere", "Spotify Hi-Fi", "Canva Enterprise", "ExpressVPN", "PicsArt Pro"];
-        const mirrors = ["rexdl.com", "apkmody.io", "happymod.com", "an1.com"];
-        
+        let lastUpdate = localStorage.getItem('last_update_time');
+        let now = new Date().getTime();
+        let oneWeek = 7 * 24 * 60 * 60 * 1000;
+
         database = [];
+        // Agar ek hafta ho gaya, toh list ko shuffle karo (Trend update)
+        let shuffle = (lastUpdate && (now - lastUpdate > oneWeek));
+        
+        let tempApps = [...appsList];
+        if(shuffle) {
+            tempApps.sort(() => Math.random() - 0.5);
+            localStorage.setItem('last_update_time', now);
+            document.getElementById('sync-msg').innerText = "● NEW WEEKLY UPDATE SYNCED!";
+        }
+
         for(let i = 1; i <= 1000; i++) {
-            let base = apps[i % apps.length];
-            database.push({
-                n: `${base} Premium #${i}`,
-                s1: `https://www.google.com/search?q=site:${mirrors[i % mirrors.length]}+${encodeURIComponent(base)}+premium`,
-                s2: `https://www.google.com/search?q=site:${mirrors[(i+1) % mirrors.length]}+${encodeURIComponent(base)}+premium`
+            let base = tempApps[i % tempApps.length];
+            database.push({ 
+                n: `${base} Premium #${i}`, 
+                s: `https://www.google.com/search?q=${encodeURIComponent(base)}+premium+download+2026`,
+                hot: (i % 15 === 0) 
             });
+        }
+        updateLeaderboard(tempApps);
+    }
+
+    function updateLeaderboard(list) {
+        const lb = document.getElementById('lb-content');
+        lb.innerHTML = "";
+        for(let i = 0; i < 6; i++) {
+            lb.innerHTML += `<div class="lb-item">
+                <span><b style="color:var(--gold)">#${i+1}</b> ${list[i]}</span>
+                <span style="color:var(--neon)">${(99 - i*7)}k 🔥</span>
+            </div>`;
         }
     }
 
     function render(list) {
         const container = document.getElementById('main-list');
         let html = "";
-        let limit = Math.min(list.length, 35); // Optimization for smooth scroll
+        let limit = Math.min(list.length, 35);
         for(let i = 0; i < limit; i++) {
-            html += `<div class="card">
-                <h3>${list[i].n}</h3>
-                <div class="server-grid">
-                    <button class="srv-btn" onclick="openChrome('${list[i].s1}')">SERVER 1</button>
-                    <button class="srv-btn" onclick="openChrome('${list[i].s2}')">SERVER 2</button>
-                </div>
+            html += `<div class="card ${list[i].hot ? 'hot' : ''}">
+                <h3 style="color:var(--neon); margin:0; font-size:14px; text-transform:uppercase;">${list[i].n}</h3>
+                <p style="font-size:9px; color:#555; margin:5px 0;">SOURCE: ENCRYPTED CHROME GATEWAY</p>
+                <button onclick="openChrome('${list[i].s}')" style="margin-top:5px; background:var(--neon); border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; color:#000;">GET SOURCE</button>
             </div>`;
         }
         container.innerHTML = html;
         container.scrollTop = 0;
     }
 
-    function unlock() {
-        const pass = document.getElementById('pk').value;
-        if(pass === "RTX") {
-            document.getElementById('gate').style.display='none';
-            document.getElementById('app').style.display='block';
-            buildDatabase();
-            render(database);
-            updateUI();
-        } else if(pass === "1111") {
-            // FAKE MODE
-            window.location.href = "https://www.google.com/maps";
-        } else { alert("ACCESS DENIED!"); }
+    // 🎤 VOICE SEARCH
+    function startVoice() {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'hi-IN';
+        recognition.start();
+        document.getElementById('search-bar').placeholder = "Listening...";
+        recognition.onresult = (e) => {
+            document.getElementById('search-bar').value = e.results[0][0].transcript;
+            filterApps();
+        };
+        recognition.onspeechend = () => { recognition.stop(); document.getElementById('search-bar').placeholder = "Bolkar ya Likhkar Khojo..."; };
     }
 
-    // 💰 PKG SYSTEM FIXED (REAL-TIME UPDATE)
+    function toggleLB() { document.body.classList.toggle('lb-active'); }
+
+    function unlock() {
+        if(document.getElementById('pk').value === "RTX") {
+            document.getElementById('gate').style.display='none';
+            document.getElementById('app').style.display='block';
+            buildDatabase(); render(database); updateUI();
+        } else { alert("ACCESS DENIED"); }
+    }
+
     function claimSecret() {
-        let val = document.getElementById('secret-inp').value.trim().toLowerCase();
-        if(val === "pkg") {
-            sc += 1000;
-            updateUI(); // Immediate screen update
-            alert("1000 Credits Injected Successfully!");
+        if(document.getElementById('secret-inp').value.toLowerCase() === "pkg") {
+            sc += 1000; updateUI(); alert("1000 CR Injected!");
             document.getElementById('secret-inp').value = "";
-        } else { alert("INVALID CODE"); }
+        }
     }
 
     function filterApps() {
@@ -143,11 +179,8 @@
     }
 
     function openChrome(url) {
-        if(sc >= 500) {
-            sc -= 500;
-            updateUI();
-            window.open(url, '_blank');
-        } else { alert("Low Credits! Use code 'pkg'"); }
+        if(sc >= 500) { sc -= 500; updateUI(); window.open(url, '_blank'); }
+        else { alert("Low Credits!"); }
     }
 
     function updateUI() {
