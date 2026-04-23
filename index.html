@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX PRO v41.0</title>
+    <title>RTX PRO v42.0</title>
     <style>
         :root { --neon: #00f2ff; --bg: #000; --gold: #ffcc00; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
@@ -18,43 +18,32 @@
             background: var(--bg); color: white; height: 100vh; overflow: hidden; 
             display: flex; flex-direction: column; 
             border: 1.5px solid #ff0000; animation: rgb-slim 2s linear infinite;
-            padding-top: 38px; /* 🔋 Mobile Status Bar Space */
+            padding-top: 38px; /* Mobile Status Bar Gap */
         }
 
-        #main-app { display: flex; height: 100%; flex-direction: column; padding: 10px; position: relative; }
+        #main-app { display: flex; height: 100%; flex-direction: column; padding: 10px; }
 
-        /* TOP SECTION */
-        .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .credits-tag { border: 1px solid var(--gold); color: var(--gold); padding: 4px 12px; border-radius: 50px; font-weight: bold; font-size: 13px; background: rgba(255,204,0,0.1); }
+        /* HEADER & SEARCH */
+        .top-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .credits-tag { border: 1px solid var(--gold); color: var(--gold); padding: 4px 12px; border-radius: 50px; font-weight: bold; font-size: 13px; }
         
         .search-engine { display: flex; gap: 8px; margin-bottom: 12px; }
         .s-input { background: #111; border: 1px solid var(--neon); flex: 1; padding: 10px; border-radius: 10px; color: white; outline: none; }
-        .lb-btn { background: var(--neon); border: none; width: 45px; border-radius: 10px; font-size: 20px; }
 
-        /* 🏆 DESI LEADERBOARD */
-        #side-lb {
-            position: fixed; top: 0; right: -100%; width: 85%; height: 100%;
-            background: rgba(5, 5, 5, 0.98); border-left: 2px solid var(--neon);
-            z-index: 5000; transition: 0.4s ease; padding: 50px 20px;
-        }
-        #side-lb.active { right: 0; }
-        .lb-item { background: #111; padding: 15px; margin-bottom: 10px; border-radius: 10px; border-left: 4px solid var(--neon); display: flex; justify-content: space-between; }
-
-        /* 📦 1CR APPS GRID */
+        /* 📦 GRID */
         #app-grid { 
             flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
             padding-bottom: 20px; scrollbar-width: none;
         }
-        #app-grid::-webkit-scrollbar { display: none; }
         
         .app-card { 
             background: #0d0d0d; border: 1px solid #222; border-radius: 15px; padding: 12px; 
-            text-align: center; transition: 0.3s;
+            text-align: center; transition: 0.2s;
         }
         .app-logo { width: 45px; height: 45px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #333; }
 
-        /* 💰 PKG ENGINE BORDER */
-        .bottom-ui { border-top: 1px solid var(--gold); padding: 12px 5px; background: #000; margin-top: auto; }
+        /* 💰 PKG ENGINE */
+        .bottom-ui { border-top: 1px solid var(--gold); padding: 12px 5px; background: #000; }
         .pkg-row { display: flex; gap: 8px; }
         .pkg-f { background: #111; border: 1px solid var(--gold); flex: 1; padding: 12px; border-radius: 10px; color: white; outline: none; }
         .claim-b { background: var(--gold); border: none; padding: 12px 18px; border-radius: 10px; font-weight: bold; }
@@ -65,18 +54,11 @@
     <div id="main-app">
         <div class="top-row">
             <div class="credits-tag">💎 <span id="cr-val">1500</span> CREDITS</div>
-            <div style="font-size: 9px; color: var(--neon);">RTX PRECISION v41</div>
+            <div style="font-size: 9px; color: var(--neon);">RTX TURBO v42</div>
         </div>
 
         <div class="search-engine">
             <input type="text" class="s-input" placeholder="Search 1Cr+ Apps..." id="find" onkeyup="search()">
-            <button class="lb-btn" onclick="toggleLB()">🏆</button>
-        </div>
-
-        <div id="side-lb">
-            <h3 style="color:var(--neon); margin-bottom:20px;">TRENDING ENGINE</h3>
-            <div id="lb-data"></div>
-            <button onclick="toggleLB()" style="margin-top:auto; background:red; color:white; border:none; padding:15px; border-radius:10px; font-weight:bold;">BACK</button>
         </div>
 
         <div id="app-grid"></div>
@@ -92,56 +74,52 @@
     <script>
         let credits = 1500;
         const appsData = [
-            {n: "Free Fire MAX Mod", img: "https://api.dicebear.com/7.x/identicon/svg?seed=ff"},
-            {n: "Sigma Battle Royale", img: "https://api.dicebear.com/7.x/identicon/svg?seed=sg"},
-            {n: "Minecraft 1.21 Premium", img: "https://api.dicebear.com/7.x/identicon/svg?seed=mc"},
-            {n: "GTA V Mobile RTX", img: "https://api.dicebear.com/7.x/identicon/svg?seed=gta"},
-            {n: "Netflix Premium Mod", img: "https://api.dicebear.com/7.x/identicon/svg?seed=nf"},
-            {n: "BGMI Hack Tool", img: "https://api.dicebear.com/7.x/identicon/svg?seed=bgmi"}
+            {n: "Free Fire MAX", img: "ff"},
+            {n: "Sigma Battle Royale", img: "sg"},
+            {n: "Minecraft 1.21", img: "mc"},
+            {n: "GTA V Mobile", img: "gta"},
+            {n: "Netflix Premium", img: "nf"},
+            {n: "BGMI Mod", img: "bgmi"}
         ];
 
         function load() {
             const grid = document.getElementById('app-grid');
-            const lb = document.getElementById('lb-data');
             grid.innerHTML = "";
             for(let i=0; i<40; i++) {
                 let app = appsData[i % appsData.length];
                 grid.innerHTML += `
                     <div class="app-card" data-name="${app.n}">
-                        <img src="${app.img}" class="app-logo">
-                        <h4 style="font-size:10px; margin-bottom:8px; height:24px; overflow:hidden;">${app.n}</h4>
-                        <button onclick="redir('${app.n}')" style="background:var(--neon); border:none; padding:6px; border-radius:6px; font-weight:bold; font-size:10px; width:100%;">GET LINK</button>
+                        <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${app.img}${i}" class="app-logo">
+                        <h4 style="font-size:10px; margin-bottom:8px;">${app.n}</h4>
+                        <button onclick="fastRedir('${app.n}')" style="background:var(--neon); border:none; padding:8px; border-radius:8px; font-weight:bold; font-size:10px; width:100%;">GET LINK</button>
                     </div>
                 `;
             }
-            lb.innerHTML = appsData.slice(0,3).map((t, i) => `
-                <div class="lb-item"><span>#${i+1} ${t.n}</span><span style="color:var(--neon)">HOT</span></div>
-            `).join('');
         }
 
-        function toggleLB() { document.getElementById('side-lb').classList.toggle('active'); }
-
-        // ✅ FIXED SMART LINK ENGINE
-        function redir(appName) {
+        // 🚀 1-SECOND TURBO REDIRECT
+        function fastRedir(name) {
             if(credits >= 500) {
                 credits -= 500;
                 document.getElementById('cr-val').innerText = credits;
                 
-                // 🚀 Logic: App name ko URL mein convert karke direct search pe bhej raha hai
-                let query = encodeURIComponent(appName + " 100% working premium download direct link");
-                window.location.href = `https://www.google.com/search?q=${query}`;
+                // Direct Targeted URL Construction
+                let cleanName = name.replace(/\s+/g, '+');
+                let targetURL = `https://www.google.com/search?q=${cleanName}+premium+apk+direct+download&btnI=1`;
+                
+                // Open immediately
+                window.location.href = targetURL;
             } else {
-                alert("Low Credits! Type 'PKG' below to get 1000.");
+                alert("Need 500 Credits!");
             }
         }
 
         function claim() {
             let code = document.getElementById('pkg-input').value.trim().toUpperCase();
-            if(code === 'PKG' || code === 'RANJAN_PRO') {
+            if(code === 'PKG') {
                 credits += 1000;
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('pkg-input').value = "";
-                alert("Success! +1000 Credits Added.");
             }
         }
 
