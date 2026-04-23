@@ -3,144 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTX GHOST V23</title>
+    <title>RTX PREDATOR v24</title>
     <style>
-        :root { --neon: #ff0055; --bg: #05060f; --card: rgba(18, 20, 29, 0.7); --gold: #ffd700; --safe: #00ff9d; }
-        body { background: var(--bg); color: #fff; font-family: sans-serif; margin: 0; padding: 10px; text-align: center; overflow: hidden; }
+        :root { --neon: #00ff9d; --danger: #ff0055; --bg: #020205; --card: rgba(20, 20, 30, 0.8); --gold: #ffd700; }
+        body { background: var(--bg); color: #fff; font-family: 'Courier New', monospace; margin: 0; padding: 10px; overflow: hidden; }
         
-        /* 🔒 SECURE LOGIN */
+        /* 🔒 HACKER LOGIN */
         #gate { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        .box { background: #12141d; padding: 30px; border: 2px solid var(--neon); border-radius: 25px; width: 80%; box-shadow: 0 0 30px rgba(255,0,85,0.2); }
+        .box { background: #0a0a0f; padding: 30px; border: 1px solid var(--neon); border-radius: 5px; width: 85%; box-shadow: 0 0 20px var(--neon); text-align: center; }
 
         #app { display: none; }
-        .header { position: sticky; top: 0; background: var(--bg); padding: 5px; z-index: 100; border-bottom: 2px solid #1a1c25; }
         
-        #search-bar { width: 90%; padding: 12px; border-radius: 12px; border: 1px solid var(--neon); background: #000; color: #fff; margin: 10px 0; outline: none; box-shadow: inset 0 0 5px var(--neon); }
+        /* 🧪 DECODING OVERLAY */
+        #loader { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; color: var(--neon); }
+        .matrix-text { font-size: 14px; margin: 5px; }
 
-        .wallet { background: linear-gradient(45deg, #000, #111); padding: 15px; border-radius: 20px; border: 1px solid #333; margin-bottom: 10px; }
-        .balance { font-size: 32px; font-weight: bold; color: var(--gold); text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+        /* 🔍 SEARCH & HEADER */
+        .header { position: sticky; top: 0; background: var(--bg); z-index: 100; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        #search-bar { width: 92%; padding: 12px; background: #000; border: 1px solid var(--neon); color: var(--neon); border-radius: 5px; outline: none; margin: 10px 0; }
 
-        /* 🚀 GHOST SCROLL (ULTRA SMOOTH) */
-        #main-list { display: flex; flex-direction: column; gap: 12px; height: 58vh; overflow-y: auto; scrollbar-width: none; padding-bottom: 80px; }
+        .wallet { border: 1px solid var(--gold); padding: 10px; border-radius: 5px; display: inline-block; margin-bottom: 10px; }
+        .balance { font-size: 24px; color: var(--gold); font-weight: bold; }
+
+        /* 🗄️ REINFORCED DATABASE LIST */
+        #main-list { height: 60vh; overflow-y: auto; scrollbar-width: none; padding-bottom: 100px; }
         #main-list::-webkit-scrollbar { display: none; }
 
         .card { 
-            background: var(--card); border: 1px solid #222; border-radius: 15px; 
-            padding: 18px; text-align: left; display: flex; justify-content: space-between; align-items: center;
-            backdrop-filter: blur(10px); transition: 0.3s;
+            background: var(--card); border-left: 4px solid var(--danger); margin: 10px 0;
+            padding: 15px; display: flex; flex-direction: column; gap: 10px;
+            backdrop-filter: blur(5px);
         }
-        .info h3 { color: var(--neon); margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
-        .get-btn { background: var(--safe); color: #000; border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; font-size: 10px; cursor: pointer; box-shadow: 0 0 10px var(--safe); }
+        .card h3 { margin: 0; font-size: 14px; color: #fff; letter-spacing: 1px; }
+        
+        /* MULTI-SERVER BUTTONS */
+        .server-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .srv-btn { background: #111; border: 1px solid var(--neon); color: var(--neon); padding: 8px; font-size: 10px; font-weight: bold; cursor: pointer; }
+        .srv-btn:active { background: var(--neon); color: #000; }
 
-        /* FIXED CREDIT BOX */
-        .footer-tool { background: #000; padding: 15px; border-top: 2px solid var(--gold); position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; }
-        .code-input { width: 60%; padding: 10px; background: #111; border: 1px solid var(--gold); color: var(--gold); border-radius: 10px; text-align: center; font-weight: bold; }
+        .footer { position: fixed; bottom: 0; left: 0; right: 0; background: #000; padding: 15px; border-top: 1px solid var(--neon); display: flex; justify-content: space-around; }
     </style>
 </head>
 <body>
 
+    <div id="loader">
+        <div class="matrix-text" id="load-msg">INITIALIZING BYPASS...</div>
+        <div style="width: 200px; height: 2px; background: #222; margin-top: 10px;">
+            <div id="progress" style="width: 0%; height: 100%; background: var(--neon);"></div>
+        </div>
+    </div>
+
     <div id="gate">
         <div class="box">
-            <h2 style="color:var(--neon); margin:0; letter-spacing:3px;">RTX GHOST</h2>
-            <p style="font-size:10px; color:#555; margin-bottom:15px;">LAG-FREE DATABASE SYSTEM</p>
-            <input type="password" id="pk" placeholder="PASSWORD" style="width:85%; padding:15px; border-radius:15px; text-align:center; border:none; background:#000; color:var(--neon); font-weight:bold; font-size:18px;">
-            <button onclick="unlock()" style="width:100%; padding:15px; background:var(--neon); border:none; border-radius:15px; font-weight:bold; color:#fff; margin-top:15px;">INITIALIZE</button>
+            <h2 style="color:var(--neon); margin:0;">SYSTEM AUTH</h2>
+            <p style="font-size:10px; color:#555;">v24.0 PREDATOR CORE</p>
+            <input type="password" id="pk" placeholder="ENTER RTX" style="width:80%; padding:12px; background:#000; border:1px solid #333; color:var(--neon); margin-top:20px; text-align:center;">
+            <button onclick="unlock()" style="width:85%; padding:12px; background:var(--neon); color:#000; border:none; margin-top:15px; font-weight:bold;">INITIALIZE ACCESS</button>
         </div>
     </div>
 
     <div id="app">
         <div class="header">
-            <input type="text" id="search-bar" placeholder="Search 1000+ Apps..." onkeyup="filterApps()">
+            <input type="text" id="search-bar" placeholder="KHOJO: 1000+ PREMIUM SOURCES" onkeyup="filterApps()">
             <div class="wallet">
-                <div class="balance" id="coin-txt">0000 CR</div>
+                <span style="font-size:10px;">CREDITS:</span> <span class="balance" id="coin-txt">0000</span>
             </div>
         </div>
 
-        <div id="main-list">
-            </div>
+        <div id="main-list"></div>
 
-        <div class="footer-tool">
-            <input type="text" id="secret-inp" class="code-input" placeholder="Enter 'pkg' for Credits">
-            <button onclick="claimSecret()" style="background:var(--gold); color:#000; border:none; padding:10px 15px; border-radius:10px; font-weight:bold; margin-left:5px;">CLAIM</button>
+        <div class="footer">
+            <input type="text" id="secret-inp" placeholder="CODE" style="width:50%; background:#111; border:1px solid var(--gold); color:var(--gold); padding:5px; text-align:center;">
+            <button onclick="claimSecret()" style="background:var(--gold); color:#000; border:none; padding:5px 15px; font-weight:bold;">+1000</button>
         </div>
     </div>
 
 <script>
     let sc = parseInt(localStorage.getItem('user_sc')) || 0;
-    let allApps = [];
+    let database = [];
 
-    // DATA GENERATOR
-    function initData() {
-        const providers = ["rexdl.com", "apkmody.io", "happymod.com", "an1.com"];
-        const apps = ["Netflix 4K", "Gemini AI", "Minecraft Pro", "GTA VI", "Premiere Elite", "Spotify Gold", "Canva Pro", "PicsArt Pro", "Truecaller Gold", "ExpressVPN"];
+    // 🏗️ REINFORCED DATABASE SYSTEM (1000 APPS)
+    function buildDatabase() {
+        const apps = ["Gemini AI", "Netflix 4K", "Minecraft", "GTA 6", "ChatGPT-5", "Premiere Pro", "Spotify Gold", "Canva Pro", "ExpressVPN", "PicsArt Pro"];
+        const mirrors = ["rexdl.com", "apkmody.io", "happymod.com", "an1.com"];
         
-        allApps = [];
+        database = [];
         for(let i = 1; i <= 1000; i++) {
-            let base = apps[i % apps.length];
-            let site = providers[i % providers.length];
-            allApps.push({
-                n: `${base} Premium #${i}`,
-                s: `https://www.google.com/search?q=site:${site}+${encodeURIComponent(base)}+premium`
+            let name = apps[i % apps.length];
+            database.push({
+                n: `${name} Premium #${i}`,
+                s1: `https://www.google.com/search?q=site:${mirrors[0]}+${name}+premium`,
+                s2: `https://www.google.com/search?q=site:${mirrors[1]}+${name}+premium`
             });
         }
     }
 
-    // GHOST RENDERING (No Hang)
-    function renderApps(list) {
-        const grid = document.getElementById('main-list');
+    function render(list) {
+        const container = document.getElementById('main-list');
         let html = "";
-        // Sirf 30 apps dikhayega taaki phone par load na pade
-        let limit = Math.min(list.length, 30);
+        let limit = Math.min(list.length, 40); // Memory safe limit
         for(let i = 0; i < limit; i++) {
             html += `<div class="card">
-                <div class="info"><h3>${list[i].n}</h3></div>
-                <button class="get-btn" onclick="openChrome('${list[i].s}')">CHROME</button>
+                <h3>${list[i].n}</h3>
+                <div class="server-grid">
+                    <button class="srv-btn" onclick="triggerDecode('${list[i].s1}')">SERVER 1 (FAST)</button>
+                    <button class="srv-btn" onclick="triggerDecode('${list[i].s2}')">SERVER 2 (SECURE)</button>
+                </div>
             </div>`;
         }
-        grid.innerHTML = html;
+        container.innerHTML = html;
+    }
+
+    // 🧪 DECODING ANIMATION LOGIC
+    function triggerDecode(url) {
+        if(sc < 500) { alert("Credits Low!"); return; }
+        
+        const loader = document.getElementById('loader');
+        const msg = document.getElementById('load-msg');
+        const prog = document.getElementById('progress');
+        
+        loader.style.display = 'flex';
+        let p = 0;
+        let steps = ["BYPASSING PAYWALL...", "DECRYPTING SOURCE...", "INJECTING SCRIPT...", "OPENING CHROME..."];
+        
+        let interval = setInterval(() => {
+            p += 5;
+            prog.style.width = p + "%";
+            msg.innerText = steps[Math.floor(p/30)] || "REDIRECTING...";
+            
+            if(p >= 100) {
+                clearInterval(interval);
+                loader.style.display = 'none';
+                sc -= 500;
+                updateUI();
+                window.open(url, '_blank');
+            }
+        }, 100);
     }
 
     function filterApps() {
         let q = document.getElementById('search-bar').value.toLowerCase();
-        let filtered = allApps.filter(a => a.n.toLowerCase().includes(q));
-        renderApps(filtered);
+        let filtered = database.filter(a => a.n.toLowerCase().includes(q));
+        render(filtered);
     }
 
     function unlock() {
         if(document.getElementById('pk').value === "RTX") {
             document.getElementById('gate').style.display='none';
             document.getElementById('app').style.display='block';
-            initData();
-            renderApps(allApps);
+            buildDatabase();
+            render(database);
             updateUI();
-        } else { alert("WRONG PASSWORD!"); }
+        } else { alert("ACCESS DENIED"); }
     }
 
-    // 💰 FIXED PKG SYSTEM
     function claimSecret() {
-        let val = document.getElementById('secret-inp').value.trim().toLowerCase();
-        if(val === "pkg") {
-            sc += 1000;
-            updateUI();
-            alert("1000 Credits Added Successfully!");
-            document.getElementById('secret-inp').value = "";
-        } else {
-            alert("Wrong Code!");
-        }
-    }
-
-    function openChrome(url) {
-        if(sc >= 500) {
-            sc -= 500;
-            updateUI();
-            window.open(url, '_blank');
-        } else {
-            alert("Insufficient Credits! Use 'pkg' code.");
+        if(document.getElementById('secret-inp').value.toLowerCase() === "pkg") {
+            sc += 1000; updateUI(); alert("CREDITS INJECTED");
         }
     }
 
     function updateUI() {
-        document.getElementById('coin-txt').innerText = sc.toString().padStart(4,'0') + " CR";
+        document.getElementById('coin-txt').innerText = sc.toString().padStart(4,'0');
         localStorage.setItem('user_sc', sc);
     }
 </script>
