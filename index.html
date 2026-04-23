@@ -3,154 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX ULTIMATE v34.0</title>
+    <title>RTX DUAL-ENGINE v37.0</title>
     <style>
-        :root { --neon: #00f2ff; --bg: #000; --gold: #ffcc00; --card: #121212; }
+        :root { --neon: #00f2ff; --bg: #000; --gold: #ffcc00; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        
+        /* 🌈 RGB BORDER (Non-Stop) */
+        @keyframes rgb-flow {
+            0% { border-color: #ff0000; box-shadow: 0 0 15px #ff0000; }
+            33% { border-color: #00ff00; box-shadow: 0 0 15px #00ff00; }
+            66% { border-color: #0000ff; box-shadow: 0 0 15px #0000ff; }
+            100% { border-color: #ff0000; box-shadow: 0 0 15px #ff0000; }
+        }
+
+        body { 
+            background: var(--bg); color: white; height: 100vh; overflow: hidden; 
+            display: flex; flex-direction: column; 
+            border: 4px solid #ff0000; animation: rgb-flow 3s linear infinite;
+        }
 
         /* 🔐 LOCK SCREEN */
         #lock-screen {
             position: fixed; inset: 0; background: var(--bg);
             display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000;
         }
-        .rtx-input { background: #111; border: 1px solid #333; padding: 15px; color: white; text-align: center; border-radius: 12px; width: 85%; font-size: 18px; outline: none; }
-        .init-btn { margin-top: 20px; width: 85%; background: var(--neon); padding: 15px; border-radius: 12px; font-weight: bold; border: none; cursor: pointer; }
 
         /* 📱 MAIN DASHBOARD */
-        #main-app { display: none; height: 100vh; flex-direction: column; padding: 10px; position: relative; width: 100%; }
+        #main-app { display: none; height: 100vh; flex-direction: column; padding: 10px; position: relative; }
 
-        /* 🔍 TOP: SEARCH & LB TRIGGER */
-        .top-nav { display: flex; gap: 10px; padding: 5px 0; margin-bottom: 10px; }
-        .s-bar { background: #111; border: 1px solid var(--neon); flex: 1; padding: 12px; border-radius: 10px; color: white; outline: none; font-size: 14px; }
-        .lb-btn { background: var(--neon); border: none; width: 50px; border-radius: 10px; font-size: 20px; cursor: pointer; }
+        /* 💰 TOP LEFT CREDITS */
+        .header-ui { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .credits-display { border: 1px solid var(--gold); color: var(--gold); padding: 5px 12px; border-radius: 50px; font-weight: bold; font-size: 13px; background: rgba(255, 204, 0, 0.05); }
 
-        /* 🏆 SIDE LEADERBOARD (Right Slide) */
-        #side-lb {
+        /* 🔍 SEARCH AREA */
+        .search-row { display: flex; gap: 8px; margin-bottom: 15px; }
+        .search-bar { background: #111; border: 1px solid var(--neon); flex: 1; padding: 12px; border-radius: 12px; color: white; outline: none; }
+        .lb-trigger { background: var(--neon); border: none; width: 45px; border-radius: 12px; font-size: 18px; box-shadow: 0 0 10px var(--neon); }
+
+        /* 🏆 TRENDING SIDE PANEL (Editing DB) */
+        #side-panel {
             position: fixed; top: 0; right: -100%; width: 85%; height: 100%;
             background: rgba(5, 5, 5, 0.98); border-left: 2px solid var(--neon);
-            z-index: 5000; transition: 0.5s ease-in-out; padding: 20px;
-            display: flex; flex-direction: column;
+            z-index: 5000; transition: 0.4s ease; padding: 20px;
         }
-        #side-lb.active { right: 0; }
-        .lb-card { background: #111; padding: 15px; margin-bottom: 10px; border-radius: 10px; border-left: 4px solid var(--neon); display: flex; justify-content: space-between; }
-        .close-lb { margin-top: auto; background: #ff3333; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; }
+        #side-panel.active { right: 0; }
+        .trend-item { background: #111; padding: 15px; margin-bottom: 8px; border-radius: 10px; border: 1px solid #333; display: flex; justify-content: space-between; }
 
-        /* 📦 CENTER: SCROLLING APP LIST */
-        #app-list-container { flex-grow: 1; overflow-y: auto; padding: 5px; scrollbar-width: none; }
-        #app-list-container::-webkit-scrollbar { display: none; }
-        .app-item { background: var(--card); border: 1px solid #222; border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; }
-        .unlock-btn { margin-left: auto; background: var(--neon); color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 12px; }
-
-        /* 💰 BOTTOM: PKG BORDER UI */
-        .bottom-border-ui { 
-            border-top: 2px solid var(--gold); 
-            padding: 15px 10px; 
-            background: #050505; 
-            margin-top: auto;
-            border-radius: 20px 20px 0 0;
+        /* 📦 3D INFINITE APP GRID (1Cr Engine) */
+        #app-grid { 
+            flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
+            padding-bottom: 20px; perspective: 1000px; scrollbar-width: none;
         }
-        .coin-display { color: var(--gold); font-weight: bold; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+        #app-grid::-webkit-scrollbar { display: none; }
         
+        .app-card { 
+            background: #0d0d0d; border: 1px solid #222; border-radius: 15px; padding: 15px; 
+            text-align: center; transform: rotateX(5deg); transition: 0.3s;
+        }
+        .app-card:active { transform: scale(0.95) rotateX(0deg); border-color: var(--neon); }
+
+        /* 💰 BOTTOM PKG BORDER */
+        .bottom-border { border-top: 1px solid var(--gold); padding: 12px 5px; background: #000; margin-top: auto; }
         .pkg-row { display: flex; gap: 8px; }
-        .pkg-field { background: #111; border: 1px solid var(--gold); flex: 1; padding: 12px; border-radius: 10px; color: white; outline: none; font-size: 14px; letter-spacing: 1px; }
-        .claim-btn { background: var(--gold); color: black; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .claim-btn:active { transform: scale(0.9); }
+        .pkg-input { background: #111; border: 1px solid var(--gold); flex: 1; padding: 12px; border-radius: 10px; color: white; outline: none; letter-spacing: 1px; }
+        .claim-btn { background: var(--gold); color: black; border: none; padding: 12px 18px; border-radius: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="lock-screen">
-        <h2 style="color:var(--neon); margin-bottom:25px; letter-spacing:4px;">RTX SYSTEM</h2>
-        <input type="password" id="pass" class="rtx-input" placeholder="RTX or PIN">
-        <button class="init-btn" onclick="check()">INITIALIZE</button>
+        <h2 style="color:var(--neon); margin-bottom:20px; letter-spacing:3px;">RTX DUAL-ENGINE</h2>
+        <input type="password" id="pin" style="background:#111; border:1px solid #333; padding:15px; color:white; border-radius:10px; text-align:center;" placeholder="ACCESS PIN">
+        <button onclick="unlock()" style="margin-top:20px; width:180px; background:var(--neon); padding:12px; border-radius:10px; border:none; font-weight:bold;">INITIALIZE</button>
     </div>
 
     <div id="main-app">
-        <div class="top-nav">
-            <input type="text" class="s-bar" placeholder="Search Apps..." id="find" onkeyup="search()">
-            <button class="lb-btn" onclick="openLB()">🏆</button>
+        <div class="header-ui">
+            <div class="credits-display">💎 <span id="cr-count">1500</span> CREDITS</div>
+            <div style="font-size:10px; color:var(--neon);">ENGINE: DUAL-DB v37</div>
         </div>
 
-        <div id="side-lb">
-            <h3 style="color:var(--neon); margin-bottom:20px;">📡 TRENDING ENGINE</h3>
-            <div id="lb-data"></div>
-            <button class="close-lb" onclick="closeLB()">← BACK TO SYSTEM</button>
+        <div class="search-row">
+            <input type="text" class="search-bar" placeholder="Search 1Cr+ Apps..." id="s-input" onkeyup="searchApps()">
+            <button class="lb-trigger" onclick="toggleSide()">🏆</button>
         </div>
 
-        <div id="app-list-container">
-            <div class="app-item" data-name="Free Fire MAX Mod">
-                <div style="font-size:28px">🔫</div>
-                <div><h4>Free Fire MAX Mod</h4><span style="color:var(--gold); font-size:10px;">PREMIUM</span></div>
-                <button class="unlock-btn" onclick="buy(500)">UNLOCK</button>
-            </div>
-            <div class="app-item" data-name="Sigma Mod">
-                <div style="font-size:28px">🚀</div>
-                <div><h4>Sigma Battle Royale</h4><span style="color:var(--gold); font-size:10px;">PREMIUM</span></div>
-                <button class="unlock-btn" onclick="buy(800)">UNLOCK</button>
-            </div>
+        <div id="side-panel">
+            <h3 style="color:var(--neon); margin-bottom:20px;">TRENDING SCANNER</h3>
+            <div id="trend-list"></div>
+            <button onclick="toggleSide()" style="margin-top:20px; background:red; color:white; width:100%; padding:12px; border:none; border-radius:10px;">BACK</button>
         </div>
 
-        <div class="bottom-border-ui">
-            <div class="coin-display">🪙 COINS: <span id="coins">1500</span></div>
+        <div id="app-grid"></div>
+
+        <div class="bottom-border">
             <div class="pkg-row">
-                <input type="text" id="pkg-input" class="pkg-field" placeholder="Enter PKG Code">
-                <button class="claim-btn" onclick="redeem()">CLAIM</button>
+                <input type="text" id="pkg-code" class="pkg-input" placeholder="Enter PKG Code">
+                <button class="claim-btn" onclick="addCredits()">CLAIM</button>
             </div>
         </div>
     </div>
 
     <script>
-        let totalCoins = 1500;
+        let credits = 1500;
+        
+        // 💾 DATABASE 1: MAIN VAULT (1 Crore Apps Logic)
+        const mainVault = ["Free Fire MAX", "Sigma", "Minecraft", "Netflix Premium", "GTA V Mobile", "Instagram Gold", "Termux RTX", "BGMI Mod", "Spotify Pro", "Roblox Hack"];
 
-        function check() {
-            if(document.getElementById('pass').value.toUpperCase() === 'RTX') {
+        // 💾 DATABASE 2: EDITING/TRENDING DB
+        const trendingDB = ["Sigma Battle Royale", "Free Fire MAX Mod"];
+
+        function unlock() {
+            let p = document.getElementById('pin').value.toUpperCase();
+            if(p === 'RTX' || p === '1111') {
                 document.getElementById('lock-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'flex';
-                updateLB();
+                loadEngines();
             }
         }
 
-        function openLB() { document.getElementById('side-lb').classList.add('active'); }
-        function closeLB() { document.getElementById('side-lb').classList.remove('active'); }
+        function loadEngines() {
+            const grid = document.getElementById('app-grid');
+            const side = document.getElementById('trend-list');
+            grid.innerHTML = "";
+            side.innerHTML = "";
 
-        function updateLB() {
-            const trends = ["Free Fire MAX", "Sigma Mod", "Minecraft 1.21"];
-            document.getElementById('lb-data').innerHTML = trends.map((n, i) => `
-                <div class="lb-card"><span>#${i+1} ${n}</span><span style="color:var(--neon)">HOT 🔥</span></div>
-            `).join('');
+            // Logic: Trending apps ko top par lana (Editing DB check)
+            let combinedList = [...new Set([...trendingDB, ...mainVault])];
+
+            combinedList.forEach((name, index) => {
+                let isTrending = trendingDB.includes(name);
+                
+                // Add to Main Grid (3D Cards)
+                grid.innerHTML += `
+                    <div class="app-card" data-name="${name}">
+                        <div style="font-size:25px">${isTrending ? '🔥' : '💎'}</div>
+                        <h4 style="font-size:12px; margin:5px 0;">${name}</h4>
+                        <span style="font-size:9px; color:${isTrending ? 'var(--neon)' : 'var(--gold)'}">${isTrending ? 'TOP TREND' : 'PREMIUM'}</span>
+                        <button onclick="goToChrome()" style="margin-top:10px; background:var(--neon); border:none; padding:6px 12px; border-radius:6px; font-size:10px; font-weight:bold;">GET LINK</button>
+                    </div>
+                `;
+
+                // Add to Side Panel (Leaderboard)
+                if(isTrending) {
+                    side.innerHTML += `<div class="trend-item"><span>#${index+1} ${name}</span><span style="color:var(--neon)">HOT</span></div>`;
+                }
+            });
         }
 
-        // 🎁 PKG COIN SYSTEM
-        function redeem() {
-            const code = document.getElementById('pkg-input').value.toUpperCase();
-            if(code === 'RANJAN_PRO' || code === 'PKG') {
-                totalCoins += 1000;
-                document.getElementById('coins').innerText = totalCoins;
-                // Magic Effect: Input clear ho jayega
-                document.getElementById('pkg-input').value = "";
-                alert("Boom! +1000 Coins Added.");
+        function goToChrome() {
+            if(credits >= 500) {
+                credits -= 500;
+                document.getElementById('cr-count').innerText = credits;
+                alert("Dual-Engine: Redirecting to Chrome...");
+                window.location.href = "https://www.google.com/search?q=direct+download+premium+mod+apps";
             } else {
-                alert("Invalid PKG Code!");
+                alert("Need 500 Credits!");
             }
         }
 
-        function search() {
-            let input = document.getElementById('find').value.toLowerCase();
-            let cards = document.getElementsByClassName('app-item');
-            for (let card of cards) {
-                let name = card.getAttribute('data-name').toLowerCase();
-                card.style.display = name.includes(input) ? "flex" : "none";
+        function toggleSide() { document.getElementById('side-panel').classList.toggle('active'); }
+
+        function addCredits() {
+            let code = document.getElementById('pkg-code').value.toUpperCase();
+            if(code === 'PKG' || code === 'RANJAN_PRO') {
+                credits += 1000;
+                document.getElementById('cr-count').innerText = credits;
+                document.getElementById('pkg-code').value = "";
+                alert("+1000 Credits Injected!");
             }
         }
 
-        function buy(cost) {
-            if(totalCoins >= cost) {
-                totalCoins -= cost;
-                document.getElementById('coins').innerText = totalCoins;
-                alert("Unlocked! Your link is ready.");
-            } else {
-                alert("Not enough coins! Use PKG code.");
+        function searchApps() {
+            let val = document.getElementById('s-input').value.toLowerCase();
+            let cards = document.getElementsByClassName('app-card');
+            for(let card of cards) {
+                let n = card.getAttribute('data-name').toLowerCase();
+                card.style.display = n.includes(val) ? "block" : "none";
             }
         }
     </script>
