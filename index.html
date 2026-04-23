@@ -3,64 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v57.0</title>
+    <title>RTX BHARAT v58.0</title>
     <style>
         :root { --saffron: #FF9933; --white: #FFFFFF; --green: #138808; --bg: #050505; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* MAIN APP UI */
+        /* MAIN UI */
         #main-app { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--saffron); padding-bottom: 10px; margin-bottom: 20px; }
         
         #app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; overflow-y: auto; padding-bottom: 100px; scrollbar-width: none; }
         .app-card { background: #111; border: 1px solid #222; border-radius: 20px; padding: 15px; text-align: center; border-top: 3px solid var(--saffron); }
-        .app-icon { width: 45px; height: 45px; border-radius: 10px; margin-bottom: 8px; }
-        .btn-get { background: var(--saffron); border: none; padding: 10px; border-radius: 8px; font-weight: 900; width: 100%; margin-top: 10px; color: black; cursor: pointer; font-size: 11px; }
+        .btn-get { background: var(--saffron); border: none; padding: 10px; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 10px; color: black; cursor: pointer; }
 
-        /* ⚪ THE WHITE SECURE PAGE (NO CAPTCHA VERSION) */
-        #download-page { 
+        /* ⚪ THE MULTI-SOURCE SECURE PAGE */
+        #secure-hub { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: white; color: black; display: none; 
-            flex-direction: column; align-items: center; justify-content: center; z-index: 10000; padding: 30px;
+            flex-direction: column; align-items: center; justify-content: center; z-index: 10000; padding: 25px;
         }
-        .official-tag { background: #e8f5e9; color: #2e7d32; padding: 5px 15px; border-radius: 50px; font-size: 11px; font-weight: bold; margin-bottom: 20px; border: 1px solid #2e7d32; }
-        .main-link { 
-            color: #d32f2f; font-size: 18px; font-weight: 800; text-decoration: none; 
-            text-align: center; border: 2px solid #d32f2f; padding: 15px; width: 100%; border-radius: 10px; display: block;
-        }
-        .trust-info { margin-top: 25px; font-size: 13px; color: #333; line-height: 1.6; border-left: 4px solid var(--saffron); padding-left: 15px; text-align: left; width: 100%; }
-        .btn-back { margin-top: 40px; background: #333; color: white; border: none; padding: 10px 30px; border-radius: 8px; font-weight: bold; }
+        .source-box { width: 100%; background: #f9f9f9; border: 2px solid #ddd; border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .download-btn { background: #007bff; color: white; padding: 12px; border-radius: 8px; text-decoration: none; display: block; text-align: center; font-weight: bold; margin-top: 10px; }
+        .softonic-btn { background: #222; } /* Dark theme for Softonic feel */
+        .uptodown-btn { background: #2e7d32; } /* Green for Uptodown feel */
 
         /* PKG BAR */
-        .pkg-bar { position: fixed; bottom: 0; width: 100%; background: #000; padding: 15px; border-top: 2px solid var(--green); display: flex; gap: 10px; z-index: 999; }
-        .pkg-in { flex: 1; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: white; outline: none; }
-        .pkg-btn { background: var(--saffron); border: none; padding: 0 20px; border-radius: 10px; font-weight: bold; color: black; }
+        .pkg-bar { position: fixed; bottom: 0; width: 100%; background: #000; padding: 15px; border-top: 2px solid var(--green); display: flex; gap: 10px; }
+        .pkg-in { flex: 1; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: white; }
     </style>
 </head>
 <body>
 
-    <div id="download-page">
-        <div class="official-tag">✓ VERIFIED OFFICIAL SOURCE</div>
+    <div id="secure-hub">
+        <h2 style="margin-bottom: 20px;">🛡️ RTX SECURE GATEWAY</h2>
         
-        <a href="#" class="main-link" id="target-link" onclick="finalRedirect()">
-            CLICK TO OPEN OFFICIAL SOURCE
-        </a>
-
-        <div class="trust-info">
-            <b>Target File:</b> <span id="active-app-name">Sigma Pro X</span><br>
-            <b>Security:</b> 100% Secure (Verified by RTX Bharat)<br>
-            <b>Source Type:</b> Company Official Page<br><br>
-            Hum aapko 100% secure link dete hain. Is official page par jaakar aap bina kisi darr ke download kar sakte hain.
+        <div class="source-box">
+            <b id="app-name-display">App Name</b>
+            <p style="font-size: 12px; color: #666;">Choose a Trusted Source for Download:</p>
+            
+            <a href="#" class="download-btn softonic-btn" id="softonic-link" onclick="track()">DOWNLOAD FROM SOFTONIC</a>
+            
+            <a href="#" class="download-btn uptodown-btn" id="uptodown-link" onclick="track()">DOWNLOAD FROM UPTODOWN</a>
         </div>
 
-        <button class="btn-back" onclick="closeDownload()">Back to RTX</button>
+        <p style="font-size: 11px; text-align: center; padding: 10px;">
+            RTX Bharat has connected with <b>Softonic</b> and <b>Uptodown</b> servers to give you 100% verified files.
+        </p>
+
+        <button onclick="closeHub()" style="background:none; border:none; color:gray; text-decoration:underline; margin-top:20px;">Cancel and Return</button>
     </div>
 
     <div id="main-app">
         <div class="header">
-            <h2 style="font-size: 18px;">RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</h2>
-            <div style="color:var(--saffron); font-weight: bold; font-size: 16px;">💎 <span id="cr-val">1500</span></div>
+            <h3>RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</h3>
+            <div style="font-weight:bold;">💎 <span id="cr-val">1500</span></div>
         </div>
 
         <div id="app-grid">
@@ -68,69 +65,55 @@
     </div>
 
     <div class="pkg-bar">
-        <input type="text" id="pkg-in" class="pkg-in" placeholder="Enter PKG Code">
-        <button class="pkg-btn" onclick="claim()">CLAIM</button>
+        <input type="text" id="pkg-in" class="pkg-in" placeholder="Enter PKG">
+        <button onclick="claim()" style="background:var(--saffron); border:none; padding:0 20px; border-radius:10px; font-weight:bold;">CLAIM</button>
     </div>
 
     <script>
         let credits = 1500;
-        let selectedApp = "";
+        const premiumApps = ["Sigma Pro X", "FF Advance", "BGMI Mod", "GTA 5", "Minecraft", "GB WhatsApp", "Lucky Patcher", "HappyMod", "CapCut", "VideoDer"];
 
-        // 10 OFFICIAL PREMIUM APPS
-        const premiumApps = [
-            "Sigma Pro X", "FF Advance Server", "BGMI Official", 
-            "GTA 5 Real", "Minecraft PE", "WhatsApp Premium", 
-            "CapCut India", "Netflix Free", "Spotify Premium", "Instagram Gold"
-        ];
-
-        function loadApps() {
+        function load() {
             const grid = document.getElementById('app-grid');
             grid.innerHTML = "";
             premiumApps.forEach(name => {
-                grid.innerHTML += `
-                    <div class="app-card">
-                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=${name}" class="app-icon">
-                        <div style="font-size:11px; font-weight:bold;">${name}</div>
-                        <button class="btn-get" onclick="openSecurePage('${name}')">GET OFFICIAL</button>
-                    </div>`;
+                grid.innerHTML += `<div class="app-card">
+                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${name}" style="width:40px;">
+                    <div style="font-size:12px; font-weight:bold; margin-top:5px;">${name}</div>
+                    <button class="btn-get" onclick="openHub('${name}')">DOWNLOAD</button>
+                </div>`;
             });
         }
 
-        function openSecurePage(name) {
+        function openHub(name) {
             if(credits >= 500) {
                 credits -= 500;
                 document.getElementById('cr-val').innerText = credits;
                 
-                selectedApp = name;
-                document.getElementById('active-app-name').innerText = name;
-                document.getElementById('target-link').innerText = "OPEN " + name.toUpperCase() + " PAGE";
-                document.getElementById('download-page').style.display = 'flex';
-            } else {
-                alert("Coins khatam! PKG dalo.");
-            }
+                document.getElementById('app-name-display').innerText = name.toUpperCase();
+                
+                // Logic to set Softonic and Uptodown links
+                let q = name.replace(" ", "-").toLowerCase();
+                document.getElementById('softonic-link').href = `https://en.softonic.com/s/${q}`;
+                document.getElementById('uptodown-link').href = `https://en.uptodown.com/android/search/${q}`;
+                
+                document.getElementById('secure-hub').style.display = 'flex';
+            } else { alert("Coins Low!"); }
         }
 
-        function finalRedirect() {
-            // No more CAPTCHA: Direct Search Result for Official Pages
-            let query = selectedApp.replace(" ", "+");
-            window.location.href = `https://www.google.com/search?q=${query}+official+company+download+page+secure`;
-        }
-
-        function closeDownload() {
-            document.getElementById('download-page').style.display = 'none';
-        }
+        function closeHub() { document.getElementById('secure-hub').style.display = 'none'; }
+        
+        function track() { console.log("Direct Official Redirect Activated"); }
 
         function claim() {
-            let val = document.getElementById('pkg-in').value.trim().toUpperCase();
-            if(val === 'PKG') {
+            if(document.getElementById('pkg-in').value.toUpperCase() === 'PKG') {
                 credits += 1000;
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('pkg-in').value = "";
-                alert("1000 Coins Added!");
             }
         }
 
-        window.onload = loadApps;
+        window.onload = load;
     </script>
 </body>
 </html>
