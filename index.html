@@ -3,118 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-PRO BRIDGE</title>
+    <title>X-PRO RECOVERY CONSOLE</title>
     <script src="https://cdn.jsdelivr.net/npm/unity-ads-sdk@4.0.0/dist/unity-ads.min.js"></script>
     <style>
-        :root { --neon: #00ff9d; --yt: #ff0000; --bg: #05060f; --card: #12141d; --warn: #ffcc00; }
-        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; text-align: center; }
+        :root { --neon: #00ff9d; --yt: #ff0000; --bg: #05060f; --card: #12141d; --gold: #ffd700; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; text-align: center; }
         
-        /* Lock */
+        /* Aarti X Secure Gate */
         #gate { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        .box { background: var(--card); padding: 30px; border: 2px solid var(--neon); border-radius: 20px; width: 85%; }
+        .gate-box { background: var(--card); padding: 30px; border: 2px solid var(--neon); border-radius: 20px; width: 85%; box-shadow: 0 0 20px rgba(0,255,157,0.2); }
 
-        /* Main View */
-        #app { display: none; }
-        .wallet { background: #000; padding: 20px; border-radius: 20px; border: 1px solid #333; margin: 10px 0; }
-        .balance { font-size: 45px; font-weight: bold; color: var(--warn); }
+        /* Dashboard */
+        #main-view { display: none; }
+        .wallet { background: #000; padding: 25px; border-radius: 20px; border: 1px solid #333; margin: 15px 0; }
+        .balance { font-size: 45px; font-weight: bold; color: var(--gold); text-shadow: 0 0 10px rgba(255,215,0,0.3); }
 
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }
-        .t-btn { padding: 18px 5px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; font-size: 12px; }
-        .u-btn { background: var(--neon); color: #000; }
-        .y-btn { background: var(--yt); color: #fff; }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .action-btn { padding: 20px 5px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.3s; }
+        .btn-u { background: var(--neon); color: #000; }
+        .btn-y { background: var(--yt); color: #fff; }
 
-        /* Store */
-        .store { background: var(--card); border-radius: 15px; padding: 15px; text-align: left; border: 1px solid #333; }
-        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222; }
-        .get-l { background: #0084ff; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        /* External Link Store */
+        .store-area { background: var(--card); border-radius: 15px; padding: 15px; text-align: left; border: 1px solid #222; }
+        .store-title { color: var(--gold); font-weight: bold; font-size: 14px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #111; }
+        .chrome-btn { background: #0084ff; color: #fff; border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div id="gate">
-        <div class="box">
-            <h2 style="color:var(--neon); margin:0;">X-SYSTEM</h2>
-            <p style="font-size:10px; color:#888;">PASS: Aarti X</p>
-            <input type="password" id="pk" placeholder="Password" style="width:90%; padding:10px; margin:15px 0; border-radius:8px; border:none; text-align:center;">
-            <button onclick="access()" style="width:100%; padding:12px; background:var(--neon); border:none; border-radius:10px; font-weight:bold;">ENTER</button>
+        <div class="gate-box">
+            <h2 style="color:var(--neon); margin:0;">X-PRO RECOVERED</h2>
+            <p style="font-size:10px; color:#666; margin-top:5px;">SECURED ACCESS ONLY</p>
+            <input type="password" id="p_input" placeholder="Enter 'Aarti X'" style="width:90%; padding:12px; margin:20px 0; border-radius:10px; border:none; text-align:center; background:#000; color:var(--neon); font-weight:bold;">
+            <button onclick="unlock()" style="width:100%; padding:12px; background:var(--neon); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">UNLOCK SYSTEM</button>
         </div>
     </div>
 
-    <div id="app">
-        <div style="font-size:10px; display:flex; justify-content:space-between; color:#555; margin-bottom:10px;">
-            <span id="u-info">UNITY: SCANNING...</span>
-            <span>AARTI X SECURE</span>
+    <div id="main-view">
+        <div style="font-size:10px; display:flex; justify-content:space-between; color:#444; margin-bottom:10px;">
+            <span id="unity-stat">● UNITY: CONNECTING...</span>
+            <span>AARTI X SECURE ENGINE</span>
         </div>
 
         <div class="wallet">
-            <div style="font-size:10px; color:#888;">CREDITS</div>
-            <div class="balance" id="coin-disp">0000</div>
+            <div style="font-size:10px; color:#888; letter-spacing:1px;">AVAILABLE CREDITS</div>
+            <div class="balance" id="coin_txt">0000</div>
         </div>
 
         <div class="btn-grid">
-            <button class="t-btn u-btn" onclick="runU()">⚡ UNITY AD<br>+50 COINS</button>
-            <button class="t-btn y-btn" onclick="runY()">📺 YT TASK<br>+50 COINS</button>
+            <button id="u_btn" class="action-btn btn-u" onclick="playAd()" disabled>⚡ UNITY REWARDS<br>(LOADING...)</button>
+            <button class="action-btn btn-y" onclick="ytTask()">📺 WATCH & EARN<br>(+50 COINS)</button>
         </div>
 
-        <div class="store">
-            <p style="font-size:13px; font-weight:bold; color:var(--warn); margin-top:0;">EXTERNAL MOD LINKS (500 Cr)</p>
-            <div class="item"><span>GB WhatsApp Pro</span> <button class="get-l" onclick="redirect('https://androidwaves.com/')">GET LINK</button></div>
-            <div class="item"><span>FF Headshot Mod</span> <button class="get-l" onclick="redirect('https://google.com/')">GET LINK</button></div>
-            <div class="item"><span>Instagram Pro</span> <button class="get-l" onclick="redirect('https://instamod.net/')">GET LINK</button></div>
-            <div class="item"><span>Spotify Premium</span> <button class="get-l" onclick="redirect('http://spotify.com')">GET LINK</button></div>
+        <div class="store-area">
+            <div class="store-title">CHROME REDIRECT STORE (500 Cr)</div>
+            
+            <div class="item">
+                <div>GB WhatsApp Pro<br><span style="font-size:9px; color:#555;">Official Download Page</span></div>
+                <button class="chrome-btn" onclick="goToChrome('https://androidwaves.com/')">GET LINK</button>
+            </div>
+
+            <div class="item">
+                <div>Free Fire Mod<br><span style="font-size:9px; color:#555;">External Store Page</span></div>
+                <button class="chrome-btn" onclick="goToChrome('https://google.com/')">GET LINK</button>
+            </div>
+
+            <div class="item">
+                <div>Instagram Pro<br><span style="font-size:9px; color:#555;">Mod Page Link</span></div>
+                <button class="chrome-btn" onclick="goToChrome('https://instamod.net/')">GET LINK</button>
+            </div>
         </div>
+
+        <p style="font-size:9px; color:#333; margin-top:20px;">X-PRO BRIDGE v2.0 | POWERED BY UNITY 6096974</p>
     </div>
 
 <script>
-    let sc = parseInt(localStorage.getItem('user_sc')) || 0;
-    let ur = false;
+    let credits = parseInt(localStorage.getItem('x_credits')) || 0;
+    let unityIsReady = false;
 
-    function access() {
-        if(document.getElementById('pk').value === "Aarti X") {
-            document.getElementById('gate').style.display = 'none';
-            document.getElementById('app').style.display = 'block';
-            initU(); update();
-        } else { alert("Galat Password!"); }
-    }
-
-    function initU() {
-        UnityAds.initialize("6096974", false, (s) => {
-            if(s) { ur = true; document.getElementById('u-info').innerText = "UNITY: ONLINE"; document.getElementById('u-info').style.color = "#00ff9d"; }
-            else { setTimeout(initU, 3000); }
+    // --- FIX 1: Aggressive Unity Connection ---
+    function initUnity() {
+        UnityAds.initialize("6096974", false, (success) => {
+            if(success) {
+                unityIsReady = true;
+                let stat = document.getElementById('unity-stat');
+                stat.innerText = "● UNITY: ONLINE";
+                stat.style.color = "#00ff9d";
+                
+                let btn = document.getElementById('u_btn');
+                btn.innerText = "⚡ UNITY REWARDS\n(+50 COINS)";
+                btn.disabled = false;
+            } else {
+                setTimeout(initUnity, 3000); // Fail hone par baar-baar koshish karega
+            }
         });
     }
 
-    function runU() {
-        if(ur) { UnityAds.show('Rewarded_Android'); setTimeout(()=>{ sc+=50; update(); }, 5000); }
-        else { alert("Unity connecting..."); initU(); }
+    function unlock() {
+        if(document.getElementById('p_input').value === "Aarti X") {
+            document.getElementById('gate').style.display = 'none';
+            document.getElementById('main-view').style.display = 'block';
+            updateUI();
+            initUnity();
+        } else { alert("Galat Password!"); }
     }
 
-    function runY() {
-        window.open('https://youtube.com', '_blank');
-        setTimeout(()=>{ sc+=50; update(); }, 8000);
-    }
-
-    // --- REDIRECT & WARNING SYSTEM ---
-    function redirect(url) {
-        if(sc >= 500) {
-            // English Warning as requested
-            let confirmAction = confirm("WARNING: This link is external. It may or may not be secure. X-PRO is not responsible after this point. If the page doesn't load, please try again after some time. Do you want to proceed?");
-            
-            if (confirmAction) {
-                sc -= 500;
-                update();
-                // Redirecting to external browser (Chrome)
-                window.open(url, '_blank');
-                alert("Redirecting to external store. X-PRO session ended for this link.");
-            }
-        } else {
-            alert("Bhai, 500 coins chahiye! Pehle tasks poore karo.");
+    function playAd() {
+        if(unityIsReady) {
+            UnityAds.show('Rewarded_Android');
+            // Coin Reward Logic
+            setTimeout(() => { credits += 50; updateUI(); }, 5000);
         }
     }
 
-    function update() {
-        document.getElementById('coin-disp').innerText = sc.toString().padStart(4, '0');
-        localStorage.setItem('user_sc', sc);
+    function ytTask() {
+        window.open('https://youtube.com', '_blank');
+        setTimeout(() => { credits += 50; updateUI(); }, 8000);
+    }
+
+    // --- FIX 2: Direct Chrome Redirection & Warning ---
+    function goToChrome(url) {
+        if(credits >= 500) {
+            let warn = confirm("ATTENTION: This will open Chrome. X-PRO is only a bridge. We do not host these files. If the page doesn't load, please try again later. Proceed?");
+            
+            if(warn) {
+                credits -= 500;
+                updateUI();
+                // Direct Chrome Command (External Window)
+                window.open(url, '_blank');
+                alert("Redirecting to Chrome. Our session has ended for this link.");
+            }
+        } else {
+            alert("Bhai, 500 coins chahiye! Tasks poore karo.");
+        }
+    }
+
+    function updateUI() {
+        document.getElementById('coin_txt').innerText = credits.toString().padStart(4, '0');
+        localStorage.setItem('x_credits', credits);
     }
 </script>
 </body>
