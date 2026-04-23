@@ -3,117 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-PRO BRIDGE FINAL</title>
-    <script src="https://cdn.jsdelivr.net/npm/unity-ads-sdk@4.0.0/dist/unity-ads.min.js"></script>
+    <title>X-PRO HELPERS - SECRET TASK</title>
     <style>
-        :root { --neon: #00ff9d; --bg: #05060f; --card: #12141d; --gold: #ffd700; }
-        body { background: var(--bg); color: #fff; font-family: sans-serif; margin: 0; padding: 15px; text-align: center; }
+        :root { --neon: #00d2ff; --bg: #05060f; --card: #12141d; --gold: #ffd700; --safe: #00ff9d; --gemini-alt: #4285f4; }
+        body { background: var(--bg); color: #fff; font-family: sans-serif; margin: 0; padding: 10px; text-align: center; }
         
         #gate { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
         .box { background: var(--card); padding: 30px; border: 2px solid var(--neon); border-radius: 20px; width: 85%; }
-        
-        #main { display: none; }
-        .wallet { background: #000; padding: 20px; border-radius: 20px; border: 1px solid #333; margin: 15px 0; }
-        .balance { font-size: 40px; font-weight: bold; color: var(--gold); }
 
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }
-        .t-btn { padding: 18px 5px; border-radius: 12px; border: none; font-weight: bold; font-size: 11px; cursor: pointer; }
-        .u-btn { background: var(--neon); color: #000; }
-        .y-btn { background: #ff0000; color: #fff; }
+        #app { display: none; }
+        .wallet { background: #000; padding: 20px; border-radius: 20px; border: 1px solid #333; margin: 10px 0; }
+        .balance { font-size: 45px; font-weight: bold; color: var(--gold); }
 
-        .store { background: var(--card); border-radius: 15px; padding: 15px; text-align: left; }
-        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222; }
-        .chrome-btn { background: #0084ff; color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; font-size: 10px; }
+        /* NEW SECRET TASK STYLE */
+        .secret-section { background: #1a1c25; padding: 15px; border-radius: 15px; border: 2px dashed var(--gold); margin: 15px 0; }
+        .code-input { width: 80%; padding: 10px; margin: 10px 0; border-radius: 8px; border: none; text-align: center; background: #000; color: var(--gold); font-weight: bold; }
+        .claim-btn { background: var(--gold); color: #000; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; }
+
+        .store { background: var(--card); border-radius: 15px; padding: 15px; text-align: left; border: 1px solid #222; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #1a1a1a; }
+        .get-btn { background: var(--safe); color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 10px; }
+        .upgrade-btn { background: var(--gemini-alt); color: #fff; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 10px; }
     </style>
 </head>
 <body>
 
     <div id="gate">
         <div class="box">
-            <h2 style="color:var(--neon)">X-SYSTEM</h2>
-            <p style="font-size:10px; color:#888;">PASS: Aarti X</p>
-            <input type="password" id="pass" placeholder="Password" style="width:90%; padding:10px; margin:15px 0; text-align:center; border-radius:8px; border:none;">
-            <button onclick="unlock()" style="width:100%; padding:12px; background:var(--neon); border:none; border-radius:10px; font-weight:bold;">ENTER SYSTEM</button>
+            <h2 style="color:var(--neon); margin:0;">X-PRO HELPERS</h2>
+            <input type="password" id="pk" placeholder="Password: Aarti X" style="width:90%; padding:12px; margin:20px 0; border-radius:10px; text-align:center; border:none; font-weight:bold;">
+            <button onclick="unlock()" style="width:100%; padding:12px; background:var(--neon); border:none; border-radius:10px; font-weight:bold;">UNLOCK</button>
         </div>
     </div>
 
-    <div id="main">
-        <div style="font-size:10px; display:flex; justify-content:space-between; color:#555;">
-            <span id="u-stat">UNITY: SCANNING...</span>
-            <span>AARTI X SECURE</span>
-        </div>
-
+    <div id="app">
         <div class="wallet">
-            <div style="font-size:10px; color:#888;">CREDITS</div>
+            <div style="font-size:10px; color:#888;">FREE HELP CREDITS</div>
             <div class="balance" id="coin-txt">0000</div>
         </div>
 
-        <div class="btn-grid">
-            <button class="t-btn u-btn" onclick="showAd()">⚡ UNITY AD<br>+50 Cr</button>
-            <button class="t-btn y-btn" onclick="openYT()">📺 YT TASK<br>+50 Cr</button>
+        <div class="secret-section">
+            <div style="color:var(--gold); font-weight:bold; font-size:12px;">🎁 SECRET REWARD TASK</div>
+            <p style="font-size:10px; color:#aaa; margin:5px 0;">Enter secret code to get 1000 Credits instantly!</p>
+            <input type="text" id="secret-inp" class="code-input" placeholder="Enter Code Here">
+            <button onclick="claimSecret()" class="claim-btn">CLAIM 1000 COINS</button>
         </div>
 
         <div class="store">
-            <p style="color:var(--gold); font-weight:bold; font-size:12px; margin-top:0;">CHROME EXTERNAL STORE (500 Cr)</p>
+            <span style="font-size:9px; color:var(--safe); font-weight:bold;">✓ 100% SECURE & VERIFIED</span>
             
-            <div class="item"><span>GB WhatsApp Pro</span> <button class="chrome-btn" onclick="goLink('https://androidwaves.com/download-gbwhatsapp-pro-apk/')">GET LINK</button></div>
-            
-            <div class="item"><span>Spotify Premium Mod</span> <button class="chrome-btn" onclick="goLink('https://www.google.com/search?q=spotify+premium+apk+mod')">GET LINK</button></div>
-            
-            <div class="item"><span>Spotify Lite Mod</span> <button class="chrome-btn" onclick="goLink('https://www.google.com/search?q=spotify+lite+mod+apk')">GET LINK</button></div>
-            
-            <div class="item"><span>Instagram Pro</span> <button class="chrome-btn" onclick="goLink('https://instamod.net/')">GET LINK</button></div>
+            <div class="item">
+                <div><b>Gemini Pro AI (Upgrade)</b><br><span style="font-size:9px; color:var(--gemini-alt);">Most Powerful AI Model</span></div>
+                <button class="upgrade-btn" onclick="openSecure('https://gemini.google.com/app')">UPGRADE</button>
+            </div>
+
+            <div class="item">
+                <div>ChatGPT Pro<br><span style="font-size:9px; color:#555;">AI Plus Features Unlocked</span></div>
+                <button class="get-btn" onclick="openSecure('https://google.com/search?q=chatgpt+pro+mod+apk')">GET LINK</button>
+            </div>
+
+            <div class="item">
+                <div>GB WhatsApp Pro<br><span style="font-size:9px; color:#555;">Safe & Secure Latest Build</span></div>
+                <button class="get-btn" onclick="openSecure('https://androidwaves.com/')">GET LINK</button>
+            </div>
         </div>
-        <p style="font-size:9px; color:#333; margin-top:15px;">AUTHORIZED BY AARTI X | UNITY 6096974</p>
+        
+        <p style="font-size:10px; color:#555; margin-top:20px;">"Hum dono milkar aapki help karenge." - Ranjan & Gemini</p>
     </div>
 
 <script>
     let sc = parseInt(localStorage.getItem('user_sc')) || 0;
-    let uReady = false;
 
     function unlock() {
-        if(document.getElementById('pass').value === "Aarti X") {
+        if(document.getElementById('pk').value === "Aarti X") {
             document.getElementById('gate').style.display='none';
-            document.getElementById('main').style.display='block';
-            initU(); update();
+            document.getElementById('app').style.display='block';
+            updateUI();
         } else { alert("Wrong Password!"); }
     }
 
-    function initU() {
-        UnityAds.initialize("6096974", false, (s) => {
-            if(s) { 
-                uReady=true; 
-                document.getElementById('u-stat').innerText="UNITY: ONLINE"; 
-                document.getElementById('u-stat').style.color="#00ff9d"; 
-            } else { setTimeout(initU, 3000); }
-        });
+    // --- NEW SECRET CODE LOGIC ---
+    function claimSecret() {
+        let code = document.getElementById('secret-inp').value.trim().toLowerCase();
+        if(code === "pkg") {
+            sc += 1000;
+            updateUI();
+            document.getElementById('secret-inp').value = "";
+            alert("SUCCESS! Aapko 1000 Credits mil gaye hain. Hum aapki help karte rahenge!");
+        } else {
+            alert("Galat Code! Sahi code dalo bhai.");
+        }
     }
 
-    function showAd() {
-        if(uReady) { 
-            UnityAds.show('Rewarded_Android'); 
-            setTimeout(()=>{ sc+=50; update(); }, 5000); 
-        } else { alert("Unity connect ho raha hai..."); initU(); }
-    }
-
-    function openYT() { 
-        window.open('https://youtube.com', '_blank'); 
-        setTimeout(()=>{ sc+=50; update(); }, 8000); 
-    }
-
-    function goLink(url) {
-        if(sc >= 500) {
-            let c = confirm("WARNING: This link will open in CHROME. X-PRO will close the bridge now. Proceed?");
-            if(c) {
-                sc -= 500;
-                update();
+    function openSecure(url) {
+        if(sc >= 500 || url.includes('gemini')) {
+            let conf = confirm("HELPERS TRUST: Ye link 100% working hai. Proceed?");
+            if(conf) {
+                if(!url.includes('gemini')) { sc -= 500; }
+                updateUI();
                 window.open(url, '_system');
                 setTimeout(() => { window.location.assign(url); }, 500);
             }
-        } else { alert("Bhai, 500 coins chahiye!"); }
+        } else {
+            alert("Credits kam hain! Secret code dalo ya tasks poore karo.");
+        }
     }
 
-    function update() {
+    function updateUI() {
         document.getElementById('coin-txt').innerText = sc.toString().padStart(4, '0');
         localStorage.setItem('user_sc', sc);
     }
