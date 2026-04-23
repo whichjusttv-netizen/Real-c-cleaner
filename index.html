@@ -3,140 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTX SEARCH & SOURCE</title>
+    <title>RTX ANTI-LAG ENGINE</title>
     <style>
         :root { --neon: #ff0055; --bg: #05060f; --card: #12141d; --gold: #ffd700; --safe: #00ff9d; }
-        body { background: var(--bg); color: #fff; font-family: sans-serif; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; text-align: center; overflow: hidden; }
         
-        /* 🔒 PASSPORT */
+        /* 🔒 SECURE LOGIN */
         #gate { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        .box { background: var(--card); padding: 35px; border: 2px solid var(--neon); border-radius: 30px; width: 85%; box-shadow: 0 0 40px rgba(255,0,85,0.3); }
+        .box { background: var(--card); padding: 30px; border: 2px solid var(--neon); border-radius: 25px; width: 80%; box-shadow: 0 0 20px var(--neon); }
 
         #app { display: none; }
-        .header { position: sticky; top: 0; background: var(--bg); padding: 10px; z-index: 100; border-bottom: 2px solid #1a1c25; }
+        .header { position: sticky; top: 0; background: var(--bg); padding: 5px; z-index: 100; border-bottom: 2px solid #1a1c25; }
         
-        /* 🔍 SEARCH SYSTEM */
-        .search-container { margin: 10px 0; }
-        #search-bar { width: 90%; padding: 15px; border-radius: 15px; border: 1px solid var(--neon); background: #000; color: #fff; font-weight: bold; text-align: center; font-size: 16px; outline: none; }
+        /* 🔍 FAST SEARCH */
+        #search-bar { width: 90%; padding: 12px; border-radius: 12px; border: 1px solid var(--neon); background: #000; color: #fff; margin: 10px 0; outline: none; }
 
-        .wallet { background: #000; padding: 12px; border-radius: 20px; border: 1px solid #333; margin: 10px 0; }
-        .balance { font-size: 30px; font-weight: bold; color: var(--gold); }
+        .wallet { background: #000; padding: 10px; border-radius: 15px; border: 1px solid #333; margin-bottom: 10px; }
+        .balance { font-size: 28px; font-weight: bold; color: var(--gold); }
 
-        /* 1000+ DYNAMIC APPS */
-        .app-grid { display: flex; flex-direction: column; gap: 10px; padding: 10px 0; max-height: 55vh; overflow-y: auto; scrollbar-width: none; }
-        .app-grid::-webkit-scrollbar { display: none; }
+        /* 🚀 OPTIMIZED SCROLL (NO HANG) */
+        #main-list { display: flex; flex-direction: column; gap: 10px; height: 60vh; overflow-y: auto; scrollbar-width: none; padding-bottom: 50px; }
+        #main-list::-webkit-scrollbar { display: none; }
 
         .card { 
-            background: #1a1c25; border: 1px solid #333; border-radius: 12px; 
+            background: #1a1c25; border: 1px solid #222; border-radius: 12px; 
             padding: 15px; text-align: left; display: flex; justify-content: space-between; align-items: center;
+            animation: fadeIn 0.3s ease;
         }
-        .info h3 { color: var(--neon); margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
-        .get-btn { background: var(--safe); color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .info h3 { color: var(--neon); margin: 0; font-size: 13px; text-transform: uppercase; }
+        .get-btn { background: var(--safe); color: #000; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; }
 
-        .secret-box { background: #000; padding: 15px; border-radius: 20px; border: 1px solid var(--gold); margin-top: 10px; }
-        .code-input { width: 80%; padding: 10px; border-radius: 10px; border: none; text-align: center; background: #111; color: var(--gold); font-weight: bold; }
+        .footer-tool { background: #000; padding: 15px; border-radius: 20px; border: 1px solid var(--gold); position: fixed; bottom: 10px; left: 10px; right: 10px; }
     </style>
 </head>
 <body>
 
     <div id="gate">
         <div class="box">
-            <h2 style="color:var(--neon); margin:0;">RTX GATEWAY</h2>
-            <p style="font-size:10px; color:#555; margin-bottom:20px;">1000 PREMIUM SOURCES ACTIVE</p>
-            <input type="password" id="pk" placeholder="PASSWORD" style="width:90%; padding:15px; border-radius:15px; text-align:center; border:none; background:#000; color:var(--neon); font-weight:bold; font-size:18px;">
-            <button onclick="unlock()" style="width:100%; padding:15px; background:var(--neon); border:none; border-radius:15px; font-weight:bold; color:#fff; margin-top:15px;">LOGIN</button>
+            <h2 style="color:var(--neon); margin:0;">RTX V22</h2>
+            <p style="font-size:10px; color:#444; margin-bottom:15px;">FIXED LAG & DATABASE ENGINE</p>
+            <input type="password" id="pk" placeholder="Password: RTX" style="width:85%; padding:12px; border-radius:10px; text-align:center; border:none; background:#000; color:var(--neon); font-weight:bold;">
+            <button onclick="unlock()" style="width:100%; padding:12px; background:var(--neon); border:none; border-radius:10px; font-weight:bold; color:#fff; margin-top:10px;">FIX & OPEN</button>
         </div>
     </div>
 
     <div id="app">
         <div class="header">
-            <div style="font-size:11px; color:var(--neon); font-weight:bold;">● RTX ELITE SYSTEM v21.0</div>
-            
-            <div class="search-container">
-                <input type="text" id="search-bar" placeholder="Khatarnak App Khojo..." onkeyup="filterApps()">
-            </div>
-
+            <input type="text" id="search-bar" placeholder="Search 1000+ Premium Apps..." onkeyup="filterApps()">
             <div class="wallet">
                 <div class="balance" id="coin-txt">0000 CR</div>
             </div>
         </div>
 
-        <div class="app-grid" id="main-list">
+        <div id="main-list">
             </div>
 
-        <div class="secret-box">
-            <input type="text" id="secret-inp" class="code-input" placeholder="CODE: pkg">
-            <button onclick="claimSecret()" style="background:var(--gold); color:#000; border:none; width:100%; padding:12px; border-radius:12px; font-weight:bold;">GET 1000 CR</button>
+        <div class="footer-tool">
+            <input type="text" id="secret-inp" placeholder="Code: pkg" style="width:60%; padding:8px; background:#111; border:none; color:var(--gold); border-radius:5px; text-align:center;">
+            <button onclick="claimSecret()" style="background:var(--gold); color:#000; border:none; padding:8px 15px; border-radius:5px; font-weight:bold;">+1000</button>
         </div>
     </div>
 
 <script>
     let sc = parseInt(localStorage.getItem('user_sc')) || 0;
-    let allAppsData = [];
+    let allApps = [];
 
-    // 1000 APPS WITH DIFFERENT PREMIUM SOURCE WEBSITES
-    const sources = [
-        "https://rexdl.com/search/",
-        "https://apkmody.io/search?q=",
-        "https://an1.com/index.php?do=search&subaction=search&story=",
-        "https://happymod.com/search.html?q=",
-        "https://apkdone.com/?s=",
-        "https://getmodnow.com/?s="
-    ];
+    // 🔥 SMART DATA ENGINE (No Hang Logic)
+    const sources = ["rexdl.com", "apkmody.io", "happymod.com", "an1.com", "apkdone.com"];
+    const names = ["Netflix 4K", "Gemini AI", "Minecraft", "GTA 2026", "Premiere Pro", "Spotify HiFi", "Canva Pro", "PicsArt Pro", "Truecaller Gold", "ExpressVPN"];
 
-    const appNames = ["Gemini AI", "Netflix 4K", "Minecraft", "GTA 6", "ChatGPT Plus", "Premiere Pro", "Spotify Pro", "Canva Gold", "Truecaller Gold", "PicsArt Pro", "ExpressVPN", "NordVPN", "KineMaster Pro", "CapCut Elite"];
-
-    function generate1000Apps() {
+    function initData() {
+        allApps = [];
         for(let i = 1; i <= 1000; i++) {
-            let baseName = appNames[i % appNames.length];
-            let name = `${baseName} Elite #${i}`;
-            // Har app ki website alag provider se link hai
+            let base = names[i % names.length];
             let provider = sources[i % sources.length];
-            let finalUrl = provider + encodeURIComponent(baseName);
-            allAppsData.push({n: name, s: finalUrl});
+            allApps.push({
+                n: `${base} Premium #${i}`,
+                s: `https://www.google.com/search?q=site:${provider}+${encodeURIComponent(base)}+premium`
+            });
         }
     }
 
-    function loadApps(data) {
+    function renderApps(list) {
         const grid = document.getElementById('main-list');
-        grid.innerHTML = "";
-        data.forEach(a => {
-            grid.innerHTML += `<div class="card">
-                <div class="info"><h3>${a.n}</h3></div>
-                <button class="get-btn" onclick="openChrome('${a.s}')">GET PREMIUM</button>
+        // Sirf top 30 apps dikhayega pehle (Performance fix)
+        let html = "";
+        let limit = list.length > 50 ? 50 : list.length; 
+        
+        for(let i = 0; i < limit; i++) {
+            html += `<div class="card">
+                <div class="info"><h3>${list[i].n}</h3></div>
+                <button class="get-btn" onclick="openChrome('${list[i].s}')">CHROME</button>
             </div>`;
-        });
+        }
+        grid.innerHTML = html;
+        grid.scrollTop = 0;
     }
 
-    // SEARCH FILTER LOGIC
     function filterApps() {
-        let input = document.getElementById('search-bar').value.toLowerCase();
-        let filtered = allAppsData.filter(app => app.n.toLowerCase().includes(input));
-        loadApps(filtered);
+        let q = document.getElementById('search-bar').value.toLowerCase();
+        let filtered = allApps.filter(a => a.n.toLowerCase().includes(q));
+        renderApps(filtered);
     }
 
     function unlock() {
         if(document.getElementById('pk').value === "RTX") {
             document.getElementById('gate').style.display='none';
             document.getElementById('app').style.display='block';
-            generate1000Apps();
-            loadApps(allAppsData);
+            initData();
+            renderApps(allApps);
             updateUI();
-        } else { alert("ACCESS DENIED!"); }
+        } else { alert("ACCESS DENIED"); }
     }
 
     function claimSecret() {
-        if(document.getElementById('secret-inp').value.trim().toLowerCase()==="pkg") {
-            sc += 1000; updateUI(); alert("1000 CR Injected.");
-            document.getElementById('secret-inp').value = "";
+        if(document.getElementById('secret-inp').value.toLowerCase()==="pkg") {
+            sc += 1000; updateUI(); alert("Credits Injected!");
         }
     }
 
     function openChrome(url) {
         if(sc >= 500) {
-            sc -= 500; updateUI(); 
-            window.open(url, '_blank'); // Open in Chrome
-        } else { alert("Coins chahiye!"); }
+            sc -= 500; updateUI(); window.open(url, '_blank');
+        } else { alert("Low Coins!"); }
     }
 
     function updateUI() {
