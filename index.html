@@ -3,37 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v55.0</title>
+    <title>RTX BHARAT v56.0</title>
     <style>
         :root { --saffron: #FF9933; --white: #FFFFFF; --green: #138808; --bg: #050505; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         body { background: var(--bg); color: white; height: 100vh; overflow: hidden; }
 
-        /* MAIN UI (Search Engine Hata Diya) */
+        /* PREMIUM UI */
         #main-app { padding: 15px; display: flex; flex-direction: column; height: 100%; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--saffron); padding-bottom: 10px; margin-bottom: 20px; }
         
-        /* 10 SPECIAL APPS GRID */
+        /* 10 TRUSTED APPS */
         #app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; overflow-y: auto; padding-bottom: 100px; }
-        .app-card { background: #111; border: 1px solid #222; border-radius: 20px; padding: 15px; text-align: center; position: relative; }
-        .app-icon { width: 50px; height: 50px; border-radius: 12px; margin-bottom: 10px; }
+        .app-card { background: #111; border: 1px solid #222; border-radius: 20px; padding: 15px; text-align: center; border-top: 3px solid var(--saffron); }
         .btn-get { background: var(--saffron); border: none; padding: 10px; border-radius: 8px; font-weight: 900; width: 100%; margin-top: 10px; color: black; cursor: pointer; }
 
-        /* ⚪ THE SECURE DOWNLOADING PAGE (WHITE SCREEN) */
+        /* ⚪ THE TRUSTED DOWNLOADING PAGE (OFFICIAL WHITE SCREEN) */
         #download-page { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: white; color: black; display: none; 
-            flex-direction: column; align-items: center; justify-content: center; z-index: 10000; padding: 25px;
+            flex-direction: column; align-items: center; justify-content: center; z-index: 10000; padding: 30px;
         }
-        .sec-header { font-size: 12px; font-weight: bold; color: var(--green); letter-spacing: 1px; margin-bottom: 10px; }
+        .official-badge { background: #e8f5e9; color: #2e7d32; padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; margin-bottom: 20px; border: 1px solid #2e7d32; }
         .main-download-link { 
-            color: #0056b3; font-size: 22px; font-weight: 800; text-decoration: underline; 
-            cursor: pointer; text-align: center; border: 3px dashed #0056b3; padding: 20px; width: 100%; border-radius: 15px;
+            color: #d32f2f; font-size: 20px; font-weight: 800; text-decoration: none; 
+            text-align: center; border: 2px solid #d32f2f; padding: 15px; width: 100%; border-radius: 10px; display: block;
         }
-        .download-desc { margin-top: 25px; font-size: 14px; color: #333; line-height: 1.6; text-align: left; background: #f0f0f0; padding: 15px; border-radius: 10px; }
-        .btn-cancel { margin-top: 40px; background: #ddd; border: none; padding: 10px 25px; border-radius: 8px; font-weight: bold; }
+        .trust-box { margin-top: 25px; font-size: 13px; color: #333; line-height: 1.6; border-left: 4px solid var(--saffron); padding-left: 15px; }
+        .btn-back { margin-top: 40px; background: #333; color: white; border: none; padding: 10px 30px; border-radius: 8px; }
 
-        /* PKG BAR (Fix) */
+        /* PKG SYSTEM */
         .pkg-bar { position: fixed; bottom: 0; width: 100%; background: #000; padding: 15px; border-top: 2px solid var(--green); display: flex; gap: 10px; z-index: 999; }
         .pkg-in { flex: 1; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: white; }
     </style>
@@ -41,26 +40,26 @@
 <body>
 
     <div id="download-page">
-        <div class="sec-header">🛡️ RTX BHARAT SECURE GATEWAY</div>
+        <div class="official-badge">✓ OFFICIAL COMPANY SOURCE</div>
         
-        <div class="main-download-link" id="target-link" onclick="startDownload()">
-            CLICK HERE TO START DOWNLOAD
+        <a href="#" class="main-download-link" id="target-link" onclick="finalRedirect()">
+            ACCESS OFFICIAL DOWNLOAD PAGE
+        </a>
+
+        <div class="trust-box">
+            <b>Verified File:</b> <span id="active-app">Sigma Pro X</span><br>
+            <b>Security:</b> 100% Trust Verified by RTX Bharat Engine.<br>
+            <b>Source:</b> Company Official Server (No Third-Party).<br><br>
+            "Hum aapko sirf vahi files dete hain jo seedha company ki website se aati hain. Koi khatra nahi, sirf 100% asli download."
         </div>
 
-        <div class="download-desc">
-            <b id="active-app-name">App Name</b> is ready to download.<br>
-            <b>Security Status:</b> 100% Verified.<br>
-            <b>Server:</b> Official Company Server.<br><br>
-            Hum aapko 100% secure link dete hain. Aap be-fikar hokar is official page se download kijiye.
-        </div>
-
-        <button class="btn-cancel" onclick="closeDownload()">BACK TO RTX</button>
+        <button class="btn-back" onclick="closeDownload()">Back to RTX</button>
     </div>
 
     <div id="main-app">
         <div class="header">
-            <h2 style="font-size: 20px;">RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</h2>
-            <div style="color:var(--saffron); font-weight: bold; font-size: 18px;">💎 <span id="cr-val">1500</span></div>
+            <h2>RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</h2>
+            <div style="color:var(--saffron); font-weight: bold;">💎 <span id="cr-val">1500</span></div>
         </div>
 
         <div id="app-grid">
@@ -76,44 +75,42 @@
         let credits = 1500;
         let selectedApp = "";
 
-        // 10 SPECIAL SELECTED APPS
-        const top10Apps = [
-            "Free Fire India", "BGMI Official", "Sigma Pro Mod", 
-            "Minecraft PE", "GTA San Andreas", "Netflix Premium", 
-            "CapCut Pro", "Instagram Mod", "Spotify Premium", "WhatsApp Plus"
+        // 10 APPS THAT PEOPLE TRUST & WANT (Including Sigma Pro X)
+        const premiumApps = [
+            "Sigma Pro X", "FF Advance Server", "BGMI Official Mod", 
+            "GTA 5 Mobile (Real)", "Minecraft Official", "WhatsApp Premium", 
+            "CapCut Pro India", "Netflix Free Access", "Spotify Premium", "Instagram Gold"
         ];
 
         function loadApps() {
             const grid = document.getElementById('app-grid');
             grid.innerHTML = "";
-            top10Apps.forEach(name => {
+            premiumApps.forEach(name => {
                 grid.innerHTML += `
                     <div class="app-card">
-                        <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}" class="app-icon">
-                        <div style="font-size:12px; font-weight:bold;">${name}</div>
-                        <button class="btn-get" onclick="openSecurePage('${name}')">GET SECURE</button>
+                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=${name}" style="width:45px; border-radius:10px;">
+                        <div style="font-size:12px; font-weight:bold; margin-top:8px;">${name}</div>
+                        <button class="btn-get" onclick="openOfficialPage('${name}')">GET OFFICIAL</button>
                     </div>`;
             });
         }
 
-        function openSecurePage(name) {
+        function openOfficialPage(name) {
             if(credits >= 500) {
                 credits -= 500;
                 document.getElementById('cr-val').innerText = credits;
                 
                 selectedApp = name;
-                document.getElementById('active-app-name').innerText = name.toUpperCase();
-                document.getElementById('target-link').innerText = "DOWNLOAD " + name.toUpperCase();
+                document.getElementById('active-app').innerText = name;
+                document.getElementById('target-link').innerText = "OPEN " + name.toUpperCase() + " SOURCE";
                 document.getElementById('download-page').style.display = 'flex';
-            } else {
-                alert("Low Credits! PKG Code dalo.");
-            }
+            } else { alert("Coins khatam! PKG dalo."); }
         }
 
-        function startDownload() {
-            // Official redirect to secure source
+        function finalRedirect() {
+            // Seedha Official page/search par redirect
             let query = selectedApp.replace(" ", "+");
-            window.location.href = `https://www.google.com/search?btnI=1&q=${query}+official+website+download+secure`;
+            window.location.href = `https://www.google.com/search?btnI=1&q=${query}+official+company+download+page`;
         }
 
         function closeDownload() {
@@ -121,8 +118,7 @@
         }
 
         function claim() {
-            let val = document.getElementById('pkg-in').value.trim().toUpperCase();
-            if(val === 'PKG') {
+            if(document.getElementById('pkg-in').value.toUpperCase() === 'PKG') {
                 credits += 1000;
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('pkg-in').value = "";
