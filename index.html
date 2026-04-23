@@ -3,114 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-PRO HELPERS - SECRET TASK</title>
+    <title>X-PRO RTX CONSOLE</title>
     <style>
-        :root { --neon: #00d2ff; --bg: #05060f; --card: #12141d; --gold: #ffd700; --safe: #00ff9d; --gemini-alt: #4285f4; }
-        body { background: var(--bg); color: #fff; font-family: sans-serif; margin: 0; padding: 10px; text-align: center; }
+        :root { --neon: #ff0055; --bg: #05060f; --card: #12141d; --gold: #ffd700; --safe: #00ff9d; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; text-align: center; overflow-x: hidden; }
         
+        /* SECURE GATEWAY (Password: RTX) */
         #gate { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        .box { background: var(--card); padding: 30px; border: 2px solid var(--neon); border-radius: 20px; width: 85%; }
+        .box { background: var(--card); padding: 35px; border: 2px solid var(--neon); border-radius: 30px; width: 85%; box-shadow: 0 0 40px rgba(255,0,85,0.2); }
 
         #app { display: none; }
-        .wallet { background: #000; padding: 20px; border-radius: 20px; border: 1px solid #333; margin: 10px 0; }
-        .balance { font-size: 45px; font-weight: bold; color: var(--gold); }
+        .wallet { background: linear-gradient(180deg, #000, #12141d); padding: 20px; border-radius: 20px; border: 1px solid #333; margin: 15px 0; }
+        .balance { font-size: 45px; font-weight: bold; color: var(--gold); letter-spacing: 2px; }
 
-        /* NEW SECRET TASK STYLE */
-        .secret-section { background: #1a1c25; padding: 15px; border-radius: 15px; border: 2px dashed var(--gold); margin: 15px 0; }
-        .code-input { width: 80%; padding: 10px; margin: 10px 0; border-radius: 8px; border: none; text-align: center; background: #000; color: var(--gold); font-weight: bold; }
-        .claim-btn { background: var(--gold); color: #000; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; }
+        /* PREMIUM SCROLLING SYSTEM */
+        .scroll-container { 
+            display: flex; overflow-x: auto; gap: 15px; padding: 20px 5px; 
+            scroll-snap-type: x mandatory; scrollbar-width: none;
+        }
+        .scroll-container::-webkit-scrollbar { display: none; }
 
-        .store { background: var(--card); border-radius: 15px; padding: 15px; text-align: left; border: 1px solid #222; }
-        .item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #1a1a1a; }
-        .get-btn { background: var(--safe); color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 10px; }
-        .upgrade-btn { background: var(--gemini-alt); color: #fff; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 10px; }
+        .card { 
+            flex: 0 0 80%; background: #1a1c25; 
+            border: 1px solid #333; border-radius: 25px; padding: 25px; 
+            scroll-snap-align: center; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        }
+
+        .card h3 { color: var(--neon); margin: 0 0 10px 0; font-size: 16px; }
+        .card p { font-size: 11px; color: #999; margin-bottom: 20px; height: 35px; overflow: hidden; }
+        .get-btn { background: var(--safe); color: #000; border: none; width: 100%; padding: 14px; border-radius: 12px; font-weight: bold; font-size: 12px; cursor: pointer; text-transform: uppercase; }
+
+        /* SECRET TASK PKG */
+        .secret-box { background: #000; padding: 20px; border-radius: 20px; border: 1px solid var(--gold); margin-top: 20px; }
+        .code-input { width: 85%; padding: 12px; margin: 10px 0; border-radius: 10px; border: none; text-align: center; background: #111; color: var(--gold); font-weight: bold; font-size: 16px; }
     </style>
 </head>
 <body>
 
     <div id="gate">
         <div class="box">
-            <h2 style="color:var(--neon); margin:0;">X-PRO HELPERS</h2>
-            <input type="password" id="pk" placeholder="Password: Aarti X" style="width:90%; padding:12px; margin:20px 0; border-radius:10px; text-align:center; border:none; font-weight:bold;">
-            <button onclick="unlock()" style="width:100%; padding:12px; background:var(--neon); border:none; border-radius:10px; font-weight:bold;">UNLOCK</button>
+            <h2 style="color:var(--neon); margin:0; letter-spacing:3px;">RTX SYSTEM</h2>
+            <p style="font-size:10px; color:#444; margin-bottom:20px;">ENCRYPTED ACCESS ONLY</p>
+            <input type="password" id="pk" placeholder="Enter Password" style="width:90%; padding:15px; margin:10px 0; border-radius:15px; text-align:center; border:none; background:#000; color:var(--neon); font-weight:bold; font-size:18px;">
+            <button onclick="unlock()" style="width:100%; padding:15px; background:var(--neon); border:none; border-radius:15px; font-weight:bold; color:#fff; cursor:pointer;">AUTHORIZE</button>
         </div>
     </div>
 
     <div id="app">
+        <div style="font-size:12px; color:var(--neon); font-weight:bold; letter-spacing:1px;">● SYSTEM STATUS: SECURE</div>
+        
         <div class="wallet">
-            <div style="font-size:10px; color:#888;">FREE HELP CREDITS</div>
+            <div style="font-size:11px; color:#666; text-transform:uppercase;">Encrypted Credits</div>
             <div class="balance" id="coin-txt">0000</div>
         </div>
 
-        <div class="secret-section">
-            <div style="color:var(--gold); font-weight:bold; font-size:12px;">🎁 SECRET REWARD TASK</div>
-            <p style="font-size:10px; color:#aaa; margin:5px 0;">Enter secret code to get 1000 Credits instantly!</p>
-            <input type="text" id="secret-inp" class="code-input" placeholder="Enter Code Here">
-            <button onclick="claimSecret()" class="claim-btn">CLAIM 1000 COINS</button>
+        <p style="font-size:10px; color:#444;">Swipe to access premium repositories</p>
+
+        <div class="scroll-container" id="app-list">
+            </div>
+
+        <div class="secret-box">
+            <div style="color:var(--gold); font-weight:bold; font-size:12px;">UNLOCK REWARD (PKG)</div>
+            <input type="text" id="secret-inp" class="code-input" placeholder="Enter Code">
+            <button onclick="claimSecret()" style="background:var(--gold); color:#000; border:none; width:100%; padding:12px; border-radius:12px; font-weight:bold;">VALIDATE</button>
         </div>
 
-        <div class="store">
-            <span style="font-size:9px; color:var(--safe); font-weight:bold;">✓ 100% SECURE & VERIFIED</span>
-            
-            <div class="item">
-                <div><b>Gemini Pro AI (Upgrade)</b><br><span style="font-size:9px; color:var(--gemini-alt);">Most Powerful AI Model</span></div>
-                <button class="upgrade-btn" onclick="openSecure('https://gemini.google.com/app')">UPGRADE</button>
-            </div>
-
-            <div class="item">
-                <div>ChatGPT Pro<br><span style="font-size:9px; color:#555;">AI Plus Features Unlocked</span></div>
-                <button class="get-btn" onclick="openSecure('https://google.com/search?q=chatgpt+pro+mod+apk')">GET LINK</button>
-            </div>
-
-            <div class="item">
-                <div>GB WhatsApp Pro<br><span style="font-size:9px; color:#555;">Safe & Secure Latest Build</span></div>
-                <button class="get-btn" onclick="openSecure('https://androidwaves.com/')">GET LINK</button>
-            </div>
-        </div>
-        
-        <p style="font-size:10px; color:#555; margin-top:20px;">"Hum dono milkar aapki help karenge." - Ranjan & Gemini</p>
+        <div style="margin-top:25px; font-size:9px; color:#222;">X-PRO RTX v10.0 | ENGINE: GEMINI PRO</div>
     </div>
 
 <script>
     let sc = parseInt(localStorage.getItem('user_sc')) || 0;
 
-    function unlock() {
-        if(document.getElementById('pk').value === "Aarti X") {
-            document.getElementById('gate').style.display='none';
-            document.getElementById('app').style.display='block';
-            updateUI();
-        } else { alert("Wrong Password!"); }
+    const apps = [
+        {n:"ChatGPT Pro", d:"Advanced AI model with premium processing."},
+        {n:"CapCut Pro", d:"Full unlocked video editor with no ads."},
+        {n:"Spotify Premium", d:"High fidelity ad-free music stream."},
+        {n:"Netflix Premium", d:"UHD content unlocked for mobile."},
+        {n:"Canva Pro", d:"Professional design suite with assets."},
+        {n:"PicsArt Gold", d:"Premium editing tools and presets."},
+        {n:"GB WhatsApp Pro", d:"Full privacy and theme controls."},
+        {n:"YouTube Premium", d:"Zero ads with background playback."},
+        {n:"Kinemaster Pro", d:"4K export video engine, no watermark."},
+        {n:"Truecaller Gold", d:"Premium identification and security."},
+        {n:"Minecraft PE", d:"Full game build with world access."},
+        {n:"Lightroom Pro", d:"Raw editing with premium presets."},
+        {n:"InShot Pro", d:"Unlocked video/photo toolkit."},
+        {n:"Disney+ Hotstar", d:"Premium stream for sports/movies."},
+        {n:"Alight Motion", d:"Motion graphics & XML support."},
+        {n:"Crunchyroll Pro", d:"HD Anime streaming, zero ads."},
+        {n:"VPN Advanced", d:"Global secure servers unlocked."},
+        {n:"Duolingo Super", d:"Fast language learning without limits."},
+        {n:"FaceApp Pro", d:"Full filters and AI transformation."},
+        {n:"Gemini Advanced", d:"Direct access to Google AI Upgrade."}
+    ];
+
+    function loadApps() {
+        const list = document.getElementById('app-list');
+        apps.forEach(a => {
+            list.innerHTML += `<div class="card">
+                <h3>${a.n}</h3><p>${a.d}</p>
+                <button class="get-btn" onclick="openSecure('https://google.com/search?q=${a.n.replace(/ /g,'+')}+premium+apk+safe')">GET ACCESS</button>
+            </div>`;
+        });
     }
 
-    // --- NEW SECRET CODE LOGIC ---
+    function unlock() {
+        if(document.getElementById('pk').value === "RTX") {
+            document.getElementById('gate').style.display='none';
+            document.getElementById('app').style.display='block';
+            loadApps(); updateUI();
+        } else { alert("Incorrect Password!"); }
+    }
+
     function claimSecret() {
-        let code = document.getElementById('secret-inp').value.trim().toLowerCase();
-        if(code === "pkg") {
-            sc += 1000;
-            updateUI();
+        if(document.getElementById('secret-inp').value.trim().toLowerCase()==="pkg") {
+            sc += 1000; updateUI(); alert("1000 Credits Validated.");
             document.getElementById('secret-inp').value = "";
-            alert("SUCCESS! Aapko 1000 Credits mil gaye hain. Hum aapki help karte rahenge!");
-        } else {
-            alert("Galat Code! Sahi code dalo bhai.");
-        }
+        } else { alert("Invalid Code!"); }
     }
 
     function openSecure(url) {
-        if(sc >= 500 || url.includes('gemini')) {
-            let conf = confirm("HELPERS TRUST: Ye link 100% working hai. Proceed?");
-            if(conf) {
-                if(!url.includes('gemini')) { sc -= 500; }
-                updateUI();
-                window.open(url, '_system');
-                setTimeout(() => { window.location.assign(url); }, 500);
+        if(sc >= 500) {
+            if(confirm("X-PRO: Link verified. Redirect to secure browser?")) {
+                sc -= 500; updateUI(); window.open(url, '_system');
             }
-        } else {
-            alert("Credits kam hain! Secret code dalo ya tasks poore karo.");
-        }
+        } else { alert("Insufficient Credits! Validate 'pkg' code."); }
     }
 
     function updateUI() {
-        document.getElementById('coin-txt').innerText = sc.toString().padStart(4, '0');
+        document.getElementById('coin-txt').innerText = sc.toString().padStart(4,'0');
         localStorage.setItem('user_sc', sc);
     }
 </script>
