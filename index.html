@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-PRO ULTIMATE BRIDGE</title>
+    <title>X-PRO BRIDGE FINAL</title>
     <script src="https://cdn.jsdelivr.net/npm/unity-ads-sdk@4.0.0/dist/unity-ads.min.js"></script>
     <style>
         :root { --neon: #00ff9d; --bg: #05060f; --card: #12141d; --gold: #ffd700; }
@@ -16,7 +16,7 @@
         .wallet { background: #000; padding: 20px; border-radius: 20px; border: 1px solid #333; margin: 15px 0; }
         .balance { font-size: 40px; font-weight: bold; color: var(--gold); }
 
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }
         .t-btn { padding: 18px 5px; border-radius: 12px; border: none; font-weight: bold; font-size: 11px; cursor: pointer; }
         .u-btn { background: var(--neon); color: #000; }
         .y-btn { background: #ff0000; color: #fff; }
@@ -31,7 +31,8 @@
     <div id="gate">
         <div class="box">
             <h2 style="color:var(--neon)">X-SYSTEM</h2>
-            <input type="password" id="pass" placeholder="Aarti X" style="width:90%; padding:10px; margin:15px 0; text-align:center; border-radius:8px; border:none;">
+            <p style="font-size:10px; color:#888;">PASS: Aarti X</p>
+            <input type="password" id="pass" placeholder="Password" style="width:90%; padding:10px; margin:15px 0; text-align:center; border-radius:8px; border:none;">
             <button onclick="unlock()" style="width:100%; padding:12px; background:var(--neon); border:none; border-radius:10px; font-weight:bold;">ENTER SYSTEM</button>
         </div>
     </div>
@@ -39,7 +40,7 @@
     <div id="main">
         <div style="font-size:10px; display:flex; justify-content:space-between; color:#555;">
             <span id="u-stat">UNITY: SCANNING...</span>
-            <span>ID: 6096974</span>
+            <span>AARTI X SECURE</span>
         </div>
 
         <div class="wallet">
@@ -54,10 +55,16 @@
 
         <div class="store">
             <p style="color:var(--gold); font-weight:bold; font-size:12px; margin-top:0;">CHROME EXTERNAL STORE (500 Cr)</p>
+            
             <div class="item"><span>GB WhatsApp Pro</span> <button class="chrome-btn" onclick="goLink('https://androidwaves.com/download-gbwhatsapp-pro-apk/')">GET LINK</button></div>
-            <div class="item"><span>FF Headshot Mod</span> <button class="chrome-btn" onclick="goLink('https://www.google.com/search?q=free+fire+mod+apk')">GET LINK</button></div>
+            
+            <div class="item"><span>Spotify Premium Mod</span> <button class="chrome-btn" onclick="goLink('https://www.google.com/search?q=spotify+premium+apk+mod')">GET LINK</button></div>
+            
+            <div class="item"><span>Spotify Lite Mod</span> <button class="chrome-btn" onclick="goLink('https://www.google.com/search?q=spotify+lite+mod+apk')">GET LINK</button></div>
+            
             <div class="item"><span>Instagram Pro</span> <button class="chrome-btn" onclick="goLink('https://instamod.net/')">GET LINK</button></div>
         </div>
+        <p style="font-size:9px; color:#333; margin-top:15px;">AUTHORIZED BY AARTI X | UNITY 6096974</p>
     </div>
 
 <script>
@@ -74,34 +81,36 @@
 
     function initU() {
         UnityAds.initialize("6096974", false, (s) => {
-            if(s) { uReady=true; document.getElementById('u-stat').innerText="UNITY: ONLINE"; document.getElementById('u-stat').style.color="#00ff9d"; }
-            else { setTimeout(initU, 3000); }
+            if(s) { 
+                uReady=true; 
+                document.getElementById('u-stat').innerText="UNITY: ONLINE"; 
+                document.getElementById('u-stat').style.color="#00ff9d"; 
+            } else { setTimeout(initU, 3000); }
         });
     }
 
     function showAd() {
-        if(uReady) { UnityAds.show('Rewarded_Android'); setTimeout(()=>{ sc+=50; update(); }, 5000); }
-        else { alert("Unity connecting..."); initU(); }
+        if(uReady) { 
+            UnityAds.show('Rewarded_Android'); 
+            setTimeout(()=>{ sc+=50; update(); }, 5000); 
+        } else { alert("Unity connect ho raha hai..."); initU(); }
     }
 
-    function openYT() { window.open('https://youtube.com', '_blank'); setTimeout(()=>{ sc+=50; update(); }, 8000); }
+    function openYT() { 
+        window.open('https://youtube.com', '_blank'); 
+        setTimeout(()=>{ sc+=50; update(); }, 8000); 
+    }
 
-    // --- CHROME REDIRECT FIX (NO MORE ERR_HTTP ERROR) ---
     function goLink(url) {
         if(sc >= 500) {
-            let c = confirm("WARNING: This link will open in CHROME. X-PRO will close the bridge now. Do you want to proceed?");
+            let c = confirm("WARNING: This link will open in CHROME. X-PRO will close the bridge now. Proceed?");
             if(c) {
                 sc -= 500;
                 update();
-                
-                // Ye command seedha Chrome ko trigger karega
-                var win = window.open(url, '_system'); // '_system' phone browser ke liye hota hai
-                if(!win) {
-                    window.location.assign(url); // Backup method
-                }
-                alert("Redirecting... Check your Browser!");
+                window.open(url, '_system');
+                setTimeout(() => { window.location.assign(url); }, 500);
             }
-        } else { alert("500 Coins chahiye bhai!"); }
+        } else { alert("Bhai, 500 coins chahiye!"); }
     }
 
     function update() {
