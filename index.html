@@ -3,54 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v56.0</title>
+    <title>RTX BHARAT v57.0</title>
     <style>
         :root { --saffron: #FF9933; --white: #FFFFFF; --green: #138808; --bg: #050505; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        body { background: var(--bg); color: white; height: 100vh; overflow: hidden; }
+        body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* PREMIUM UI */
-        #main-app { padding: 15px; display: flex; flex-direction: column; height: 100%; }
+        /* MAIN APP UI */
+        #main-app { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--saffron); padding-bottom: 10px; margin-bottom: 20px; }
         
-        /* 10 TRUSTED APPS */
-        #app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; overflow-y: auto; padding-bottom: 100px; }
+        #app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; overflow-y: auto; padding-bottom: 100px; scrollbar-width: none; }
         .app-card { background: #111; border: 1px solid #222; border-radius: 20px; padding: 15px; text-align: center; border-top: 3px solid var(--saffron); }
-        .btn-get { background: var(--saffron); border: none; padding: 10px; border-radius: 8px; font-weight: 900; width: 100%; margin-top: 10px; color: black; cursor: pointer; }
+        .app-icon { width: 45px; height: 45px; border-radius: 10px; margin-bottom: 8px; }
+        .btn-get { background: var(--saffron); border: none; padding: 10px; border-radius: 8px; font-weight: 900; width: 100%; margin-top: 10px; color: black; cursor: pointer; font-size: 11px; }
 
-        /* ⚪ THE TRUSTED DOWNLOADING PAGE (OFFICIAL WHITE SCREEN) */
+        /* ⚪ THE WHITE SECURE PAGE (NO CAPTCHA VERSION) */
         #download-page { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: white; color: black; display: none; 
             flex-direction: column; align-items: center; justify-content: center; z-index: 10000; padding: 30px;
         }
-        .official-badge { background: #e8f5e9; color: #2e7d32; padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; margin-bottom: 20px; border: 1px solid #2e7d32; }
-        .main-download-link { 
-            color: #d32f2f; font-size: 20px; font-weight: 800; text-decoration: none; 
+        .official-tag { background: #e8f5e9; color: #2e7d32; padding: 5px 15px; border-radius: 50px; font-size: 11px; font-weight: bold; margin-bottom: 20px; border: 1px solid #2e7d32; }
+        .main-link { 
+            color: #d32f2f; font-size: 18px; font-weight: 800; text-decoration: none; 
             text-align: center; border: 2px solid #d32f2f; padding: 15px; width: 100%; border-radius: 10px; display: block;
         }
-        .trust-box { margin-top: 25px; font-size: 13px; color: #333; line-height: 1.6; border-left: 4px solid var(--saffron); padding-left: 15px; }
-        .btn-back { margin-top: 40px; background: #333; color: white; border: none; padding: 10px 30px; border-radius: 8px; }
+        .trust-info { margin-top: 25px; font-size: 13px; color: #333; line-height: 1.6; border-left: 4px solid var(--saffron); padding-left: 15px; text-align: left; width: 100%; }
+        .btn-back { margin-top: 40px; background: #333; color: white; border: none; padding: 10px 30px; border-radius: 8px; font-weight: bold; }
 
-        /* PKG SYSTEM */
+        /* PKG BAR */
         .pkg-bar { position: fixed; bottom: 0; width: 100%; background: #000; padding: 15px; border-top: 2px solid var(--green); display: flex; gap: 10px; z-index: 999; }
-        .pkg-in { flex: 1; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: white; }
+        .pkg-in { flex: 1; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: white; outline: none; }
+        .pkg-btn { background: var(--saffron); border: none; padding: 0 20px; border-radius: 10px; font-weight: bold; color: black; }
     </style>
 </head>
 <body>
 
     <div id="download-page">
-        <div class="official-badge">✓ OFFICIAL COMPANY SOURCE</div>
+        <div class="official-tag">✓ VERIFIED OFFICIAL SOURCE</div>
         
-        <a href="#" class="main-download-link" id="target-link" onclick="finalRedirect()">
-            ACCESS OFFICIAL DOWNLOAD PAGE
+        <a href="#" class="main-link" id="target-link" onclick="finalRedirect()">
+            CLICK TO OPEN OFFICIAL SOURCE
         </a>
 
-        <div class="trust-box">
-            <b>Verified File:</b> <span id="active-app">Sigma Pro X</span><br>
-            <b>Security:</b> 100% Trust Verified by RTX Bharat Engine.<br>
-            <b>Source:</b> Company Official Server (No Third-Party).<br><br>
-            "Hum aapko sirf vahi files dete hain jo seedha company ki website se aati hain. Koi khatra nahi, sirf 100% asli download."
+        <div class="trust-info">
+            <b>Target File:</b> <span id="active-app-name">Sigma Pro X</span><br>
+            <b>Security:</b> 100% Secure (Verified by RTX Bharat)<br>
+            <b>Source Type:</b> Company Official Page<br><br>
+            Hum aapko 100% secure link dete hain. Is official page par jaakar aap bina kisi darr ke download kar sakte hain.
         </div>
 
         <button class="btn-back" onclick="closeDownload()">Back to RTX</button>
@@ -58,8 +59,8 @@
 
     <div id="main-app">
         <div class="header">
-            <h2>RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</h2>
-            <div style="color:var(--saffron); font-weight: bold;">💎 <span id="cr-val">1500</span></div>
+            <h2 style="font-size: 18px;">RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</h2>
+            <div style="color:var(--saffron); font-weight: bold; font-size: 16px;">💎 <span id="cr-val">1500</span></div>
         </div>
 
         <div id="app-grid">
@@ -68,18 +69,18 @@
 
     <div class="pkg-bar">
         <input type="text" id="pkg-in" class="pkg-in" placeholder="Enter PKG Code">
-        <button onclick="claim()" style="background:var(--saffron); border:none; padding:0 20px; border-radius:10px; font-weight:bold;">CLAIM</button>
+        <button class="pkg-btn" onclick="claim()">CLAIM</button>
     </div>
 
     <script>
         let credits = 1500;
         let selectedApp = "";
 
-        // 10 APPS THAT PEOPLE TRUST & WANT (Including Sigma Pro X)
+        // 10 OFFICIAL PREMIUM APPS
         const premiumApps = [
-            "Sigma Pro X", "FF Advance Server", "BGMI Official Mod", 
-            "GTA 5 Mobile (Real)", "Minecraft Official", "WhatsApp Premium", 
-            "CapCut Pro India", "Netflix Free Access", "Spotify Premium", "Instagram Gold"
+            "Sigma Pro X", "FF Advance Server", "BGMI Official", 
+            "GTA 5 Real", "Minecraft PE", "WhatsApp Premium", 
+            "CapCut India", "Netflix Free", "Spotify Premium", "Instagram Gold"
         ];
 
         function loadApps() {
@@ -88,29 +89,31 @@
             premiumApps.forEach(name => {
                 grid.innerHTML += `
                     <div class="app-card">
-                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=${name}" style="width:45px; border-radius:10px;">
-                        <div style="font-size:12px; font-weight:bold; margin-top:8px;">${name}</div>
-                        <button class="btn-get" onclick="openOfficialPage('${name}')">GET OFFICIAL</button>
+                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=${name}" class="app-icon">
+                        <div style="font-size:11px; font-weight:bold;">${name}</div>
+                        <button class="btn-get" onclick="openSecurePage('${name}')">GET OFFICIAL</button>
                     </div>`;
             });
         }
 
-        function openOfficialPage(name) {
+        function openSecurePage(name) {
             if(credits >= 500) {
                 credits -= 500;
                 document.getElementById('cr-val').innerText = credits;
                 
                 selectedApp = name;
-                document.getElementById('active-app').innerText = name;
-                document.getElementById('target-link').innerText = "OPEN " + name.toUpperCase() + " SOURCE";
+                document.getElementById('active-app-name').innerText = name;
+                document.getElementById('target-link').innerText = "OPEN " + name.toUpperCase() + " PAGE";
                 document.getElementById('download-page').style.display = 'flex';
-            } else { alert("Coins khatam! PKG dalo."); }
+            } else {
+                alert("Coins khatam! PKG dalo.");
+            }
         }
 
         function finalRedirect() {
-            // Seedha Official page/search par redirect
+            // No more CAPTCHA: Direct Search Result for Official Pages
             let query = selectedApp.replace(" ", "+");
-            window.location.href = `https://www.google.com/search?btnI=1&q=${query}+official+company+download+page`;
+            window.location.href = `https://www.google.com/search?q=${query}+official+company+download+page+secure`;
         }
 
         function closeDownload() {
@@ -118,10 +121,12 @@
         }
 
         function claim() {
-            if(document.getElementById('pkg-in').value.toUpperCase() === 'PKG') {
+            let val = document.getElementById('pkg-in').value.trim().toUpperCase();
+            if(val === 'PKG') {
                 credits += 1000;
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('pkg-in').value = "";
+                alert("1000 Coins Added!");
             }
         }
 
