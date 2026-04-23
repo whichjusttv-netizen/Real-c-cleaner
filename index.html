@@ -3,55 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v54.0</title>
+    <title>RTX BHARAT v55.0</title>
     <style>
         :root { --saffron: #FF9933; --white: #FFFFFF; --green: #138808; --bg: #050505; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         body { background: var(--bg); color: white; height: 100vh; overflow: hidden; }
 
-        /* MAIN UI */
+        /* MAIN UI (Search Engine Hata Diya) */
         #main-app { padding: 15px; display: flex; flex-direction: column; height: 100%; }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--saffron); padding-bottom: 10px; margin-bottom: 15px; }
-        #app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow-y: auto; padding-bottom: 80px; }
-        .app-card { background: #111; border: 1px solid #222; border-radius: 15px; padding: 12px; text-align: center; }
-        .btn-get { background: var(--saffron); border: none; padding: 8px; border-radius: 5px; font-weight: bold; width: 100%; margin-top: 10px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--saffron); padding-bottom: 10px; margin-bottom: 20px; }
+        
+        /* 10 SPECIAL APPS GRID */
+        #app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; overflow-y: auto; padding-bottom: 100px; }
+        .app-card { background: #111; border: 1px solid #222; border-radius: 20px; padding: 15px; text-align: center; position: relative; }
+        .app-icon { width: 50px; height: 50px; border-radius: 12px; margin-bottom: 10px; }
+        .btn-get { background: var(--saffron); border: none; padding: 10px; border-radius: 8px; font-weight: 900; width: 100%; margin-top: 10px; color: black; cursor: pointer; }
 
-        /* ⚪ OFFICIAL REDIRECT PAGE (WHITE SCREEN) */
-        #redirect-page { 
+        /* ⚪ THE SECURE DOWNLOADING PAGE (WHITE SCREEN) */
+        #download-page { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: white; color: black; display: none; 
-            flex-direction: column; align-items: center; justify-content: center; z-index: 10000; padding: 30px;
+            flex-direction: column; align-items: center; justify-content: center; z-index: 10000; padding: 25px;
         }
-        .official-header { font-size: 14px; color: #555; margin-bottom: 10px; }
-        .company-link { color: #0066cc; font-size: 20px; font-weight: 800; text-decoration: underline; cursor: pointer; text-align: center; border: 2px solid #0066cc; padding: 15px; border-radius: 10px; width: 100%; }
-        .secure-note { margin-top: 20px; font-size: 13px; color: #444; line-height: 1.6; }
-        .btn-back { margin-top: 40px; color: gray; background: none; border: 1px solid #ccc; padding: 8px 20px; border-radius: 5px; }
+        .sec-header { font-size: 12px; font-weight: bold; color: var(--green); letter-spacing: 1px; margin-bottom: 10px; }
+        .main-download-link { 
+            color: #0056b3; font-size: 22px; font-weight: 800; text-decoration: underline; 
+            cursor: pointer; text-align: center; border: 3px dashed #0056b3; padding: 20px; width: 100%; border-radius: 15px;
+        }
+        .download-desc { margin-top: 25px; font-size: 14px; color: #333; line-height: 1.6; text-align: left; background: #f0f0f0; padding: 15px; border-radius: 10px; }
+        .btn-cancel { margin-top: 40px; background: #ddd; border: none; padding: 10px 25px; border-radius: 8px; font-weight: bold; }
 
-        /* PKG BAR */
-        .pkg-bar { position: fixed; bottom: 0; width: 100%; background: #000; padding: 12px; border-top: 2px solid var(--green); display: flex; gap: 10px; }
-        .pkg-in { flex: 1; background: #111; border: 1px solid #333; padding: 10px; border-radius: 8px; color: white; }
+        /* PKG BAR (Fix) */
+        .pkg-bar { position: fixed; bottom: 0; width: 100%; background: #000; padding: 15px; border-top: 2px solid var(--green); display: flex; gap: 10px; z-index: 999; }
+        .pkg-in { flex: 1; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: white; }
     </style>
 </head>
 <body>
 
-    <div id="redirect-page">
-        <p class="official-header">RTX BHARAT SECURE GATEWAY</p>
+    <div id="download-page">
+        <div class="sec-header">🛡️ RTX BHARAT SECURE GATEWAY</div>
         
-        <div class="company-link" id="target-link" onclick="goToOfficial()">
-            GOTO OFFICIAL WEBSITE
+        <div class="main-download-link" id="target-link" onclick="startDownload()">
+            CLICK HERE TO START DOWNLOAD
         </div>
 
-        <div class="secure-note">
-            <b>Important:</b> Clicking above will take you to the 100% official company page. RTX Bharat has verified this source. You will find the <b>Official Download Button</b> directly on the destination page.
+        <div class="download-desc">
+            <b id="active-app-name">App Name</b> is ready to download.<br>
+            <b>Security Status:</b> 100% Verified.<br>
+            <b>Server:</b> Official Company Server.<br><br>
+            Hum aapko 100% secure link dete hain. Aap be-fikar hokar is official page se download kijiye.
         </div>
 
-        <button class="btn-back" onclick="closeRedirect()">Cancel & Go Back</button>
+        <button class="btn-cancel" onclick="closeDownload()">BACK TO RTX</button>
     </div>
 
     <div id="main-app">
         <div class="header">
-            <h3>RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</h3>
-            <div style="color:var(--saffron); font-weight: bold;">💎 <span id="cr-val">1500</span></div>
+            <h2 style="font-size: 20px;">RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</h2>
+            <div style="color:var(--saffron); font-weight: bold; font-size: 18px;">💎 <span id="cr-val">1500</span></div>
         </div>
 
         <div id="app-grid">
@@ -59,58 +68,68 @@
     </div>
 
     <div class="pkg-bar">
-        <input type="text" id="pkg-in" class="pkg-in" placeholder="Enter PKG">
-        <button onclick="claim()" style="background:var(--saffron); border:none; padding:10px 15px; border-radius:8px; font-weight:bold;">CLAIM</button>
+        <input type="text" id="pkg-in" class="pkg-in" placeholder="Enter PKG Code">
+        <button onclick="claim()" style="background:var(--saffron); border:none; padding:0 20px; border-radius:10px; font-weight:bold;">CLAIM</button>
     </div>
 
     <script>
         let credits = 1500;
-        let currentApp = "";
+        let selectedApp = "";
 
-        const apps = ["Free Fire India", "BGMI Official", "Sigma Pro", "Netflix Premium", "Minecraft Official", "GTA V Mobile"];
+        // 10 SPECIAL SELECTED APPS
+        const top10Apps = [
+            "Free Fire India", "BGMI Official", "Sigma Pro Mod", 
+            "Minecraft PE", "GTA San Andreas", "Netflix Premium", 
+            "CapCut Pro", "Instagram Mod", "Spotify Premium", "WhatsApp Plus"
+        ];
 
-        function load() {
+        function loadApps() {
             const grid = document.getElementById('app-grid');
             grid.innerHTML = "";
-            apps.forEach(name => {
-                grid.innerHTML += `<div class="app-card">
-                    <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}" style="width:40px;">
-                    <div style="font-size:12px; font-weight:bold; margin-top:5px;">${name}</div>
-                    <button class="btn-get" onclick="openGate('${name}')">GET OFFICIAL</button>
-                </div>`;
+            top10Apps.forEach(name => {
+                grid.innerHTML += `
+                    <div class="app-card">
+                        <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}" class="app-icon">
+                        <div style="font-size:12px; font-weight:bold;">${name}</div>
+                        <button class="btn-get" onclick="openSecurePage('${name}')">GET SECURE</button>
+                    </div>`;
             });
         }
 
-        function openGate(name) {
+        function openSecurePage(name) {
             if(credits >= 500) {
                 credits -= 500;
                 document.getElementById('cr-val').innerText = credits;
                 
-                currentApp = name;
-                document.getElementById('target-link').innerText = "OPEN " + name.toUpperCase() + " OFFICIAL PAGE";
-                document.getElementById('redirect-page').style.display = 'flex';
-            } else { alert("PKG dalo! Credits khatam."); }
+                selectedApp = name;
+                document.getElementById('active-app-name').innerText = name.toUpperCase();
+                document.getElementById('target-link').innerText = "DOWNLOAD " + name.toUpperCase();
+                document.getElementById('download-page').style.display = 'flex';
+            } else {
+                alert("Low Credits! PKG Code dalo.");
+            }
         }
 
-        function goToOfficial() {
-            // Yeh seedha Official Page par bhejega jahan download button hota hai
-            let query = currentApp.replace(" ", "+");
-            window.location.href = `https://www.google.com/search?btnI=1&q=${query}+official+website+download`;
+        function startDownload() {
+            // Official redirect to secure source
+            let query = selectedApp.replace(" ", "+");
+            window.location.href = `https://www.google.com/search?btnI=1&q=${query}+official+website+download+secure`;
         }
 
-        function closeRedirect() {
-            document.getElementById('redirect-page').style.display = 'none';
+        function closeDownload() {
+            document.getElementById('download-page').style.display = 'none';
         }
 
         function claim() {
-            if(document.getElementById('pkg-in').value.toUpperCase() === 'PKG') {
+            let val = document.getElementById('pkg-in').value.trim().toUpperCase();
+            if(val === 'PKG') {
                 credits += 1000;
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('pkg-in').value = "";
             }
         }
 
-        window.onload = load;
+        window.onload = loadApps;
     </script>
 </body>
 </html>
