@@ -3,107 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v58.0</title>
+    <title>RTX BHARAT v60.0</title>
     <style>
         :root { --saffron: #FF9933; --white: #FFFFFF; --green: #138808; --bg: #050505; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* MAIN UI */
-        #main-app { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--saffron); padding-bottom: 10px; margin-bottom: 20px; }
+        /* HEADER */
+        .header { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--saffron); background: #000; z-index: 100; }
         
-        #app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; overflow-y: auto; padding-bottom: 100px; scrollbar-width: none; }
-        .app-card { background: #111; border: 1px solid #222; border-radius: 20px; padding: 15px; text-align: center; border-top: 3px solid var(--saffron); }
-        .btn-get { background: var(--saffron); border: none; padding: 10px; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 10px; color: black; cursor: pointer; }
+        /* 🔄 ROLLING SYSTEM (Carousel) */
+        .rolling-container { width: 100%; overflow: hidden; background: #111; padding: 10px 0; border-bottom: 1px solid #222; }
+        .rolling-track { display: flex; width: calc(250px * 10); animation: scroll 20s linear infinite; }
+        .roll-item { width: 200px; margin: 0 10px; background: linear-gradient(45deg, #111, #222); padding: 10px; border-radius: 10px; border: 1px solid var(--saffron); text-align: center; font-size: 11px; font-weight: bold; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-1000px); } }
 
-        /* ⚪ THE MULTI-SOURCE SECURE PAGE */
-        #secure-hub { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: white; color: black; display: none; 
-            flex-direction: column; align-items: center; justify-content: center; z-index: 10000; padding: 25px;
-        }
-        .source-box { width: 100%; background: #f9f9f9; border: 2px solid #ddd; border-radius: 15px; padding: 15px; margin-bottom: 15px; }
-        .download-btn { background: #007bff; color: white; padding: 12px; border-radius: 8px; text-decoration: none; display: block; text-align: center; font-weight: bold; margin-top: 10px; }
-        .softonic-btn { background: #222; } /* Dark theme for Softonic feel */
-        .uptodown-btn { background: #2e7d32; } /* Green for Uptodown feel */
+        /* 🎮 30 TRENDING GAMES GRID */
+        #game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; overflow-y: auto; flex-grow: 1; padding-bottom: 100px; scrollbar-width: none; }
+        .game-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 12px; text-align: center; border-bottom: 3px solid var(--green); transition: 0.3s; }
+        .game-card:active { transform: scale(0.95); border-color: var(--saffron); }
+        .game-icon { width: 55px; height: 55px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #444; }
+        .btn-target { background: var(--saffron); border: none; padding: 8px; border-radius: 5px; font-weight: 900; width: 100%; margin-top: 8px; color: black; font-size: 10px; }
+
+        /* ⚪ DIRECT NOTICE PAGE */
+        #notice-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; color: black; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; padding: 30px; }
+        .notice-box { border: 3px solid #000; padding: 20px; border-radius: 15px; background: #fff; width: 100%; box-shadow: 10px 10px 0px var(--saffron); }
+        .action-btn { background: #000; color: white; padding: 15px; border-radius: 10px; text-decoration: none; display: block; text-align: center; font-weight: bold; margin-top: 25px; width: 100%; }
 
         /* PKG BAR */
         .pkg-bar { position: fixed; bottom: 0; width: 100%; background: #000; padding: 15px; border-top: 2px solid var(--green); display: flex; gap: 10px; }
-        .pkg-in { flex: 1; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: white; }
+        .pkg-in { flex: 1; background: #111; border: 1px solid #333; padding: 10px; border-radius: 8px; color: white; }
     </style>
 </head>
 <body>
 
-    <div id="secure-hub">
-        <h2 style="margin-bottom: 20px;">🛡️ RTX SECURE GATEWAY</h2>
-        
-        <div class="source-box">
-            <b id="app-name-display">App Name</b>
-            <p style="font-size: 12px; color: #666;">Choose a Trusted Source for Download:</p>
-            
-            <a href="#" class="download-btn softonic-btn" id="softonic-link" onclick="track()">DOWNLOAD FROM SOFTONIC</a>
-            
-            <a href="#" class="download-btn uptodown-btn" id="uptodown-link" onclick="track()">DOWNLOAD FROM UPTODOWN</a>
-        </div>
-
-        <p style="font-size: 11px; text-align: center; padding: 10px;">
-            RTX Bharat has connected with <b>Softonic</b> and <b>Uptodown</b> servers to give you 100% verified files.
-        </p>
-
-        <button onclick="closeHub()" style="background:none; border:none; color:gray; text-decoration:underline; margin-top:20px;">Cancel and Return</button>
+    <div class="header">
+        <h2 style="font-size: 18px;">RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</h2>
+        <div style="color:var(--saffron); font-weight: bold;">💎 <span id="cr-val">1500</span></div>
     </div>
 
-    <div id="main-app">
-        <div class="header">
-            <h3>RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</h3>
-            <div style="font-weight:bold;">💎 <span id="cr-val">1500</span></div>
+    <div class="rolling-container">
+        <div class="rolling-track">
+            <div class="roll-item">🔥 SIGMA PRO X UPDATED</div>
+            <div class="roll-item">🚀 GTA 5 MOBILE ACTIVE</div>
+            <div class="roll-item">🎮 FF ADVANCE SERVER</div>
+            <div class="roll-item">💎 UNLIMITED CREDITS PKG</div>
+            <div class="roll-item">🛡️ BHARAT SECURE ENGINE</div>
+        </div>
+    </div>
+
+    <div id="game-grid">
         </div>
 
-        <div id="app-grid">
-            </div>
+    <div id="notice-screen">
+        <div class="notice-box">
+            <h2 style="color:red; margin-bottom:10px;">DIRECT NOTICE</h2>
+            <p><b>Target:</b> <span id="target-name">GAME</span></p>
+            <p style="font-size:12px; margin-top:10px;">Humara engine is game ko <b>Softonic, Uptodown aur Official Servers</b> par target kar chuka hai. Ye link Play Store par nahi milega.</p>
+        </div>
+        <a href="#" class="action-btn" id="final-link" onclick="track()">START SECURE DOWNLOAD</a>
+        <button onclick="closeNotice()" style="margin-top:20px; background:none; border:none; text-decoration:underline; color:gray;">Back</button>
     </div>
 
     <div class="pkg-bar">
         <input type="text" id="pkg-in" class="pkg-in" placeholder="Enter PKG">
-        <button onclick="claim()" style="background:var(--saffron); border:none; padding:0 20px; border-radius:10px; font-weight:bold;">CLAIM</button>
+        <button onclick="claim()" style="background:var(--saffron); border:none; padding:10px 15px; border-radius:8px; font-weight:bold;">CLAIM</button>
     </div>
 
     <script>
         let credits = 1500;
-        const premiumApps = ["Sigma Pro X", "FF Advance", "BGMI Mod", "GTA 5", "Minecraft", "GB WhatsApp", "Lucky Patcher", "HappyMod", "CapCut", "VideoDer"];
+        // 30 PREMIUM BANNED/TRENDING GAMES
+        const games = [
+            "Sigma Pro X", "Free Fire India", "BGMI Mod", "GTA 5 Mobile", "Minecraft PE", 
+            "Fortnite Android", "FIFA 25 Mod", "Call of Duty War", "Tekken 8 Mobile", "Apex Legends",
+            "GTA San Andreas", "Bully Edition", "Spider-Man 2", "Resident Evil 4", "God of War Mobile",
+            "PUBG KR", "Free Fire Advance", "Sigma Battle", "Cyberpunk Mod", "Total Overdose",
+            "Hitman Blood", "Need For Speed", "Among Us Mod", "Roblox Premium", "Clash of Clans Mod",
+            "Fall Guys Mobile", "Valorant Mobile", "Elden Ring Mobile", "WWE 2K25", "Project Bloodstrike"
+        ];
 
         function load() {
-            const grid = document.getElementById('app-grid');
+            const grid = document.getElementById('game-grid');
             grid.innerHTML = "";
-            premiumApps.forEach(name => {
-                grid.innerHTML += `<div class="app-card">
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${name}" style="width:40px;">
-                    <div style="font-size:12px; font-weight:bold; margin-top:5px;">${name}</div>
-                    <button class="btn-get" onclick="openHub('${name}')">DOWNLOAD</button>
+            games.forEach(name => {
+                grid.innerHTML += `<div class="game-card">
+                    <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}" class="game-icon">
+                    <div style="font-size:10px; font-weight:bold;">${name}</div>
+                    <button class="btn-target" onclick="openTarget('${name}')">TARGET LINK</button>
                 </div>`;
             });
         }
 
-        function openHub(name) {
+        function openTarget(name) {
             if(credits >= 500) {
                 credits -= 500;
                 document.getElementById('cr-val').innerText = credits;
+                document.getElementById('target-name').innerText = name.toUpperCase();
                 
-                document.getElementById('app-name-display').innerText = name.toUpperCase();
-                
-                // Logic to set Softonic and Uptodown links
-                let q = name.replace(" ", "-").toLowerCase();
-                document.getElementById('softonic-link').href = `https://en.softonic.com/s/${q}`;
-                document.getElementById('uptodown-link').href = `https://en.uptodown.com/android/search/${q}`;
-                
-                document.getElementById('secure-hub').style.display = 'flex';
-            } else { alert("Coins Low!"); }
+                // Sniper Targeting System
+                let q = name.replace(" ", "+");
+                document.getElementById('final-link').href = `https://www.google.com/search?q=${q}+download+official+softonic+uptodown`;
+                document.getElementById('notice-screen').style.display = 'flex';
+            } else { alert("PKG Code dalo!"); }
         }
 
-        function closeHub() { document.getElementById('secure-hub').style.display = 'none'; }
-        
-        function track() { console.log("Direct Official Redirect Activated"); }
+        function closeNotice() { document.getElementById('notice-screen').style.display = 'none'; }
+        function track() { console.log("Target Locked"); }
 
         function claim() {
             if(document.getElementById('pkg-in').value.toUpperCase() === 'PKG') {
