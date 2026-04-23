@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX ULTIMATE v39.0</title>
+    <title>RTX PRO v40.0</title>
     <style>
         :root { --neon: #00f2ff; --bg: #000; --gold: #ffcc00; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         
+        /* 🌈 SLIM RGB BORDER */
         @keyframes rgb-slim {
             0% { border-color: #ff0000; box-shadow: 0 0 5px #ff0000; }
             50% { border-color: #00ff00; box-shadow: 0 0 5px #00ff00; }
@@ -18,18 +19,32 @@
             background: var(--bg); color: white; height: 100vh; overflow: hidden; 
             display: flex; flex-direction: column; 
             border: 1.5px solid #ff0000; animation: rgb-slim 2s linear infinite;
+            padding-top: 35px; /* 🔋 BATTERY/NETWORK FIX: Upar se jagah chodi hai */
         }
 
-        #main-app { display: flex; height: 100vh; flex-direction: column; padding: 10px; position: relative; }
+        #main-app { display: flex; height: 100%; flex-direction: column; padding: 10px; position: relative; }
 
-        /* TOP SECTION */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .credits { border: 1px solid var(--gold); color: var(--gold); padding: 5px 12px; border-radius: 50px; font-weight: bold; font-size: 13px; background: rgba(255,204,0,0.1); }
+        /* 💰 TOP ROW: CREDITS & SEARCH */
+        .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .credits-tag { border: 1px solid var(--gold); color: var(--gold); padding: 4px 12px; border-radius: 50px; font-weight: bold; font-size: 13px; background: rgba(255,204,0,0.1); }
+        
+        .search-engine { display: flex; gap: 8px; margin-bottom: 12px; }
+        .s-input { background: #111; border: 1px solid var(--neon); flex: 1; padding: 10px; border-radius: 10px; color: white; outline: none; font-size: 14px; }
+        .lb-btn { background: var(--neon); border: none; width: 45px; border-radius: 10px; font-size: 20px; cursor: pointer; box-shadow: 0 0 8px var(--neon); }
 
-        .search-box { display: flex; gap: 8px; margin-bottom: 15px; }
-        .s-in { background: #111; border: 1px solid var(--neon); flex: 1; padding: 12px; border-radius: 12px; color: white; outline: none; }
+        /* 🏆 DESI STYLE LEADERBOARD (RIGHT SLIDE) */
+        #side-lb {
+            position: fixed; top: 0; right: -100%; width: 85%; height: 100%;
+            background: rgba(5, 5, 5, 0.98); border-left: 2px solid var(--neon);
+            z-index: 5000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 50px 20px 20px 20px; /* Upar se extra space for status bar */
+            display: flex; flex-direction: column;
+        }
+        #side-lb.active { right: 0; }
+        .lb-item { background: #111; padding: 15px; margin-bottom: 10px; border-radius: 10px; border-left: 4px solid var(--neon); display: flex; justify-content: space-between; font-size: 14px; }
+        .back-btn { margin-top: auto; background: #ff3333; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; }
 
-        /* 📦 1 CR APPS GRID WITH REAL LOGOS */
+        /* 📦 1CR APPS SCROLLING GRID */
         #app-grid { 
             flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
             padding-bottom: 20px; scrollbar-width: none;
@@ -40,91 +55,100 @@
             background: #0d0d0d; border: 1px solid #222; border-radius: 15px; padding: 12px; 
             text-align: center; transition: 0.3s;
         }
-        .app-logo { width: 50px; height: 50px; border-radius: 10px; margin-bottom: 8px; object-fit: cover; border: 1px solid #333; }
-        .app-card:active { transform: scale(0.95); border-color: var(--neon); }
+        .app-logo { width: 50px; height: 50px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #333; }
 
         /* 💰 PKG ENGINE BORDER */
-        .bottom-nav { border-top: 1px solid var(--gold); padding: 12px 5px; background: #000; margin-top: auto; }
-        .pkg-group { display: flex; gap: 8px; }
-        .pkg-field { background: #111; border: 1px solid var(--gold); flex: 1; padding: 12px; border-radius: 10px; color: white; outline: none; }
-        .btn-claim { background: var(--gold); color: black; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; }
+        .bottom-ui { border-top: 1px solid var(--gold); padding: 12px 5px; background: #000; margin-top: auto; }
+        .pkg-row { display: flex; gap: 8px; }
+        .pkg-f { background: #111; border: 1px solid var(--gold); flex: 1; padding: 12px; border-radius: 10px; color: white; outline: none; }
+        .claim-b { background: var(--gold); border: none; padding: 12px 18px; border-radius: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="main-app">
-        <div class="header">
-            <div class="credits">💰 <span id="cr-val">1500</span> CREDITS</div>
-            <div style="font-size:10px; color:var(--neon);">ENGINE: 1Cr+ LOGOS</div>
+        <div class="top-row">
+            <div class="credits-tag">💎 <span id="cr-val">1500</span> CREDITS</div>
+            <div style="font-size: 9px; color: var(--neon); letter-spacing: 1px;">RTX ULTIMATE v40</div>
         </div>
 
-        <div class="search-box">
-            <input type="text" class="s-in" placeholder="Search 1,00,00,000+ Apps..." id="find" onkeyup="search()">
+        <div class="search-engine">
+            <input type="text" class="s-input" placeholder="Search 1Cr+ Apps..." id="find" onkeyup="search()">
+            <button class="lb-btn" onclick="toggleLB()">🏆</button>
+        </div>
+
+        <div id="side-lb">
+            <h3 style="color:var(--neon); margin-bottom:20px; text-shadow: 0 0 10px var(--neon);">📡 TRENDING ENGINE</h3>
+            <div id="lb-data">
+                </div>
+            <button class="back-btn" onclick="toggleLB()">← BACK TO SYSTEM</button>
         </div>
 
         <div id="app-grid">
             </div>
 
-        <div class="bottom-nav">
-            <div class="pkg-group">
-                <input type="text" id="pkg-input" class="pkg-field" placeholder="Enter PKG Code">
-                <button class="btn-claim" onclick="claimPkg()">CLAIM</button>
+        <div class="bottom-ui">
+            <div class="pkg-row">
+                <input type="text" id="pkg-input" class="pkg-f" placeholder="Enter PKG Code">
+                <button class="claim-b" onclick="claim()">CLAIM</button>
             </div>
         </div>
     </div>
 
     <script>
         let credits = 1500;
-
-        // 🚀 1 CR APPS DATABASE ENGINE (With Real Logo Logic)
-        const appDB = [
-            { name: "Free Fire MAX", img: "https://api.dicebear.com/7.x/identicon/svg?seed=ff" },
-            { name: "Sigma Battle", img: "https://api.dicebear.com/7.x/identicon/svg?seed=sigma" },
-            { name: "Minecraft 1.21", img: "https://api.dicebear.com/7.x/identicon/svg?seed=mc" },
-            { name: "GTA V Mobile", img: "https://api.dicebear.com/7.x/identicon/svg?seed=gta" },
-            { name: "Netflix Mod", img: "https://api.dicebear.com/7.x/identicon/svg?seed=nf" },
-            { name: "BGMI UC Mod", img: "https://api.dicebear.com/7.x/identicon/svg?seed=bgmi" },
-            { name: "Insta Gold", img: "https://api.dicebear.com/7.x/identicon/svg?seed=ig" },
-            { name: "WhatsApp Pro", img: "https://api.dicebear.com/7.x/identicon/svg?seed=wa" }
+        const appsData = [
+            {n: "Free Fire MAX", img: "https://api.dicebear.com/7.x/identicon/svg?seed=ff1"},
+            {n: "Sigma Lite", img: "https://api.dicebear.com/7.x/identicon/svg?seed=sg2"},
+            {n: "Minecraft 1.21", img: "https://api.dicebear.com/7.x/identicon/svg?seed=mc3"},
+            {n: "Netflix Pro", img: "https://api.dicebear.com/7.x/identicon/svg?seed=nf4"},
+            {n: "GTA V Mobile", img: "https://api.dicebear.com/7.x/identicon/svg?seed=gta5"},
+            {n: "Instagram Mod", img: "https://api.dicebear.com/7.x/identicon/svg?seed=ig6"}
         ];
 
-        function loadApps() {
+        function load() {
             const grid = document.getElementById('app-grid');
+            const lb = document.getElementById('lb-data');
             grid.innerHTML = "";
-            // Simulating 1 Crore loop efficiently
-            for (let i = 0; i < 50; i++) {
-                let app = appDB[i % appDB.length];
+            lb.innerHTML = "";
+
+            // Load 60 apps for simulation
+            for(let i=0; i<60; i++) {
+                let app = appsData[i % appsData.length];
                 grid.innerHTML += `
-                    <div class="app-card" data-name="${app.name}">
-                        <img src="${app.img}" class="app-logo" alt="logo">
-                        <h4 style="font-size:11px; margin-bottom:10px;">${app.name}</h4>
+                    <div class="app-card" data-name="${app.n}">
+                        <img src="${app.img}" class="app-logo">
+                        <h4 style="font-size:11px; margin-bottom:8px;">${app.n}</h4>
                         <button onclick="redir()" style="background:var(--neon); border:none; padding:6px; border-radius:6px; font-weight:bold; font-size:10px; width:100%;">GET LINK</button>
                     </div>
                 `;
             }
+
+            // Desi Leaderboard Items
+            const trends = ["FF MAX Mod", "Sigma v2", "Minecraft 1.21"];
+            lb.innerHTML = trends.map((t, i) => `
+                <div class="lb-item"><span>#${i+1} ${t}</span><span style="color:var(--neon)">HOT 🔥</span></div>
+            `).join('');
         }
 
-        // ✅ PKG ENGINE FIXED
-        function claimPkg() {
+        function toggleLB() { document.getElementById('side-lb').classList.toggle('active'); }
+
+        function claim() {
             let code = document.getElementById('pkg-input').value.trim().toUpperCase();
             if(code === 'PKG' || code === 'RANJAN_PRO') {
                 credits += 1000;
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('pkg-input').value = "";
-                alert("Boom! +1000 Credits Added Successfully.");
-            } else {
-                alert("Invalid PKG Code!");
-            }
+                alert("Success! +1000 Credits Added.");
+            } else { alert("Invalid PKG Code!"); }
         }
 
         function redir() {
             if(credits >= 500) {
                 credits -= 500;
                 document.getElementById('cr-val').innerText = credits;
-                window.location.href = "https://www.google.com/search?q=download+premium+mod+apk+direct";
-            } else {
-                alert("Low Credits! Use PKG code.");
-            }
+                window.location.href = "https://www.google.com/search?q=premium+mod+apps+direct+link";
+            } else { alert("Need 500 Credits!"); }
         }
 
         function search() {
@@ -136,7 +160,7 @@
             }
         }
 
-        window.onload = loadApps;
+        window.onload = load;
     </script>
 </body>
 </html>
