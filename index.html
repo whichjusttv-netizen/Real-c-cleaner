@@ -3,42 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTX AUTO-SYNC v27</title>
+    <title>RTX FINAL FIX v27.1</title>
     <style>
         :root { --neon: #00f2ff; --danger: #ff0055; --bg: #030308; --gold: #ffd700; --nebula: linear-gradient(45deg, #050510, #1a0b2e, #050510); }
         body { background: var(--nebula); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 12px; overflow: hidden; height: 100vh; }
         
-        /* 🔒 SECURE CORE */
         #gate { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        .box { background: #0a0a14; padding: 30px; border: 1px solid var(--neon); border-radius: 20px; width: 85%; text-align: center; box-shadow: 0 0 20px var(--neon); }
+        .box { background: #0a0a14; padding: 30px; border: 1px solid var(--neon); border-radius: 20px; width: 85%; text-align: center; }
 
         #app { display: none; height: 100%; }
         
-        /* 📡 SYNC STATUS */
-        .sync-bar { font-size: 10px; color: var(--neon); text-align: left; margin-bottom: 5px; font-family: monospace; }
-
-        /* 🎤 VOICE & SEARCH */
-        .search-area { display: flex; align-items: center; gap: 8px; margin: 5px 0; }
-        #search-bar { flex: 1; padding: 14px; background: rgba(0,0,0,0.8); border: 1px solid var(--neon); color: var(--neon); border-radius: 12px; outline: none; box-shadow: inset 0 0 10px rgba(0,242,255,0.2); }
+        .search-area { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
+        #search-bar { flex: 1; padding: 14px; background: rgba(0,0,0,0.8); border: 1px solid var(--neon); color: var(--neon); border-radius: 12px; outline: none; }
         .mic-btn { background: var(--neon); color: #000; border: none; padding: 12px; border-radius: 12px; cursor: pointer; }
 
-        /* 🏆 TRENDING LEADERBOARD (Right Slide) */
         #leaderboard {
             position: fixed; top: 0; right: -100%; width: 85%; height: 100%;
             background: rgba(5, 5, 15, 0.98); backdrop-filter: blur(20px);
-            z-index: 1000; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); padding: 25px; border-left: 2px solid var(--gold);
+            z-index: 1000; transition: 0.5s; padding: 25px; border-left: 2px solid var(--gold);
         }
         .lb-active #leaderboard { right: 0; }
-        .lb-item { display: flex; justify-content: space-between; padding: 15px; background: rgba(255,215,0,0.05); margin-bottom: 8px; border-radius: 8px; border: 1px solid #222; }
 
-        /* 🗄️ SMART DATABASE LIST */
-        #main-list { height: 52vh; overflow-y: auto; scrollbar-width: none; margin-top: 10px; padding-bottom: 100px; }
-        #main-list::-webkit-scrollbar { display: none; }
-        .card { background: rgba(255,255,255,0.03); border: 1px solid #1a1a2e; margin: 10px 0; padding: 18px; border-radius: 15px; position: relative; overflow: hidden; }
-        .card::before { content: "TRENDING"; position: absolute; top: 0; right: 0; background: var(--danger); font-size: 8px; padding: 3px 8px; border-bottom-left-radius: 8px; display: none; }
-        .card.hot::before { display: block; }
+        #main-list { height: 50vh; overflow-y: auto; scrollbar-width: none; margin-top: 10px; padding-bottom: 120px; }
+        .card { background: rgba(255,255,255,0.03); border: 1px solid #1a1a2e; margin: 10px 0; padding: 18px; border-radius: 15px; }
         
-        /* FOOTER & CREDITS */
         .footer { position: fixed; bottom: 0; left: 0; right: 0; background: #000; padding: 20px; display: flex; gap: 10px; border-top: 1px solid var(--gold); z-index: 500; }
         .code-input { flex: 1; background: #0a0a0f; border: 1px solid var(--gold); color: var(--gold); padding: 12px; border-radius: 10px; text-align: center; font-weight: bold; }
     </style>
@@ -47,112 +35,97 @@
 
     <div id="gate">
         <div class="box">
-            <h2 style="color:var(--neon); letter-spacing:2px;">RTX CORE</h2>
-            <p style="color:#444; font-size:10px;">AUTO-SYNC ENGINE v27.0</p>
-            <input type="password" id="pk" placeholder="PASSWORD" style="width:85%; padding:15px; background:#000; border:1px solid #222; color:var(--neon); border-radius:12px; text-align:center; font-size:18px;">
-            <button onclick="unlock()" style="width:90%; padding:15px; background:var(--neon); color:#000; border:none; margin-top:20px; border-radius:12px; font-weight:bold;">INITIALIZE SYSTEM</button>
+            <h2 style="color:var(--neon);">RTX CORE</h2>
+            <input type="password" id="pk" placeholder="PASSWORD" style="width:85%; padding:15px; background:#000; border:1px solid #222; color:var(--neon); border-radius:12px; text-align:center;">
+            <button onclick="unlock()" style="width:90%; padding:15px; background:var(--neon); color:#000; border:none; margin-top:20px; border-radius:12px; font-weight:bold;">INITIALIZE</button>
         </div>
     </div>
 
     <div id="leaderboard">
-        <h2 style="color:var(--gold); text-align:center; letter-spacing:2px;">🏆 WEEKLY TRENDS</h2>
-        <div id="lb-content">
-            </div>
-        <button onclick="toggleLB()" style="width:100%; margin-top:30px; padding:15px; background:var(--danger); border:none; color:#fff; border-radius:12px; font-weight:bold;">CLOSE PANEL</button>
+        <h2 style="color:var(--gold); text-align:center;">🏆 TRENDS</h2>
+        <div id="lb-content"></div>
+        <button onclick="toggleLB()" style="width:100%; margin-top:30px; padding:15px; background:var(--danger); border:none; color:#fff; border-radius:12px;">CLOSE</button>
     </div>
 
     <div id="app">
-        <div class="sync-bar" id="sync-msg">● NETWORK CONNECTED | DATABASE: SYNCED</div>
-        <div style="text-align:right; font-size:10px; color:var(--gold); margin-bottom:5px;" onclick="toggleLB()">SWIPE FOR LEADERBOARD ➔</div>
+        <div style="text-align:right; font-size:10px; color:var(--gold);" onclick="toggleLB()">LEADERBOARD ➔</div>
         
         <div class="search-area">
-            <input type="text" id="search-bar" placeholder="Bolkar ya Likhkar Khojo..." onkeyup="filterApps()">
+            <input type="text" id="search-bar" placeholder="Khojo..." onkeyup="filterApps()">
             <button class="mic-btn" onclick="startVoice()">🎤</button>
         </div>
 
-        <div style="text-align:center; background:rgba(0,0,0,0.5); padding:10px; border-radius:15px; border:1px solid #111;">
-            <span style="color:var(--gold); font-size:12px;">WALLET</span><br>
-            <span id="coin-txt" style="font-size:32px; font-weight:bold; color:#fff;">0000</span> <span style="color:var(--gold);">CR</span>
+        <div style="text-align:center; background:rgba(0,0,0,0.5); padding:15px; border-radius:15px; border:1px solid var(--gold);">
+            <span style="color:var(--gold); font-size:12px;">CREDITS</span><br>
+            <span id="coin-txt" style="font-size:35px; font-weight:bold; color:#fff;">0000</span>
         </div>
 
         <div id="main-list"></div>
 
         <div class="footer">
-            <input type="text" id="secret-inp" class="code-input" placeholder="CODE: pkg">
-            <button onclick="claimSecret()" style="background:var(--gold); padding:0 20px; border-radius:10px; font-weight:bold; color:#000;">CLAIM</button>
+            <input type="text" id="secret-inp" class="code-input" placeholder="Type 'pkg' here">
+            <button onclick="claimSecret()" style="background:var(--gold); padding:0 25px; border-radius:10px; font-weight:bold; color:#000;">CLAIM</button>
         </div>
     </div>
 
 <script>
+    // 💰 CREDITS STORAGE ENGINE
     let sc = parseInt(localStorage.getItem('user_sc')) || 0;
     let database = [];
-    const appsList = ["Gemini AI", "Netflix 4K", "Minecraft Pro", "GTA VI", "ChatGPT-5", "Adobe Elite", "Spotify Gold", "Canva Pro", "ExpressVPN Pro", "PicsArt Premium", "Disney+ Pro", "KineMaster Gold", "CapCut Elite", "Free Fire Tools"];
 
-    // 🔄 WEEKLY AUTO-UPDATE LOGIC
-    function buildDatabase() {
-        let lastUpdate = localStorage.getItem('last_update_time');
-        let now = new Date().getTime();
-        let oneWeek = 7 * 24 * 60 * 60 * 1000;
-
-        database = [];
-        // Agar ek hafta ho gaya, toh list ko shuffle karo (Trend update)
-        let shuffle = (lastUpdate && (now - lastUpdate > oneWeek));
-        
-        let tempApps = [...appsList];
-        if(shuffle) {
-            tempApps.sort(() => Math.random() - 0.5);
-            localStorage.setItem('last_update_time', now);
-            document.getElementById('sync-msg').innerText = "● NEW WEEKLY UPDATE SYNCED!";
+    function updateUI() {
+        // Direct screen update (No Delay)
+        const display = document.getElementById('coin-txt');
+        if(display) {
+            display.innerText = sc.toString().padStart(4, '0');
         }
-
-        for(let i = 1; i <= 1000; i++) {
-            let base = tempApps[i % tempApps.length];
-            database.push({ 
-                n: `${base} Premium #${i}`, 
-                s: `https://www.google.com/search?q=${encodeURIComponent(base)}+premium+download+2026`,
-                hot: (i % 15 === 0) 
-            });
-        }
-        updateLeaderboard(tempApps);
+        localStorage.setItem('user_sc', sc);
     }
 
-    function updateLeaderboard(list) {
-        const lb = document.getElementById('lb-content');
-        lb.innerHTML = "";
-        for(let i = 0; i < 6; i++) {
-            lb.innerHTML += `<div class="lb-item">
-                <span><b style="color:var(--gold)">#${i+1}</b> ${list[i]}</span>
-                <span style="color:var(--neon)">${(99 - i*7)}k 🔥</span>
-            </div>`;
+    // 🔄 FIXED CLAIM SYSTEM
+    function claimSecret() {
+        const inputField = document.getElementById('secret-inp');
+        const code = inputField.value.trim().toLowerCase();
+        
+        if(code === "pkg") {
+            sc = sc + 1000; // Force addition
+            updateUI(); // Immediate screen refresh
+            alert("SUCCESS: 1000 Credits Injected!");
+            inputField.value = ""; // Clear input
+        } else {
+            alert("ERROR: Invalid Code!");
+        }
+    }
+
+    function buildDatabase() {
+        const apps = ["Gemini AI", "Netflix 4K", "Minecraft", "GTA VI", "ChatGPT-5", "Spotify Gold"];
+        database = [];
+        for(let i = 1; i <= 1000; i++) {
+            let base = apps[i % apps.length];
+            database.push({ n: `${base} Premium #${i}`, s: `https://www.google.com/search?q=${encodeURIComponent(base)}+premium` });
         }
     }
 
     function render(list) {
         const container = document.getElementById('main-list');
         let html = "";
-        let limit = Math.min(list.length, 35);
+        let limit = Math.min(list.length, 30);
         for(let i = 0; i < limit; i++) {
-            html += `<div class="card ${list[i].hot ? 'hot' : ''}">
-                <h3 style="color:var(--neon); margin:0; font-size:14px; text-transform:uppercase;">${list[i].n}</h3>
-                <p style="font-size:9px; color:#555; margin:5px 0;">SOURCE: ENCRYPTED CHROME GATEWAY</p>
-                <button onclick="openChrome('${list[i].s}')" style="margin-top:5px; background:var(--neon); border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; color:#000;">GET SOURCE</button>
+            html += `<div class="card">
+                <h3 style="color:var(--neon); margin:0;">${list[i].n}</h3>
+                <button onclick="openChrome('${list[i].s}')" style="margin-top:10px; background:var(--neon); border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold;">GET SOURCE</button>
             </div>`;
         }
         container.innerHTML = html;
-        container.scrollTop = 0;
     }
 
-    // 🎤 VOICE SEARCH
     function startVoice() {
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = 'hi-IN';
-        recognition.start();
-        document.getElementById('search-bar').placeholder = "Listening...";
-        recognition.onresult = (e) => {
-            document.getElementById('search-bar').value = e.results[0][0].transcript;
-            filterApps();
-        };
-        recognition.onspeechend = () => { recognition.stop(); document.getElementById('search-bar').placeholder = "Bolkar ya Likhkar Khojo..."; };
+        const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if(!Speech) { alert("Voice not supported in this browser"); return; }
+        const rec = new Speech();
+        rec.lang = 'hi-IN';
+        rec.start();
+        rec.onresult = (e) => { document.getElementById('search-bar').value = e.results[0][0].transcript; filterApps(); };
     }
 
     function toggleLB() { document.body.classList.toggle('lb-active'); }
@@ -162,14 +135,7 @@
             document.getElementById('gate').style.display='none';
             document.getElementById('app').style.display='block';
             buildDatabase(); render(database); updateUI();
-        } else { alert("ACCESS DENIED"); }
-    }
-
-    function claimSecret() {
-        if(document.getElementById('secret-inp').value.toLowerCase() === "pkg") {
-            sc += 1000; updateUI(); alert("1000 CR Injected!");
-            document.getElementById('secret-inp').value = "";
-        }
+        } else { alert("WRONG PASSWORD"); }
     }
 
     function filterApps() {
@@ -180,13 +146,11 @@
 
     function openChrome(url) {
         if(sc >= 500) { sc -= 500; updateUI(); window.open(url, '_blank'); }
-        else { alert("Low Credits!"); }
+        else { alert("Credits Low! Use 'pkg' code."); }
     }
 
-    function updateUI() {
-        document.getElementById('coin-txt').innerText = sc.toString().padStart(4,'0');
-        localStorage.setItem('user_sc', sc);
-    }
+    // Initial Load
+    window.onload = updateUI;
 </script>
 </body>
 </html>
