@@ -3,133 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX PRO v42.0</title>
+    <title>RTX PRO v44.0</title>
     <style>
-        :root { --neon: #00f2ff; --bg: #000; --gold: #ffcc00; }
-        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        :root { --neon: #00f2ff; --bg: #050505; --gold: #ffcc00; --glass: rgba(20, 20, 20, 0.95); }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
         
-        @keyframes rgb-slim {
-            0% { border-color: #ff0000; }
-            50% { border-color: #00ff00; }
-            100% { border-color: #0000ff; }
+        body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+        /* 📱 RIGHT SIDE LEADERBOARD (DYNAMIC) */
+        #leaderboard {
+            position: fixed; top: 0; right: -100%; width: 85%; height: 100%;
+            background: var(--glass); backdrop-filter: blur(20px);
+            border-left: 2px solid var(--neon); z-index: 10000;
+            transition: 0.4s cubic-bezier(0.1, 0.7, 0.1, 1);
+            padding: 50px 20px; display: flex; flex-direction: column;
         }
+        #leaderboard.active { right: 0; }
 
-        body { 
-            background: var(--bg); color: white; height: 100vh; overflow: hidden; 
-            display: flex; flex-direction: column; 
-            border: 1.5px solid #ff0000; animation: rgb-slim 2s linear infinite;
-            padding-top: 38px; /* Mobile Status Bar Gap */
-        }
-
-        #main-app { display: flex; height: 100%; flex-direction: column; padding: 10px; }
-
-        /* HEADER & SEARCH */
-        .top-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .credits-tag { border: 1px solid var(--gold); color: var(--gold); padding: 4px 12px; border-radius: 50px; font-weight: bold; font-size: 13px; }
+        .lb-title { font-size: 22px; font-weight: 900; color: var(--neon); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
         
-        .search-engine { display: flex; gap: 8px; margin-bottom: 12px; }
-        .s-input { background: #111; border: 1px solid var(--neon); flex: 1; padding: 10px; border-radius: 10px; color: white; outline: none; }
-
-        /* 📦 GRID */
-        #app-grid { 
-            flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
-            padding-bottom: 20px; scrollbar-width: none;
+        #lb-list { flex-grow: 1; overflow-y: auto; scrollbar-width: none; }
+        .lb-item { 
+            background: #111; margin-bottom: 12px; padding: 15px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+            border: 1px solid #222; animation: slideIn 0.3s forwards;
         }
+        .status-dot { width: 8px; height: 8px; background: #0f0; border-radius: 50%; box-shadow: 0 0 10px #0f0; }
+
+        /* 📦 MAIN INTERFACE */
+        #main-app { padding: 20px; height: 100%; display: flex; flex-direction: column; margin-top: 30px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         
-        .app-card { 
-            background: #0d0d0d; border: 1px solid #222; border-radius: 15px; padding: 12px; 
-            text-align: center; transition: 0.2s;
-        }
-        .app-logo { width: 45px; height: 45px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #333; }
+        #app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; overflow-y: auto; scrollbar-width: none; }
+        .app-card { background: #111; border: 1px solid #222; border-radius: 20px; padding: 15px; text-align: center; }
+        .btn-get { background: var(--neon); color: black; border: none; padding: 10px; border-radius: 10px; font-weight: 900; width: 100%; margin-top: 10px; }
 
-        /* 💰 PKG ENGINE */
-        .bottom-ui { border-top: 1px solid var(--gold); padding: 12px 5px; background: #000; }
-        .pkg-row { display: flex; gap: 8px; }
-        .pkg-f { background: #111; border: 1px solid var(--gold); flex: 1; padding: 12px; border-radius: 10px; color: white; outline: none; }
-        .claim-b { background: var(--gold); border: none; padding: 12px 18px; border-radius: 10px; font-weight: bold; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; z-index: 9999; }
+        .overlay.active { display: block; }
     </style>
 </head>
-<body>
+<body ontouchstart="hStart(event)" ontouchend="hEnd(event)">
+
+    <div class="overlay" id="overlay" onclick="closeLB()"></div>
+
+    <div id="leaderboard">
+        <div class="lb-title">Live Updates ⚡</div>
+        <p style="font-size: 10px; color: #888; margin-bottom: 15px;">New Premium Apps added via Server</p>
+        <div id="lb-list">
+            </div>
+        <button onclick="closeLB()" style="background:red; border:none; color:white; padding:15px; border-radius:12px; font-weight:bold; width:100%;">BACK TO HOME</button>
+    </div>
 
     <div id="main-app">
-        <div class="top-row">
-            <div class="credits-tag">💎 <span id="cr-val">1500</span> CREDITS</div>
-            <div style="font-size: 9px; color: var(--neon);">RTX TURBO v42</div>
+        <div class="header">
+            <h1 style="font-size:24px;">RTX <span style="color:var(--neon)">PREMIUM</span></h1>
+            <div style="color:var(--gold); font-weight:bold;">💎 <span id="cr-val">1500</span></div>
         </div>
-
-        <div class="search-engine">
-            <input type="text" class="s-input" placeholder="Search 1Cr+ Apps..." id="find" onkeyup="search()">
-        </div>
-
         <div id="app-grid"></div>
-
-        <div class="bottom-ui">
-            <div class="pkg-row">
-                <input type="text" id="pkg-input" class="pkg-f" placeholder="Enter PKG Code">
-                <button class="claim-b" onclick="claim()">CLAIM</button>
-            </div>
-        </div>
     </div>
 
     <script>
         let credits = 1500;
-        const appsData = [
-            {n: "Free Fire MAX", img: "ff"},
-            {n: "Sigma Battle Royale", img: "sg"},
-            {n: "Minecraft 1.21", img: "mc"},
-            {n: "GTA V Mobile", img: "gta"},
-            {n: "Netflix Premium", img: "nf"},
-            {n: "BGMI Mod", img: "bgmi"}
+        let sX = 0;
+
+        // 🚀 LIVE UPDATES DATA (Internet logic simulation)
+        const liveApps = [
+            { name: "Free Fire V1.104 Mod", status: "WORKING" },
+            { name: "Minecraft 1.21.30 Premium", status: "UPDATED" },
+            { name: "Netflix Premium 4K", status: "LIVE" },
+            { name: "Sigma Battle Royale X", status: "HOT" },
+            { name: "GTA San Andreas RTX", status: "WORKING" }
         ];
 
         function load() {
             const grid = document.getElementById('app-grid');
-            grid.innerHTML = "";
-            for(let i=0; i<40; i++) {
-                let app = appsData[i % appsData.length];
+            const lbList = document.getElementById('lb-list');
+            
+            // Load Cards
+            liveApps.forEach(app => {
                 grid.innerHTML += `
-                    <div class="app-card" data-name="${app.n}">
-                        <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${app.img}${i}" class="app-logo">
-                        <h4 style="font-size:10px; margin-bottom:8px;">${app.n}</h4>
-                        <button onclick="fastRedir('${app.n}')" style="background:var(--neon); border:none; padding:8px; border-radius:8px; font-weight:bold; font-size:10px; width:100%;">GET LINK</button>
+                    <div class="app-card">
+                        <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${app.name}" style="width:50px; border-radius:10px; margin-bottom:10px;">
+                        <div style="font-size:11px;">${app.name}</div>
+                        <button class="btn-get" onclick="redir('${app.name}')">GET</button>
                     </div>
                 `;
-            }
+                // Load Leaderboard
+                lbList.innerHTML += `
+                    <div class="lb-item">
+                        <span style="font-size:12px; font-weight:bold;">${app.name}</span>
+                        <div style="display:flex; align-items:center; gap:5px;">
+                            <span style="font-size:10px; color:var(--neon)">${app.status}</span>
+                            <div class="status-dot"></div>
+                        </div>
+                    </div>
+                `;
+            });
         }
 
-        // 🚀 1-SECOND TURBO REDIRECT
-        function fastRedir(name) {
+        // 🤚 SWIPE LOGIC
+        function hStart(e) { sX = e.touches[0].clientX; }
+        function hEnd(e) {
+            let eX = e.changedTouches[0].clientX;
+            if (sX - eX > 100) openLB(); // Swipe Left (from right side)
+            if (eX - sX > 100) closeLB(); // Swipe Right to close
+        }
+
+        function openLB() {
+            document.getElementById('leaderboard').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+        function closeLB() {
+            document.getElementById('leaderboard').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        function redir(name) {
             if(credits >= 500) {
                 credits -= 500;
                 document.getElementById('cr-val').innerText = credits;
-                
-                // Direct Targeted URL Construction
-                let cleanName = name.replace(/\s+/g, '+');
-                let targetURL = `https://www.google.com/search?q=${cleanName}+premium+apk+direct+download&btnI=1`;
-                
-                // Open immediately
-                window.location.href = targetURL;
-            } else {
-                alert("Need 500 Credits!");
-            }
-        }
-
-        function claim() {
-            let code = document.getElementById('pkg-input').value.trim().toUpperCase();
-            if(code === 'PKG') {
-                credits += 1000;
-                document.getElementById('cr-val').innerText = credits;
-                document.getElementById('pkg-input').value = "";
-            }
-        }
-
-        function search() {
-            let q = document.getElementById('find').value.toLowerCase();
-            let cards = document.getElementsByClassName('app-card');
-            for(let c of cards) {
-                let n = c.getAttribute('data-name').toLowerCase();
-                c.style.display = n.includes(q) ? "block" : "none";
-            }
+                window.location.href = `https://www.google.com/search?q=${name}+100%+working+premium+direct+link&btnI=1`;
+            } else { alert("No Credits!"); }
         }
 
         window.onload = load;
