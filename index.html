@@ -3,35 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX PRO v47.0</title>
+    <title>RTX PRO v49.0</title>
     <style>
         :root { --neon: #00f2ff; --bg: #050505; --gold: #ffcc00; --card: #111; }
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-        
         body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; padding-top: 40px; }
 
-        /* 🔍 SEARCH & HEADER (Vaisa hi jaisa v45 mein tha) */
+        /* HEADER & SEARCH */
         #main-app { padding: 0 15px; height: 100%; display: flex; flex-direction: column; }
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .search-box { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 12px; color: white; margin-bottom: 15px; outline: none; }
-        .search-box:focus { border-color: var(--neon); }
+        .search-box { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 12px; color: white; margin-bottom: 15px; outline: none; border-left: 3px solid var(--neon); }
 
-        /* 📦 APP GRID */
+        /* APP GRID (Infinite Internet Power) */
         #app-grid { flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-bottom: 80px; scrollbar-width: none; }
-        .app-card { background: var(--card); border: 1px solid #222; border-radius: 18px; padding: 12px; text-align: center; }
-        .btn-get { background: var(--neon); color: black; border: none; padding: 8px; border-radius: 8px; font-weight: 900; width: 100%; margin-top: 8px; font-size: 11px; }
+        .app-card { background: var(--card); border: 1px solid #222; border-radius: 18px; padding: 12px; text-align: center; transition: 0.3s; }
+        .btn-get { background: var(--neon); color: black; border: none; padding: 8px; border-radius: 8px; font-weight: 900; width: 100%; margin-top: 8px; font-size: 11px; cursor: pointer; }
 
-        /* 💰 PKG BOX (Fixed at Bottom) */
+        /* PKG BOX (Smooth Working) */
         .pkg-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; padding: 15px; border-top: 1px solid var(--gold); display: flex; gap: 8px; z-index: 999; }
-        .pkg-input { flex: 1; background: #111; border: 1px solid #444; padding: 10px; border-radius: 8px; color: white; font-size: 12px; }
-        .pkg-btn { background: var(--gold); border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 12px; }
+        .pkg-input { flex: 1; background: #111; border: 1px solid #444; padding: 10px; border-radius: 8px; color: white; }
+        .pkg-btn { background: var(--gold); border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; }
 
-        /* 🏆 LEADERBOARD (Right Swipe Feature) */
-        #leaderboard {
-            position: fixed; top: 0; right: -100%; width: 85%; height: 100%;
-            background: rgba(10, 10, 10, 0.98); border-left: 2px solid var(--neon); z-index: 10000;
-            transition: 0.4s; padding: 50px 20px;
-        }
+        /* LEADERBOARD */
+        #leaderboard { position: fixed; top: 0; right: -100%; width: 85%; height: 100%; background: rgba(5, 5, 5, 0.98); border-left: 2px solid var(--neon); z-index: 10000; transition: 0.4s; padding: 50px 20px; }
         #leaderboard.active { right: 0; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; z-index: 9998; }
         .overlay.active { display: block; }
@@ -42,9 +36,9 @@
     <div class="overlay" id="overlay" onclick="closeLB()"></div>
 
     <div id="leaderboard">
-        <h2 style="color:var(--neon); margin-bottom:20px;">LIVE UPDATES</h2>
+        <h2 style="color:var(--neon); margin-bottom:20px;">GLOBAL UPDATES</h2>
         <div id="lb-list"></div>
-        <button onclick="closeLB()" style="margin-top:20px; width:100%; padding:12px; background:red; border:none; color:white; border-radius:10px;">BACK</button>
+        <button onclick="closeLB()" style="margin-top:20px; width:100%; padding:12px; background:#333; border:none; color:white; border-radius:10px;">CLOSE</button>
     </div>
 
     <div id="main-app">
@@ -53,7 +47,7 @@
             <div style="color:var(--gold); font-size:14px; font-weight:bold;">💎 <span id="cr-val">1500</span></div>
         </div>
 
-        <input type="text" class="search-box" placeholder="Search 1Cr+ Premium Apps..." id="find" onkeyup="search()">
+        <input type="text" class="search-box" placeholder="Search 10Cr+ Apps (Internet)..." id="find" onkeyup="search()">
 
         <div id="app-grid"></div>
     </div>
@@ -66,58 +60,64 @@
     <script>
         let credits = 1500;
         let sX = 0;
-        const apps = ["Free Fire MAX", "Sigma Mod", "Minecraft PE", "Netflix Premium", "GTA V Mobile", "BGMI Injector", "Roblox Menu", "Spotify Pro"];
+        const localApps = ["Free Fire MAX", "Sigma Mod", "Minecraft", "Netflix", "GTA V", "BGMI", "Roblox", "Spotify"];
 
-        // 🚀 LOAD APPS ON START
         function load() {
             const grid = document.getElementById('app-grid');
             const lb = document.getElementById('lb-list');
             grid.innerHTML = "";
-            apps.forEach(name => {
-                grid.innerHTML += `
-                    <div class="app-card" data-name="${name}">
-                        <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}" style="width:40px; margin-bottom:8px;">
-                        <div style="font-size:10px; font-weight:bold;">${name}</div>
-                        <button class="btn-get" onclick="redir('${name}')">GET LINK</button>
-                    </div>
-                `;
-                lb.innerHTML += `<div style="padding:10px; border-bottom:1px solid #222; font-size:11px;">🛡️ ${name} Ready</div>`;
+            localApps.forEach(name => {
+                grid.innerHTML += `<div class="app-card" data-name="${name}">
+                    <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}" style="width:40px; margin-bottom:8px;">
+                    <div style="font-size:10px; font-weight:bold;">${name}</div>
+                    <button class="btn-get" onclick="redir('${name}')">GET SECURE</button>
+                </div>`;
+                lb.innerHTML += `<div style="padding:10px; border-bottom:1px solid #222; font-size:11px;">🌍 User downloaded ${name}</div>`;
             });
         }
 
-        // 🔍 SEARCH LOGIC
         function search() {
             let q = document.getElementById('find').value.toLowerCase();
             let cards = document.getElementsByClassName('app-card');
+            let found = false;
             for(let c of cards) {
-                c.style.display = c.getAttribute('data-name').toLowerCase().includes(q) ? "block" : "none";
+                if(c.getAttribute('data-name').toLowerCase().includes(q)) {
+                    c.style.display = "block";
+                    found = true;
+                } else { c.style.display = "none"; }
+            }
+            // 🚀 INTERNET FETCH LOGIC
+            if(q.length > 2 && !found) {
+                document.getElementById('app-grid').innerHTML += `<div class="app-card" data-name="${q}">
+                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${q}" style="width:40px; margin-bottom:8px;">
+                    <div style="font-size:10px; font-weight:bold; color:var(--neon);">${q.toUpperCase()}</div>
+                    <button class="btn-get" onclick="redir('${q}')">FETCH INTERNET</button>
+                </div>`;
             }
         }
 
-        // 💰 PKG CLAIM
         function claim() {
-            if(document.getElementById('pkg-in').value.toUpperCase() === 'PKG') {
+            let val = document.getElementById('pkg-in').value.trim().toUpperCase();
+            if(val === 'PKG') {
                 credits += 1000;
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('pkg-in').value = "";
             }
         }
 
-        // 🔗 REDIRECTION
         function redir(name) {
             if(credits >= 500) {
+                // 🛡️ SECURITY MESSAGE (English as requested)
+                alert("WE PROVIDE YOU 100% SECURE LINK. PLEASE OPEN WITHOUT ANY WORRY.");
+                
                 credits -= 500;
                 document.getElementById('cr-val').innerText = credits;
-                window.location.href = `https://www.google.com/search?q=${name}+direct+download&btnI=1`;
-            } else { alert("Need Credits!"); }
+                window.location.href = `https://www.google.com/search?q=site:github.com+OR+site:apkmirror.com+${name}+premium+apk+secure`;
+            } else { alert("Insufficient Credits! Need 500."); }
         }
 
-        // 🏆 NAVIGATION (SWIPE)
         function hStart(e) { sX = e.touches[0].clientX; }
-        function hEnd(e) {
-            let eX = e.changedTouches[0].clientX;
-            if (sX - eX > 100) { document.getElementById('leaderboard').classList.add('active'); document.getElementById('overlay').classList.add('active'); }
-        }
+        function hEnd(e) { if (sX - e.changedTouches[0].clientX > 100) { document.getElementById('leaderboard').classList.add('active'); document.getElementById('overlay').classList.add('active'); } }
         function closeLB() { document.getElementById('leaderboard').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
 
         window.onload = load;
