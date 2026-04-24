@@ -3,156 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v67.0</title>
+    <title>RTX BHARAT v69.0</title>
     <style>
-        :root { --saffron: #FF9933; --white: #FFFFFF; --green: #138808; --bg: #000; --blue: #000080; }
+        :root { --saffron: #FF9933; --green: #138808; --bg: #0d0d0d; --card: #1a1a1a; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; justify-content: center; }
 
+        /* 📱 COMPACT STRUCTURE */
         #main-container { 
-            width: 96%; max-width: 400px; height: 98vh; background: var(--bg);
-            border-top: 4px solid var(--saffron); border-bottom: 4px solid var(--green);
-            display: flex; flex-direction: column; position: relative;
+            width: 100%; max-width: 400px; height: 100vh; background: var(--bg);
+            display: flex; flex-direction: column; position: relative; border: 1px solid #333;
         }
 
-        /* 🇮🇳 BHARAT SPECIAL UI */
-        .header { padding: 12px; display: flex; justify-content: space-between; border-bottom: 1px solid #222; background: #050505; }
-        .rolling-bar { background: #111; padding: 5px; font-size: 10px; color: var(--saffron); overflow: hidden; white-space: nowrap; border-bottom: 1px solid #333; }
-        .rolling-text { display: inline-block; animation: scroll 15s linear infinite; }
-        @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
-        /* 📱 PREMIUM APPS ONLY (No Games) */
-        #app-grid { flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; padding-bottom: 80px; scrollbar-width: none; }
-        .app-card { background: #0a0a0a; border: 1px solid #333; border-radius: 12px; padding: 15px; text-align: center; position: relative; }
-        .app-card img { width: 45px; border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--saffron); }
-        .btn-target { background: var(--green); color: white; border: none; padding: 8px; border-radius: 5px; font-size: 10px; font-weight: 900; width: 100%; cursor: pointer; }
-
-        /* ⚪ DIRECT REDIRECT & BHARAT NOTICE */
-        #notice-page { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background: white; color: black; display: none; 
-            flex-direction: column; align-items: center; justify-content: center; z-index: 1000; padding: 25px;
-        }
-        #redirect-bar {
-            position: absolute; top: 0; left: 0; width: 100%; background: #f1f3f4; border-bottom: 2px solid #ccc;
-            padding: 12px; font-size: 10px; text-align: left;
-        }
-        .url-text { color: #1a73e8; font-weight: bold; text-decoration: underline; word-break: break-all; }
-
-        .bharat-tag { background: var(--blue); color: white; padding: 4px 15px; border-radius: 4px; font-weight: bold; font-size: 11px; margin-bottom: 15px; }
-        .box { border: 2px solid #ddd; border-radius: 15px; padding: 20px; width: 100%; text-align: center; }
-        .main-btn { background: #000; color: white; padding: 18px; border-radius: 10px; text-decoration: none; width: 100%; display: block; text-align: center; font-weight: bold; margin-top: 20px; border: 2px solid var(--green); }
-
-        /* 🚫 BORDER BLOCK SCREEN */
-        #block-screen { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; 
-            color: white; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; text-align: center; padding: 20px;
+        /* 🔍 GLOBAL SEARCH BAR (Internet Connected) */
+        .search-box { padding: 10px; background: #050505; display: flex; gap: 8px; border-bottom: 1px solid #222; }
+        .search-box input { 
+            flex: 1; background: #1a1a1a; border: 1px solid #444; padding: 8px 15px; 
+            border-radius: 20px; color: white; font-size: 13px; outline: none;
         }
 
-        .pkg-section { position: absolute; bottom: 0; width: 100%; background: #000; padding: 12px; display: flex; gap: 8px; border-top: 1px solid #333; }
-        .pkg-in { flex: 1; background: #111; border: 1px solid #444; padding: 10px; border-radius: 8px; color: white; }
+        /* ☰ HEADER & MENU */
+        .header { padding: 12px; display: flex; justify-content: space-between; align-items: center; background: #000; }
+        .menu-btn { font-size: 24px; cursor: pointer; color: var(--saffron); }
+        .user-id { font-size: 11px; background: #222; padding: 4px 10px; border-radius: 4px; border: 1px solid var(--green); }
+
+        /* 📂 SIDEBAR (Drawer) */
+        #sidebar { 
+            position: absolute; top: 0; left: -280px; width: 280px; height: 100%; 
+            background: #111; z-index: 2000; transition: 0.3s; padding: 20px;
+            box-shadow: 10px 0 20px rgba(0,0,0,0.5); border-right: 2px solid var(--saffron);
+        }
+        #sidebar.active { left: 0; }
+        .sidebar-item { padding: 15px; border-bottom: 1px solid #222; font-weight: bold; cursor: pointer; color: #ccc; }
+        .sidebar-item:hover { color: var(--saffron); background: #1a1a1a; }
+
+        /* 🎞️ CONTENT AREA */
+        #content-area { flex-grow: 1; overflow-y: auto; padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; scrollbar-width: none; }
+        .item-card { background: var(--card); border-radius: 10px; padding: 10px; text-align: center; border-bottom: 3px solid var(--green); }
+        .item-card img { width: 50px; height: 50px; border-radius: 8px; margin-bottom: 8px; }
+        .btn-action { background: var(--green); border: none; color: white; padding: 6px; width: 100%; border-radius: 4px; font-size: 11px; font-weight: bold; }
+
+        /* OVERLAY */
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1500; }
     </style>
 </head>
 <body>
 
-    <div id="block-screen">
-        <h1 style="color:var(--saffron);">ACCESS DENIED</h1>
-        <p style="margin-top:20px;">RTX BHARAT is strictly for <b>Indian Citizens</b> only.<br>Your location (Outside Bharat) has been flagged.</p>
-        <div style="font-size: 50px; margin-top: 30px;">🇮🇳🚫</div>
-    </div>
+    <div id="overlay" onclick="toggleMenu()"></div>
 
     <div id="main-container">
+        <div id="sidebar">
+            <h3 style="color:var(--saffron); margin-bottom:20px; border-bottom:1px solid #333; padding-bottom:10px;">RTX EXPLORER</h3>
+            <div class="sidebar-item" onclick="showCat('Premium Apps')">📁 Premium Apps</div>
+            <div class="sidebar-item" onclick="showCat('Premium Movies')">🎬 Premium Movies</div>
+            <div class="sidebar-item" onclick="showCat('Hacking Tools')">🛠️ Hacking Tools</div>
+            <div class="sidebar-item" onclick="showCat('Web Series')">📺 Web Series</div>
+            <div class="sidebar-item" onclick="showCat('Software')">💻 PC Software</div>
+            <div style="margin-top:50px; font-size:10px; color:gray;">BHARAT ID: <span id="sid">BH-99234</span></div>
+        </div>
+
         <div class="header">
-            <span style="font-weight: 900;">RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</span>
-            <div style="color:var(--saffron); font-weight: bold;">💎 <span id="cr-val">1500</span></div>
+            <div class="menu-btn" onclick="toggleMenu()">☰</div>
+            <div style="font-weight:900; letter-spacing:1px;">RTX <span style="color:var(--saffron)">BHARAT</span></div>
+            <div class="user-id" id="profile-id">ID: BHARAT-786</div>
         </div>
 
-        <div class="rolling-bar"><div class="rolling-text">🛡️ ONLY FOR BHARAT | PREMIUM MODS & HACKING TOOLS LOADED | 🚫 NON-INDIAN IPs BLOCKED 🚀</div></div>
+        <div class="search-box">
+            <input type="text" id="mainSearch" placeholder="Search Movies, Apps, or Mods..." onkeyup="searchNet()">
+        </div>
 
-        <div id="app-grid"></div>
-
-        <div id="notice-page">
-            <div id="redirect-bar">
-                <span style="color:red; font-weight:900;">⚠️ BHARAT SECURE REDIRECT</span><br>
-                <span class="url-text" id="display-url">Loading...</span>
+        <div id="content-area">
             </div>
-            <div class="bharat-tag">BHARAT NODES ACTIVE 🇮🇳</div>
-            <div class="box">
-                <h2 id="t-app" style="color:#000;">APP NAME</h2>
-                <p style="font-size:11px; color:#555; margin-top:8px;">Special premium version detected. Bharat server is redirecting to the direct source.</p>
-            </div>
-            <a href="#" class="main-btn" id="f-link">SECURE DOWNLOAD</a>
-            <button onclick="closeP()" style="margin-top:20px; color:gray; background:none; border:none; text-decoration:underline; font-weight:bold;">Cancel</button>
-        </div>
-
-        <div class="pkg-section">
-            <input type="text" id="pkg-in" class="pkg-in" placeholder="BHARAT PKG">
-            <button onclick="claim()" style="background:var(--saffron); border:none; padding:8px 15px; border-radius:8px; font-weight:bold;">CLAIM</button>
-        </div>
     </div>
 
     <script>
-        let credits = 1500;
+        // 🆔 AUTO PROFILE GENERATOR
+        const myID = "BH-" + Math.floor(1000 + Math.random() * 9000);
+        document.getElementById('profile-id').innerText = "ID: " + myID;
+        document.getElementById('sid').innerText = myID;
 
-        // 🎯 PREMIUM APPS LIST (No Games)
-        const apps = [
-            "Lucky Patcher VIP", "MT Manager Pro", "NP Manager", "Game Guardian Pro", "WhatsApp Plus Bharat",
-            "Spotify Premium", "Kinemaster Mod", "CapCut Pro No-VPN", "Alight Motion Premium", "Canva Pro",
-            "PicsArt Gold Bharat", "ZArchiver Donate", "HTTP Canary Pro", "Termux Tools Pack", "IDM Download Manager",
-            "Truecaller Gold", "Youtube Vanced Pro", "TikTok No-Filter", "Insta Pro Mod", "Snapchat Premium Mod",
-            "Hotstar VIP Mod", "Netflix Bharat Premium", "MX Player Gold", "WPS Office Pro", "VPN Master Pro"
+        const data = [
+            { name: "Pushpa 2 Full", cat: "Premium Movies", type: "4K" },
+            { name: "Lucky Patcher", cat: "Hacking Tools", type: "VIP" },
+            { name: "Mirzapur S3", cat: "Web Series", type: "HD" },
+            { name: "MT Manager", cat: "Hacking Tools", type: "MOD" },
+            { name: "Netflix Mod", cat: "Premium Apps", type: "FREE" },
+            { name: "GTA V Mobile", cat: "Premium Apps", type: "BETA" },
+            { name: "Kantara A-1", cat: "Premium Movies", type: "HD" }
         ];
 
-        // 🛡️ BORDER SECURITY CHECK (Simulated for Demo)
-        function checkLocation() {
-            // Asli app mein yahan IP check hota hai, abhi hum demo dikha rahe hain
-            const userCountry = "India"; // Ise 'Bangladesh' karke test kar sakte ho
-            if (userCountry !== "India") {
-                document.getElementById('block-screen').style.display = 'flex';
-                document.getElementById('main-container').style.display = 'none';
-            }
-        }
-
-        function load() {
-            const grid = document.getElementById('app-grid');
-            grid.innerHTML = "";
-            apps.forEach(name => {
-                grid.innerHTML += `<div class="app-card">
-                    <img src="https://api.dicebear.com/7.x/initials/svg?seed=${name}">
-                    <div style="font-size:10px; font-weight:bold; margin:5px 0;">${name}</div>
-                    <button class="btn-target" onclick="openP('${name}')">TARGET LINK</button>
-                </div>`;
+        function load(filter = "") {
+            const area = document.getElementById('content-area');
+            area.innerHTML = "";
+            const filtered = filter ? data.filter(i => i.cat === filter) : data;
+            
+            filtered.forEach(item => {
+                area.innerHTML += `
+                    <div class="item-card">
+                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${item.name}">
+                        <div style="font-size:11px; font-weight:bold; margin-bottom:5px;">${item.name}</div>
+                        <button class="btn-action" onclick="alert('Connecting to Bharat Server...')">GET ${item.type}</button>
+                    </div>
+                `;
             });
         }
 
-        function openP(name) {
-            if(credits >= 500) {
-                credits -= 500;
-                document.getElementById('cr-val').innerText = credits;
-                document.getElementById('t-app').innerText = name.toUpperCase();
-                
-                let q = name.toLowerCase().replace(/\s+/g, '-');
-                let finalUrl = `https://${q}.en.uptodown.com/android/download`;
-                
-                document.getElementById('f-link').href = finalUrl;
-                document.getElementById('display-url').innerText = finalUrl;
-                document.getElementById('notice-page').style.display = 'flex';
-            } else { alert("Bharat PKG Code Needed!"); }
-        }
-
-        function closeP() { document.getElementById('notice-page').style.display = 'none'; }
-        function claim() {
-            if(document.getElementById('pkg-in').value.toUpperCase() === 'BHARAT') {
-                credits += 1000;
-                document.getElementById('cr-val').innerText = credits;
-                document.getElementById('pkg-in').value = "";
+        function toggleMenu() {
+            const side = document.getElementById('sidebar');
+            const over = document.getElementById('overlay');
+            if(side.classList.contains('active')) {
+                side.classList.remove('active');
+                over.style.display = 'none';
+            } else {
+                side.classList.add('active');
+                over.style.display = 'block';
             }
         }
 
-        window.onload = () => {
-            checkLocation();
-            load();
-        };
+        function showCat(cat) {
+            load(cat);
+            toggleMenu();
+        }
+
+        function searchNet() {
+            let val = document.getElementById('mainSearch').value.toLowerCase();
+            const area = document.getElementById('content-area');
+            area.innerHTML = "";
+            data.forEach(item => {
+                if(item.name.toLowerCase().includes(val)) {
+                    area.innerHTML += `
+                        <div class="item-card">
+                            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${item.name}">
+                            <div style="font-size:11px; font-weight:bold; margin-bottom:5px;">${item.name}</div>
+                            <button class="btn-action">SEARCH RESULTS</button>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        window.onload = () => load();
     </script>
 </body>
 </html>
