@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v63.0</title>
+    <title>RTX BHARAT v64.0</title>
     <style>
         :root { --saffron: #FF9933; --white: #FFFFFF; --green: #2e7d32; --bg: #000000; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
@@ -33,8 +33,17 @@
         #notice-page { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background: white; color: black; display: none; 
-            flex-direction: column; align-items: center; justify-content: center; z-index: 1000; padding: 25px;
+            flex-direction: column; align-items: center; justify-content: center; z-index: 1000; padding: 25px; padding-top: 60px;
         }
+        
+        /* 🚨 NEW: TOP REDIRECT NOTICE BAR */
+        #redirect-bar {
+            position: absolute; top: 0; left: 0; width: 100%; background: #f8f9fa; border-bottom: 2px solid #dadce0;
+            padding: 12px; font-size: 11px; text-align: left; word-wrap: break-word; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .redirect-title { color: #d32f2f; font-weight: 900; font-size: 12px; margin-bottom: 4px; display: block; }
+        .redirect-url { color: #1a73e8; text-decoration: underline; font-weight: bold; }
+
         .soft-tag { background: var(--green); color: white; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 12px; margin-bottom: 15px; }
         .box { border: 2px solid #ddd; border-radius: 12px; padding: 20px; width: 100%; text-align: center; }
         .main-btn { background: var(--green); color: white; padding: 16px; border-radius: 8px; text-decoration: none; width: 100%; display: block; text-align: center; font-weight: bold; margin-top: 20px; font-size: 18px; }
@@ -56,11 +65,19 @@
         <div id="game-list"></div>
 
         <div id="notice-page">
+            
+            <div id="redirect-bar">
+                <span class="redirect-title">⚠️ Redirect Notice</span>
+                The app is redirecting you to: <br>
+                <span class="redirect-url" id="display-url">https://example.com</span>
+            </div>
+
             <div class="soft-tag">SOFT Secure Engine</div>
             <div class="box">
                 <h2 id="t-game">GAME NAME</h2>
                 <p style="font-size:12px; color:#666; margin-top:10px;">Connection Established! Click below to jump directly to the <b>Official Softonic Download Page</b>.</p>
             </div>
+            
             <a href="#" class="main-btn" id="f-link">SECURE DOWNLOAD</a>
             <button onclick="closeP()" style="margin-top:20px; color:gray; background:none; border:none; text-decoration:underline; font-weight:bold;">Cancel</button>
         </div>
@@ -74,18 +91,13 @@
     <script>
         let credits = 1500;
         
-        // 🎯 EXACT SOFTONIC DIRECT LINKS (NO GOOGLE SEARCH)
+        // 🎯 EXACT SOFTONIC DIRECT LINKS
         const gameLinks = {
-            "Sigma Pro X": "https://sigma-battle-royale-re9.en.softonic.com/android/download", // Video wala exact link!
+            "Sigma Pro X": "https://sigma-battle-royale-re9.en.softonic.com/android/download",
             "GTA 5 Mobile": "https://grand-theft-auto-v-gta-5.en.softonic.com/android/download",
             "Free Fire Advance": "https://free-fire-advance.en.softonic.com/android/download",
             "Minecraft": "https://minecraft.en.softonic.com/android/download",
-            "BGMI Mod": "https://battlegrounds-mobile-india.en.softonic.com/android/download",
-            "Fortnite Android": "https://fortnite.en.softonic.com/android/download",
-            "Call of Duty": "https://call-of-duty-mobile.en.softonic.com/android/download",
-            "PUBG KR": "https://pubg-mobile-kr.en.softonic.com/android/download",
-            "WhatsApp Plus": "https://whatsapp-plus.en.softonic.com/android/download",
-            "Roblox": "https://roblox.en.softonic.com/android/download"
+            "BGMI Mod": "https://battlegrounds-mobile-india.en.softonic.com/android/download"
         };
 
         const games = [
@@ -115,15 +127,16 @@
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('t-game').innerText = name.toUpperCase();
                 
-                // 🚀 DIRECT TARGET INJECTION: Agar list mein link hai toh seedha wahan bhejo
                 let directUrl = gameLinks[name];
                 if (!directUrl) {
-                    // Agar link database mein nahi hai, toh automatic Softonic URL generate karo
                     let q = name.toLowerCase().replace(/\s+/g, '-');
                     directUrl = `https://${q}.en.softonic.com/android/download`;
                 }
                 
+                // 🚨 UPDATE THE REDIRECT NOTICE TEXT AND MAIN LINK
                 document.getElementById('f-link').href = directUrl;
+                document.getElementById('display-url').innerText = directUrl;
+                
                 document.getElementById('notice-page').style.display = 'flex';
             } else { alert("Coins Needed!"); }
         }
