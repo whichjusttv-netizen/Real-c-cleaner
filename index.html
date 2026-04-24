@@ -3,140 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v70.0 | TEAM SOLID</title>
+    <title>RTX BHARAT v71.0 | FIXED</title>
     <style>
-        :root { --saffron: #FF9933; --white: #FFFFFF; --green: #138808; --bg: #000; --accent: #ff3e3e; }
+        :root { --saffron: #FF9933; --white: #FFFFFF; --green: #138808; --bg: #000; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        body { background: #050505; color: white; height: 100vh; overflow: hidden; display: flex; justify-content: center; }
+        body { background: #000; color: white; height: 100vh; overflow: hidden; }
 
-        #main-container { 
-            width: 100%; max-width: 400px; height: 100vh; background: var(--bg);
-            border-left: 1px solid #222; border-right: 1px solid #222;
-            display: flex; flex-direction: column; position: relative;
-        }
+        /* MAIN LAYOUT */
+        #main-container { width: 100%; height: 100vh; display: flex; flex-direction: column; position: relative; }
 
-        /* 📡 NETWORK & HEADER */
-        .header { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; border-bottom: 1px solid #222; }
-        .net-status { font-size: 9px; color: #00ff00; letter-spacing: 1px; animation: blink 2s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        /* HEADER & STATUS */
+        .header { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; border-bottom: 1px solid #222; z-index: 100; }
+        .net-status { font-size: 10px; color: #00ff00; font-weight: bold; }
 
-        /* 🆔 INITIAL ID SCREEN */
-        #id-screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000;
-            z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center;
-        }
-        .id-box { border: 1px dashed var(--saffron); padding: 20px; border-radius: 10px; background: #050505; width: 100%; }
-        .id-text { font-size: 24px; font-weight: 900; color: var(--saffron); margin: 15px 0; letter-spacing: 3px; }
-
-        /* ☰ SIDEBAR (3 LINES) */
+        /* SIDEBAR (3 LINES) */
         #sidebar {
-            position: absolute; left: -250px; top: 0; width: 250px; height: 100%;
-            background: #0a0a0a; transition: 0.3s; z-index: 1500; border-right: 2px solid var(--saffron); padding: 20px;
+            position: absolute; left: -260px; top: 0; width: 250px; height: 100%;
+            background: #0d0d0d; transition: 0.4s; z-index: 1001; border-right: 2px solid var(--saffron); padding: 20px;
         }
         #sidebar.active { left: 0; }
         .menu-item { padding: 15px 0; border-bottom: 1px solid #222; font-size: 14px; cursor: pointer; color: #ccc; }
-        .menu-item:hover { color: var(--saffron); }
+        .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; }
 
-        /* CONTENT */
-        #content { flex-grow: 1; overflow-y: auto; padding: 15px; padding-bottom: 80px; }
-        .section-title { font-size: 14px; font-weight: bold; margin-bottom: 15px; color: var(--saffron); border-left: 3px solid var(--saffron); padding-left: 10px; }
-
-        .app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        /* CONTENT AREA */
+        #content-scroll { flex-grow: 1; overflow-y: auto; padding: 15px; padding-bottom: 90px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card { background: #111; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #222; }
-        .card img { width: 40px; margin-bottom: 10px; filter: grayscale(1); }
-        .download-btn { background: var(--green); color: white; border: none; padding: 8px; border-radius: 5px; width: 100%; font-size: 10px; font-weight: bold; }
+        .card img { width: 45px; margin-bottom: 10px; border-radius: 8px; }
+        
+        /* FIX: BUTTON STYLES */
+        .action-btn { background: var(--green); color: white; border: none; padding: 10px; border-radius: 6px; width: 100%; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 5px; }
+        .action-btn:active { transform: scale(0.95); background: #0e6606; }
 
-        /* 🔘 BOTTOM NAVIGATION */
+        /* BOTTOM NAV FIX */
         .bottom-nav { 
-            position: absolute; bottom: 0; width: 100%; background: #0a0a0a; 
-            display: flex; justify-content: space-around; padding: 12px; border-top: 1px solid #222;
+            position: fixed; bottom: 0; width: 100%; background: #0a0a0a; 
+            display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #222; z-index: 100;
         }
-        .nav-btn { color: #555; font-size: 10px; text-align: center; cursor: pointer; }
-        .nav-btn.active { color: var(--saffron); }
+        .nav-btn { color: #555; font-size: 10px; text-align: center; cursor: pointer; flex: 1; }
+        .nav-btn.active { color: var(--saffron); font-weight: bold; }
 
-        .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1400; }
+        /* REDIRECT PAGE */
+        #redirect-page { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: white; color: black; display: none; 
+            flex-direction: column; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
+        }
     </style>
 </head>
 <body>
 
-    <div id="id-screen">
-        <div style="font-size: 40px; margin-bottom: 20px;">🇮🇳</div>
-        <h2 style="font-size: 18px; letter-spacing: 2px;">RTX BHARAT PROTOCOL</h2>
-        <p style="font-size: 11px; color: #666; margin: 10px 0;">TEAM SOLID IS ASSIGNING YOUR UNIQUE ID...</p>
-        <div class="id-box">
-            <div style="font-size: 10px; color: gray;">YOUR AGENT ID:</div>
-            <div id="user-id-val" class="id-text">RTX-99021</div>
-        </div>
-        <button onclick="startApp()" style="margin-top: 30px; background: var(--saffron); border: none; padding: 15px 40px; border-radius: 50px; font-weight: bold; cursor: pointer;">ACCESS VAULT</button>
+    <div id="sidebar">
+        <h3 style="color:var(--saffron); margin-bottom:10px;">TEAM SOLID</h3>
+        <p id="sid-display" style="font-size:10px; color:gray; margin-bottom:20px;"></p>
+        <div class="menu-item">🇮🇳 BHARAT NODES</div>
+        <div class="menu-item">🛠️ TOOLS BYPASS</div>
+        <div class="menu-item" onclick="closeSidebar()" style="color:red; margin-top:40px;">CLOSE MENU</div>
     </div>
+    <div id="overlay" class="overlay" onclick="closeSidebar()"></div>
 
     <div id="main-container">
         <div class="header">
-            <div onclick="toggleMenu()" style="cursor:pointer; font-size: 20px;">☰</div>
-            <div style="font-weight: 900; font-size: 16px;">RTX <span style="color:var(--saffron)">BHARAT</span></div>
+            <div onclick="openSidebar()" style="font-size:22px; cursor:pointer;">☰</div>
+            <div style="font-weight:900;">RTX <span style="color:var(--saffron)">BHARAT</span></div>
             <div class="net-status">● CONNECTED</div>
         </div>
 
-        <div id="sidebar">
-            <h3 style="color:var(--saffron); margin-bottom:20px;">AGENT PROFILE</h3>
-            <div style="font-size: 11px; color: gray; margin-bottom: 20px;">ID: <span id="sid-val" style="color:white"></span></div>
-            <div class="menu-item">🇮🇳 My Country: Bharat</div>
-            <div class="menu-item">🛠️ Team Solid Contact</div>
-            <div class="menu-item">🔑 Change PKG Code</div>
-            <div class="menu-item">🛡️ Encryption Settings</div>
-            <div class="menu-item" onclick="toggleMenu()" style="color:red; margin-top:30px;">✖ Close Menu</div>
-        </div>
-        <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-
-        <div id="content">
-            <div class="section-title">TOP BYPASSED TOOLS</div>
-            <div class="app-grid">
-                <div class="card">
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Lucky">
-                    <div style="font-size:11px; font-weight:bold; margin-bottom:8px;">LUCKY PATCHER</div>
-                    <button class="download-btn">INJECT</button>
-                </div>
-                <div class="card">
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=MT">
-                    <div style="font-size:11px; font-weight:bold; margin-bottom:8px;">MT MANAGER</div>
-                    <button class="download-btn">INJECT</button>
-                </div>
-            </div>
-        </div>
+        <div id="content-scroll"></div>
 
         <div class="bottom-nav">
-            <div class="nav-btn active">🏠<br>HOME</div>
-            <div class="nav-btn">🎬<br>MOVIES</div>
-            <div class="nav-btn">📱<br>APPS</div>
-            <div class="nav-btn">👤<br>TEAM</div>
+            <div class="nav-btn active" onclick="loadPage('home', this)">🏠<br>HOME</div>
+            <div class="nav-btn" onclick="loadPage('apps', this)">📱<br>APPS</div>
+            <div class="nav-btn" onclick="loadPage('movies', this)">🎬<br>MOVIES</div>
+            <div class="nav-btn" onclick="alert('Team Solid Only')">👤<br>TEAM</div>
         </div>
     </div>
 
+    <div id="redirect-page">
+        <div style="width:100%; text-align:left; font-size:10px; margin-bottom:50px;">
+            <b style="color:red;">⚠️ BHARAT SECURE REDIRECT</b><br>
+            <span id="target-url" style="word-break:break-all; color:blue;"></span>
+        </div>
+        <div style="border:2px solid #eee; padding:20px; border-radius:15px; width:100%; text-align:center;">
+            <h2 id="target-item">ITEM</h2>
+            <p style="font-size:12px; color:#666;">Direct Bypassed Link Generated.</p>
+        </div>
+        <a href="#" id="final-link" style="background:black; color:white; padding:18px; width:100%; text-align:center; display:block; margin-top:20px; text-decoration:none; border-radius:10px; font-weight:bold;">DOWNLOAD NOW</a>
+        <button onclick="document.getElementById('redirect-page').style.display='none'" style="margin-top:20px; border:none; background:none; text-decoration:underline;">Go Back</button>
+    </div>
+
     <script>
-        // Generate Unique Team ID
-        function generateID() {
-            const id = "RTX-" + Math.floor(10000 + Math.random() * 90000);
-            document.getElementById('user-id-val').innerText = id;
-            document.getElementById('sid-val').innerText = id;
+        const uID = "RTX-" + Math.floor(1000 + Math.random() * 9000);
+        document.getElementById('sid-display').innerText = "AGENT ID: " + uID;
+
+        function openSidebar() { 
+            document.getElementById('sidebar').classList.add('active'); 
+            document.getElementById('overlay').style.display = 'block';
+        }
+        function closeSidebar() { 
+            document.getElementById('sidebar').classList.remove('active'); 
+            document.getElementById('overlay').style.display = 'none';
         }
 
-        function startApp() {
-            document.getElementById('id-screen').style.display = 'none';
-        }
+        // FIX: CONTENT LOADING LOGIC
+        function loadPage(type, btn) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const area = document.getElementById('content-scroll');
+            area.innerHTML = "";
 
-        function toggleMenu() {
-            const side = document.getElementById('sidebar');
-            const over = document.getElementById('overlay');
-            if (side.classList.contains('active')) {
-                side.classList.remove('active');
-                over.style.display = 'none';
-            } else {
-                side.classList.add('active');
-                over.style.display = 'block';
+            let items = [];
+            if(type === 'home') {
+                area.innerHTML = `<div style="background:#111; padding:20px; border-radius:12px; border:1px solid var(--saffron); margin-bottom:20px;"><h3>WELCOME AGENT</h3><p style="font-size:11px; color:gray;">System is secure.</p></div>`;
+                items = ["Sigma Battle", "HappyMod"];
+            } else if(type === 'apps') {
+                items = ["Lucky Patcher", "MT Manager", "NP Manager", "Game Guardian"];
+            } else if(type === 'movies') {
+                items = ["Pushpa 2 HD", "Stree 2", "Kalki 2898", "Pathaan"];
             }
+
+            let html = `<div class="grid">`;
+            items.forEach(name => {
+                html += `
+                <div class="card">
+                    <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}">
+                    <div style="font-size:11px; font-weight:bold;">${name}</div>
+                    <button class="action-btn" onclick="triggerDownload('${name}')">${type==='movies'?'WATCH':'DOWNLOAD'}</button>
+                </div>`;
+            });
+            html += `</div>`;
+            area.innerHTML += html;
         }
 
-        window.onload = generateID;
+        // FIX: DOWNLOAD BUTTON LOGIC
+        function triggerDownload(name) {
+            const url = `https://${name.toLowerCase().replace(/\s+/g, '-')}.en.uptodown.com/android/download`;
+            document.getElementById('target-item').innerText = name.toUpperCase();
+            document.getElementById('target-url').innerText = url;
+            document.getElementById('final-link').href = url;
+            document.getElementById('redirect-page').style.display = 'flex';
+        }
+
+        window.onload = () => loadPage('home', document.querySelector('.nav-btn'));
     </script>
 </body>
 </html>
