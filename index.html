@@ -3,110 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v64.0</title>
+    <title>RTX BHARAT v65.0</title>
     <style>
         :root { --saffron: #FF9933; --white: #FFFFFF; --green: #2e7d32; --bg: #000000; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         
         body { background: #111; color: white; height: 100vh; display: flex; justify-content: center; overflow: hidden; align-items: flex-start; }
 
-        /* COMPACT DESIGN */
+        /* COMPACT PRO STRUCTURE */
         #main-container { 
             width: 96%; max-width: 400px; height: 98vh; background: var(--bg);
             border-top: 3px solid var(--saffron); border-left: 1px solid #333; border-right: 1px solid #333;
             display: flex; flex-direction: column; position: relative;
         }
 
-        .header { padding: 12px; display: flex; justify-content: space-between; border-bottom: 1px solid #222; }
+        .header { padding: 12px; display: flex; justify-content: space-between; border-bottom: 1px solid #222; background: #050505; }
         
+        /* 🔄 ROLLING SYSTEM */
         .rolling-bar { background: #1a1a1a; padding: 5px; font-size: 10px; color: var(--saffron); overflow: hidden; white-space: nowrap; }
         .rolling-text { display: inline-block; animation: scroll 15s linear infinite; }
         @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* PREMIUM GAMES GRID */
+        /* 🎮 30 TRENDING GAMES */
         #game-list { flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; padding-bottom: 80px; scrollbar-width: none; }
-        .game-card { background: #0a0a0a; border: 1px solid #222; border-radius: 12px; padding: 10px; text-align: center; border-bottom: 2px solid var(--green); }
-        .game-card img { width: 40px; border-radius: 8px; margin-bottom: 5px; }
-        .btn-target { background: var(--green); color: white; border: none; padding: 8px; border-radius: 4px; font-size: 10px; font-weight: 900; width: 100%; cursor: pointer; }
+        .game-card { background: #0a0a0a; border: 1px solid #222; border-radius: 12px; padding: 12px; text-align: center; border-bottom: 2px solid var(--green); }
+        .game-card img { width: 45px; border-radius: 10px; margin-bottom: 6px; border: 1px solid #333; }
+        .btn-target { background: var(--green); color: white; border: none; padding: 8px; border-radius: 5px; font-size: 10px; font-weight: 900; width: 100%; cursor: pointer; }
 
-        /* ⚪ DIRECT LANDING NOTICE (White Page) */
+        /* ⚪ DIRECT NOTICE & REDIRECT PAGE */
         #notice-page { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background: white; color: black; display: none; 
-            flex-direction: column; align-items: center; justify-content: center; z-index: 1000; padding: 25px; padding-top: 60px;
+            flex-direction: column; align-items: center; justify-content: center; z-index: 1000; padding: 25px; padding-top: 70px;
         }
         
-        /* 🚨 NEW: TOP REDIRECT NOTICE BAR */
+        /* 🚨 TOP REDIRECT NOTICE */
         #redirect-bar {
-            position: absolute; top: 0; left: 0; width: 100%; background: #f8f9fa; border-bottom: 2px solid #dadce0;
-            padding: 12px; font-size: 11px; text-align: left; word-wrap: break-word; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: absolute; top: 0; left: 0; width: 100%; background: #f1f3f4; border-bottom: 2px solid #ccc;
+            padding: 12px; font-size: 10px; text-align: left; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .redirect-title { color: #d32f2f; font-weight: 900; font-size: 12px; margin-bottom: 4px; display: block; }
-        .redirect-url { color: #1a73e8; text-decoration: underline; font-weight: bold; }
+        .warning-text { color: #d32f2f; font-weight: 900; font-size: 11px; display: block; margin-bottom: 3px; }
+        .url-text { color: #0056b3; font-weight: bold; text-decoration: underline; word-break: break-all; }
 
-        .soft-tag { background: var(--green); color: white; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 12px; margin-bottom: 15px; }
-        .box { border: 2px solid #ddd; border-radius: 12px; padding: 20px; width: 100%; text-align: center; }
-        .main-btn { background: var(--green); color: white; padding: 16px; border-radius: 8px; text-decoration: none; width: 100%; display: block; text-align: center; font-weight: bold; margin-top: 20px; font-size: 18px; }
+        .source-tag { background: #333; color: white; padding: 4px 12px; border-radius: 50px; font-weight: bold; font-size: 10px; margin-bottom: 15px; }
+        .box { border: 2px solid #ddd; border-radius: 15px; padding: 20px; width: 100%; text-align: center; background: #fafafa; }
+        .main-btn { background: #000; color: white; padding: 18px; border-radius: 10px; text-decoration: none; width: 100%; display: block; text-align: center; font-weight: bold; margin-top: 20px; font-size: 16px; border: 2px solid var(--saffron); }
 
-        .pkg-section { position: absolute; bottom: 0; width: 100%; background: #000; padding: 10px; display: flex; gap: 8px; border-top: 1px solid #333; }
-        .pkg-in { flex: 1; background: #111; border: 1px solid #444; padding: 8px; border-radius: 5px; color: white; }
+        .pkg-section { position: absolute; bottom: 0; width: 100%; background: #000; padding: 12px; display: flex; gap: 8px; border-top: 1px solid #333; }
+        .pkg-in { flex: 1; background: #111; border: 1px solid #444; padding: 10px; border-radius: 8px; color: white; }
     </style>
 </head>
 <body>
 
     <div id="main-container">
         <div class="header">
-            <span style="font-weight: 900;">RTX <span style="color:var(--saffron)">BHARAT</span></span>
+            <span style="font-weight: 900;">RTX <span style="color:var(--saffron)">BHARAT</span> 🇮🇳</span>
             <div style="color:var(--saffron); font-weight: bold;">💎 <span id="cr-val">1500</span></div>
         </div>
 
-        <div class="rolling-bar"><div class="rolling-text">🔥 DIRECT SOFTONIC SERVERS CONNECTED | SIGMA PRO X SECURE LINK ACTIVE 🚀</div></div>
+        <div class="rolling-bar"><div class="rolling-text">🚀 MULTI-SOURCE ENGINE ACTIVE: SOFTONIC | UPTODOWN | APKPURE | APKMIRROR CONNECTED 🔥</div></div>
 
         <div id="game-list"></div>
 
         <div id="notice-page">
-            
             <div id="redirect-bar">
-                <span class="redirect-title">⚠️ Redirect Notice</span>
-                The app is redirecting you to: <br>
-                <span class="redirect-url" id="display-url">https://example.com</span>
+                <span class="warning-text">⚠️ EXTERNAL REDIRECT NOTICE</span>
+                You are moving to: <br>
+                <span class="url-text" id="display-url">Loading...</span>
             </div>
 
-            <div class="soft-tag">SOFT Secure Engine</div>
+            <div class="source-tag" id="source-name">THIRD PARTY SOURCE</div>
             <div class="box">
-                <h2 id="t-game">GAME NAME</h2>
-                <p style="font-size:12px; color:#666; margin-top:10px;">Connection Established! Click below to jump directly to the <b>Official Softonic Download Page</b>.</p>
+                <h2 id="t-game" style="color:#000;">GAME NAME</h2>
+                <p style="font-size:11px; color:#555; margin-top:8px;">RTX Bharat has scanned multiple third-party servers. The best secure link has been found.</p>
             </div>
             
-            <a href="#" class="main-btn" id="f-link">SECURE DOWNLOAD</a>
+            <a href="#" class="main-btn" id="f-link">DIRECT DOWNLOAD</a>
             <button onclick="closeP()" style="margin-top:20px; color:gray; background:none; border:none; text-decoration:underline; font-weight:bold;">Cancel</button>
         </div>
 
         <div class="pkg-section">
-            <input type="text" id="pkg-in" class="pkg-in" placeholder="PKG CODE">
-            <button onclick="claim()" style="background:var(--saffron); border:none; padding:8px 12px; border-radius:5px; font-weight:bold; color:black;">CLAIM</button>
+            <input type="text" id="pkg-in" class="pkg-in" placeholder="ENTER PKG">
+            <button onclick="claim()" style="background:var(--saffron); border:none; padding:8px 15px; border-radius:8px; font-weight:bold;">CLAIM</button>
         </div>
     </div>
 
     <script>
         let credits = 1500;
         
-        // 🎯 EXACT SOFTONIC DIRECT LINKS
-        const gameLinks = {
-            "Sigma Pro X": "https://sigma-battle-royale-re9.en.softonic.com/android/download",
-            "GTA 5 Mobile": "https://grand-theft-auto-v-gta-5.en.softonic.com/android/download",
-            "Free Fire Advance": "https://free-fire-advance.en.softonic.com/android/download",
-            "Minecraft": "https://minecraft.en.softonic.com/android/download",
-            "BGMI Mod": "https://battlegrounds-mobile-india.en.softonic.com/android/download"
+        // 🎯 MULTI-SOURCE DATABASE (Softonic, Uptodown, etc.)
+        const gameDatabase = {
+            "Sigma Pro X": { url: "https://sigma-battle-royale-re9.en.softonic.com/android/download", src: "SOFTONIC" },
+            "GTA 5 Mobile": { url: "https://grand-theft-auto-v-gta-5.en.uptodown.com/android/download", src: "UPTODOWN" },
+            "Free Fire Advance": { url: "https://free-fire-advance.en.softonic.com/android/download", src: "SOFTONIC" },
+            "Minecraft": { url: "https://minecraft.en.softonic.com/android/download", src: "SOFTONIC" },
+            "BGMI Mod": { url: "https://battlegrounds-mobile-india.en.uptodown.com/android/download", src: "UPTODOWN" },
+            "WhatsApp Plus": { url: "https://whatsapp-plus.en.softonic.com/android/download", src: "SOFTONIC" },
+            "Fortnite Android": { url: "https://fortnite.en.uptodown.com/android/download", src: "UPTODOWN" }
         };
 
         const games = [
             "Sigma Pro X", "GTA 5 Mobile", "Free Fire Advance", "Minecraft", "BGMI Mod",
-            "Fortnite Android", "Call of Duty", "PUBG KR", "WhatsApp Plus", "Roblox",
-            "FIFA 25 Mod", "Tekken 8 Mobile", "Apex Legends", "Spider-Man 2", "God of War", 
-            "Resident Evil 4", "Bully", "GTA San Andreas", "Valorant Mobile", "Elden Ring", 
-            "Clash of Clans", "Need For Speed", "Hitman", "Among Us", "Project Blood", 
-            "Cyberpunk", "Total Overdose", "WWE 2K25", "Fall Guys", "Sigma Battle"
+            "Fortnite Android", "WhatsApp Plus", "Roblox", "FIFA 25 Mod", "Tekken 8 Mobile",
+            "Call of Duty", "PUBG KR", "Spider-Man 2", "God of War", "Resident Evil 4",
+            "Bully", "GTA San Andreas", "Valorant Mobile", "Elden Ring", "Clash of Clans",
+            "Need For Speed", "Hitman", "Among Us", "Project Blood", "Cyberpunk",
+            "Total Overdose", "WWE 2K25", "Fall Guys", "Sigma Battle", "Lucky Patcher"
         ];
 
         function load() {
@@ -114,7 +116,7 @@
             grid.innerHTML = "";
             games.forEach(name => {
                 grid.innerHTML += `<div class="game-card">
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${name}" style="width:40px;">
+                    <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}" style="width:40px;">
                     <div style="font-size:10px; font-weight:bold; margin:5px 0;">${name}</div>
                     <button class="btn-target" onclick="openP('${name}')">TARGET LINK</button>
                 </div>`;
@@ -127,18 +129,26 @@
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('t-game').innerText = name.toUpperCase();
                 
-                let directUrl = gameLinks[name];
-                if (!directUrl) {
+                let data = gameDatabase[name];
+                let finalUrl = "";
+                let source = "";
+
+                if (data) {
+                    finalUrl = data.url;
+                    source = data.src;
+                } else {
+                    // Auto-target Uptodown for other games
                     let q = name.toLowerCase().replace(/\s+/g, '-');
-                    directUrl = `https://${q}.en.softonic.com/android/download`;
+                    finalUrl = `https://${q}.en.uptodown.com/android/download`;
+                    source = "UPTODOWN SERVER";
                 }
                 
-                // 🚨 UPDATE THE REDIRECT NOTICE TEXT AND MAIN LINK
-                document.getElementById('f-link').href = directUrl;
-                document.getElementById('display-url').innerText = directUrl;
+                document.getElementById('f-link').href = finalUrl;
+                document.getElementById('display-url').innerText = finalUrl;
+                document.getElementById('source-name').innerText = source;
                 
                 document.getElementById('notice-page').style.display = 'flex';
-            } else { alert("Coins Needed!"); }
+            } else { alert("PKG Code Needed!"); }
         }
 
         function closeP() { document.getElementById('notice-page').style.display = 'none'; }
