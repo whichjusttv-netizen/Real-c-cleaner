@@ -3,149 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v71.0 | FIXED</title>
+    <title>RTX BHARAT v72.0 | IP SHIELD</title>
     <style>
-        :root { --saffron: #FF9933; --white: #FFFFFF; --green: #138808; --bg: #000; }
+        :root { --saffron: #FF9933; --green: #138808; --bg: #000; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        body { background: #000; color: white; height: 100vh; overflow: hidden; }
+        body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; justify-content: center; }
 
-        /* MAIN LAYOUT */
-        #main-container { width: 100%; height: 100vh; display: flex; flex-direction: column; position: relative; }
+        #main-container { width: 100%; max-width: 450px; height: 100vh; display: flex; flex-direction: column; position: relative; border-top: 5px solid var(--saffron); }
 
-        /* HEADER & STATUS */
-        .header { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; border-bottom: 1px solid #222; z-index: 100; }
-        .net-status { font-size: 10px; color: #00ff00; font-weight: bold; }
+        /* 📡 IP & SECURITY HEADER */
+        .header { padding: 15px; background: #0a0a0a; border-bottom: 1px solid #222; text-align: center; }
+        .ip-box { font-size: 10px; color: var(--saffron); margin-top: 5px; font-family: monospace; }
 
-        /* SIDEBAR (3 LINES) */
-        #sidebar {
-            position: absolute; left: -260px; top: 0; width: 250px; height: 100%;
-            background: #0d0d0d; transition: 0.4s; z-index: 1001; border-right: 2px solid var(--saffron); padding: 20px;
-        }
-        #sidebar.active { left: 0; }
-        .menu-item { padding: 15px 0; border-bottom: 1px solid #222; font-size: 14px; cursor: pointer; color: #ccc; }
-        .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; }
+        /* 📱 SCROLLABLE PREMIUM HUB */
+        #content { flex-grow: 1; overflow-y: auto; padding: 15px; scrollbar-width: none; }
+        .section-title { font-size: 13px; font-weight: bold; margin: 20px 0 10px; color: var(--saffron); text-transform: uppercase; letter-spacing: 1px; border-left: 3px solid var(--saffron); padding-left: 10px; }
 
-        /* CONTENT AREA */
-        #content-scroll { flex-grow: 1; overflow-y: auto; padding: 15px; padding-bottom: 90px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .card { background: #111; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #222; }
-        .card img { width: 45px; margin-bottom: 10px; border-radius: 8px; }
+        .app-list { display: flex; flex-direction: column; gap: 10px; }
+        .app-item { background: #0d0d0d; border: 1px solid #222; border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; transition: 0.3s; }
+        .app-item:active { background: #1a1a1a; }
         
-        /* FIX: BUTTON STYLES */
-        .action-btn { background: var(--green); color: white; border: none; padding: 10px; border-radius: 6px; width: 100%; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 5px; }
-        .action-btn:active { transform: scale(0.95); background: #0e6606; }
+        .info { display: flex; align-items: center; gap: 12px; }
+        .info img { width: 40px; height: 40px; border-radius: 8px; border: 1px solid #333; }
+        .app-name { font-size: 13px; font-weight: bold; }
+        .source-tag { font-size: 9px; color: #666; background: #1a1a1a; padding: 2px 6px; border-radius: 4px; margin-top: 3px; display: inline-block; }
 
-        /* BOTTOM NAV FIX */
-        .bottom-nav { 
-            position: fixed; bottom: 0; width: 100%; background: #0a0a0a; 
-            display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #222; z-index: 100;
-        }
-        .nav-btn { color: #555; font-size: 10px; text-align: center; cursor: pointer; flex: 1; }
-        .nav-btn.active { color: var(--saffron); font-weight: bold; }
+        .dl-btn { background: var(--green); color: white; border: none; padding: 8px 15px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; }
 
-        /* REDIRECT PAGE */
-        #redirect-page { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: white; color: black; display: none; 
-            flex-direction: column; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
-        }
+        /* 🚫 BLOCK SCREEN */
+        #block-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+
+        /* ⚪ DIRECT NOTICE PAGE */
+        #redirect-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; color: black; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="sidebar">
-        <h3 style="color:var(--saffron); margin-bottom:10px;">TEAM SOLID</h3>
-        <p id="sid-display" style="font-size:10px; color:gray; margin-bottom:20px;"></p>
-        <div class="menu-item">🇮🇳 BHARAT NODES</div>
-        <div class="menu-item">🛠️ TOOLS BYPASS</div>
-        <div class="menu-item" onclick="closeSidebar()" style="color:red; margin-top:40px;">CLOSE MENU</div>
+    <div id="block-screen">
+        <h1 style="color:red; font-size: 40px;">🚫 ACCESS DENIED</h1>
+        <p style="margin-top:20px; font-size: 14px;">Your IP Address originates from a <br><b>Restricted Territory (PAK/INTL)</b>.</p>
+        <p style="color: gray; font-size: 11px; margin-top: 10px;">RTX BHARAT is only for Indian IP addresses.</p>
+        <div style="font-size: 50px; margin-top: 30px;">🇮🇳</div>
     </div>
-    <div id="overlay" class="overlay" onclick="closeSidebar()"></div>
 
     <div id="main-container">
         <div class="header">
-            <div onclick="openSidebar()" style="font-size:22px; cursor:pointer;">☰</div>
-            <div style="font-weight:900;">RTX <span style="color:var(--saffron)">BHARAT</span></div>
-            <div class="net-status">● CONNECTED</div>
+            <div style="font-weight: 900; letter-spacing: 2px;">RTX <span style="color:var(--saffron)">BHARAT</span> VAULT</div>
+            <div id="user-ip" class="ip-box">FETCHING SECURE IP...</div>
         </div>
 
-        <div id="content-scroll"></div>
+        <div id="content">
+            <div class="section-title">Hacking & Mod Tools</div>
+            <div class="app-list" id="tools-list"></div>
 
-        <div class="bottom-nav">
-            <div class="nav-btn active" onclick="loadPage('home', this)">🏠<br>HOME</div>
-            <div class="nav-btn" onclick="loadPage('apps', this)">📱<br>APPS</div>
-            <div class="nav-btn" onclick="loadPage('movies', this)">🎬<br>MOVIES</div>
-            <div class="nav-btn" onclick="alert('Team Solid Only')">👤<br>TEAM</div>
+            <div class="section-title">Premium Software (Bypassed)</div>
+            <div class="app-list" id="software-list"></div>
+            
+            <div class="section-title">Media & Entertainment</div>
+            <div class="app-list" id="media-list"></div>
         </div>
     </div>
 
     <div id="redirect-page">
-        <div style="width:100%; text-align:left; font-size:10px; margin-bottom:50px;">
-            <b style="color:red;">⚠️ BHARAT SECURE REDIRECT</b><br>
-            <span id="target-url" style="word-break:break-all; color:blue;"></span>
+        <div style="width:100%; text-align:left; font-size:10px; margin-bottom:40px;">
+            <b style="color:red;">⚠️ EXTERNAL REDIRECT</b><br>
+            <span id="target-url" style="word-break:break-all; color:blue; text-decoration:underline;"></span>
         </div>
-        <div style="border:2px solid #eee; padding:20px; border-radius:15px; width:100%; text-align:center;">
-            <h2 id="target-item">ITEM</h2>
-            <p style="font-size:12px; color:#666;">Direct Bypassed Link Generated.</p>
+        <div style="border:2px solid #ddd; padding:20px; border-radius:15px; width:100%; text-align:center;">
+            <h2 id="target-name">APP NAME</h2>
+            <p style="font-size:11px; color:#666;">Source Verified by RTX Bharat Team.</p>
         </div>
-        <a href="#" id="final-link" style="background:black; color:white; padding:18px; width:100%; text-align:center; display:block; margin-top:20px; text-decoration:none; border-radius:10px; font-weight:bold;">DOWNLOAD NOW</a>
-        <button onclick="document.getElementById('redirect-page').style.display='none'" style="margin-top:20px; border:none; background:none; text-decoration:underline;">Go Back</button>
+        <a href="#" id="final-link" style="background:black; color:white; padding:18px; width:100%; text-align:center; display:block; margin-top:20px; text-decoration:none; border-radius:10px; font-weight:bold;">DIRECT DOWNLOAD</a>
+        <button onclick="document.getElementById('redirect-page').style.display='none'" style="margin-top:20px; border:none; background:none; text-decoration:underline;">Back to Vault</button>
     </div>
 
     <script>
-        const uID = "RTX-" + Math.floor(1000 + Math.random() * 9000);
-        document.getElementById('sid-display').innerText = "AGENT ID: " + uID;
+        // 🎯 MULTI-SOURCE DATABASE
+        const database = [
+            { name: "Lucky Patcher", src: "SOFTONIC", type: "tools", url: "https://lucky-patcher.en.softonic.com/android/download" },
+            { name: "MT Manager VIP", src: "MOBILISM", type: "tools", url: "https://mt-manager.en.uptodown.com/android/download" },
+            { name: "Game Guardian", src: "OFFICIAL MIRROR", type: "tools", url: "https://gameguardian.net/download" },
+            { name: "NP Manager", src: "APK-ADMIN", type: "tools", url: "https://np-manager.en.uptodown.com/android/download" },
+            { name: "Spotify Premium", src: "MOD-YOLO", type: "software", url: "https://spotify.en.softonic.com/android/download" },
+            { name: "Kinemaster Pro", src: "MOD-ARENA", type: "software", url: "https://kinemaster.en.uptodown.com/android/download" },
+            { name: "CapCut Pro", src: "UPTODOWN", type: "software", url: "https://capcut.en.uptodown.com/android/download" },
+            { name: "Pushpa 2 Full HD", src: "BHARAT-SERVER", type: "media", url: "https://archive.org/details/pushpa-2-full-movie" },
+            { name: "Youtube Vanced", src: "VANCED-TEAM", type: "media", url: "https://youtubevanced.com/download" }
+        ];
 
-        function openSidebar() { 
-            document.getElementById('sidebar').classList.add('active'); 
-            document.getElementById('overlay').style.display = 'block';
-        }
-        function closeSidebar() { 
-            document.getElementById('sidebar').classList.remove('active'); 
-            document.getElementById('overlay').style.display = 'none';
-        }
+        // 🛡️ IP CATCHER & BORDER SECURITY
+        async function checkSecurity() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                document.getElementById('user-ip').innerText = `IP: ${data.ip} | LOC: ${data.country_name}`;
 
-        // FIX: CONTENT LOADING LOGIC
-        function loadPage(type, btn) {
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const area = document.getElementById('content-scroll');
-            area.innerHTML = "";
-
-            let items = [];
-            if(type === 'home') {
-                area.innerHTML = `<div style="background:#111; padding:20px; border-radius:12px; border:1px solid var(--saffron); margin-bottom:20px;"><h3>WELCOME AGENT</h3><p style="font-size:11px; color:gray;">System is secure.</p></div>`;
-                items = ["Sigma Battle", "HappyMod"];
-            } else if(type === 'apps') {
-                items = ["Lucky Patcher", "MT Manager", "NP Manager", "Game Guardian"];
-            } else if(type === 'movies') {
-                items = ["Pushpa 2 HD", "Stree 2", "Kalki 2898", "Pathaan"];
+                // Pakistan or Non-India Block Logic
+                if (data.country_code === 'PK' || data.country_code !== 'IN') {
+                    document.getElementById('block-screen').style.display = 'flex';
+                    document.getElementById('main-container').style.display = 'none';
+                }
+            } catch (error) {
+                document.getElementById('user-ip').innerText = "IP: 192.168.1.1 (LOCAL BYPASS)";
             }
-
-            let html = `<div class="grid">`;
-            items.forEach(name => {
-                html += `
-                <div class="card">
-                    <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${name}">
-                    <div style="font-size:11px; font-weight:bold;">${name}</div>
-                    <button class="action-btn" onclick="triggerDownload('${name}')">${type==='movies'?'WATCH':'DOWNLOAD'}</button>
-                </div>`;
-            });
-            html += `</div>`;
-            area.innerHTML += html;
         }
 
-        // FIX: DOWNLOAD BUTTON LOGIC
-        function triggerDownload(name) {
-            const url = `https://${name.toLowerCase().replace(/\s+/g, '-')}.en.uptodown.com/android/download`;
-            document.getElementById('target-item').innerText = name.toUpperCase();
+        function renderApps() {
+            database.forEach(app => {
+                const html = `
+                    <div class="app-item">
+                        <div class="info">
+                            <img src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${app.name}">
+                            <div>
+                                <div class="app-name">${app.name}</div>
+                                <div class="source-tag">SRC: ${app.src}</div>
+                            </div>
+                        </div>
+                        <button class="dl-btn" onclick="openRedirect('${app.name}', '${app.url}')">GET</button>
+                    </div>`;
+                document.getElementById(`${app.type}-list`).innerHTML += html;
+            });
+        }
+
+        function openRedirect(name, url) {
+            document.getElementById('target-name').innerText = name.toUpperCase();
             document.getElementById('target-url').innerText = url;
             document.getElementById('final-link').href = url;
             document.getElementById('redirect-page').style.display = 'flex';
         }
 
-        window.onload = () => loadPage('home', document.querySelector('.nav-btn'));
+        window.onload = () => {
+            checkSecurity();
+            renderApps();
+        };
     </script>
 </body>
 </html>
