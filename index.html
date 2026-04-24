@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v62.0</title>
+    <title>RTX BHARAT v63.0</title>
     <style>
         :root { --saffron: #FF9933; --white: #FFFFFF; --green: #2e7d32; --bg: #000000; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         
-        body { background: #111; color: white; height: 100vh; display: flex; justify-content: center; overflow: hidden; }
+        body { background: #111; color: white; height: 100vh; display: flex; justify-content: center; overflow: hidden; align-items: flex-start; }
 
         /* COMPACT DESIGN */
         #main-container { 
-            width: 96%; max-width: 400px; height: 100vh; background: var(--bg);
-            border-top: 3px solid var(--saffron); display: flex; flex-direction: column; position: relative;
+            width: 96%; max-width: 400px; height: 98vh; background: var(--bg);
+            border-top: 3px solid var(--saffron); border-left: 1px solid #333; border-right: 1px solid #333;
+            display: flex; flex-direction: column; position: relative;
         }
 
         .header { padding: 12px; display: flex; justify-content: space-between; border-bottom: 1px solid #222; }
@@ -22,13 +23,13 @@
         .rolling-text { display: inline-block; animation: scroll 15s linear infinite; }
         @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* 30 PREMIUM GAMES */
+        /* PREMIUM GAMES GRID */
         #game-list { flex-grow: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; padding-bottom: 80px; scrollbar-width: none; }
         .game-card { background: #0a0a0a; border: 1px solid #222; border-radius: 12px; padding: 10px; text-align: center; border-bottom: 2px solid var(--green); }
         .game-card img { width: 40px; border-radius: 8px; margin-bottom: 5px; }
         .btn-target { background: var(--green); color: white; border: none; padding: 8px; border-radius: 4px; font-size: 10px; font-weight: 900; width: 100%; cursor: pointer; }
 
-        /* ⚪ THE WHITE SECURE PAGE (DIRECT LANDING) */
+        /* ⚪ DIRECT LANDING NOTICE (White Page) */
         #notice-page { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background: white; color: black; display: none; 
@@ -38,7 +39,7 @@
         .box { border: 2px solid #ddd; border-radius: 12px; padding: 20px; width: 100%; text-align: center; }
         .main-btn { background: var(--green); color: white; padding: 16px; border-radius: 8px; text-decoration: none; width: 100%; display: block; text-align: center; font-weight: bold; margin-top: 20px; font-size: 18px; }
 
-        .pkg-section { position: absolute; bottom: 0; width: 100%; background: #000; padding: 10px; display: flex; gap: 8px; }
+        .pkg-section { position: absolute; bottom: 0; width: 100%; background: #000; padding: 10px; display: flex; gap: 8px; border-top: 1px solid #333; }
         .pkg-in { flex: 1; background: #111; border: 1px solid #444; padding: 8px; border-radius: 5px; color: white; }
     </style>
 </head>
@@ -47,38 +48,53 @@
     <div id="main-container">
         <div class="header">
             <span style="font-weight: 900;">RTX <span style="color:var(--saffron)">BHARAT</span></span>
-            <div style="color:var(--saffron);">💎 <span id="cr-val">1500</span></div>
+            <div style="color:var(--saffron); font-weight: bold;">💎 <span id="cr-val">1500</span></div>
         </div>
 
-        <div class="rolling-bar"><div class="rolling-text">🔥 TARGET LOCKED: SOFTONIC SECURE SERVERS ACTIVE | SIGMA PRO X READY 🚀</div></div>
+        <div class="rolling-bar"><div class="rolling-text">🔥 DIRECT SOFTONIC SERVERS CONNECTED | SIGMA PRO X SECURE LINK ACTIVE 🚀</div></div>
 
         <div id="game-list"></div>
 
         <div id="notice-page">
-            <div class="soft-tag">SOFT Secure Linker</div>
+            <div class="soft-tag">SOFT Secure Engine</div>
             <div class="box">
                 <h2 id="t-game">GAME NAME</h2>
-                <p style="font-size:12px; color:#666; margin-top:10px;">Aapka premium game target ho chuka hai. "Secure Download" par click karte hi aap <b>Softonic</b> ke asli downloading page par pahunch jayenge.</p>
+                <p style="font-size:12px; color:#666; margin-top:10px;">Connection Established! Click below to jump directly to the <b>Official Softonic Download Page</b>.</p>
             </div>
             <a href="#" class="main-btn" id="f-link">SECURE DOWNLOAD</a>
-            <button onclick="closeP()" style="margin-top:20px; color:gray; background:none; border:none; text-decoration:underline;">Go Back</button>
+            <button onclick="closeP()" style="margin-top:20px; color:gray; background:none; border:none; text-decoration:underline; font-weight:bold;">Cancel</button>
         </div>
 
         <div class="pkg-section">
             <input type="text" id="pkg-in" class="pkg-in" placeholder="PKG CODE">
-            <button onclick="claim()" style="background:var(--saffron); border:none; padding:8px 12px; border-radius:5px; font-weight:bold;">CLAIM</button>
+            <button onclick="claim()" style="background:var(--saffron); border:none; padding:8px 12px; border-radius:5px; font-weight:bold; color:black;">CLAIM</button>
         </div>
     </div>
 
     <script>
         let credits = 1500;
+        
+        // 🎯 EXACT SOFTONIC DIRECT LINKS (NO GOOGLE SEARCH)
+        const gameLinks = {
+            "Sigma Pro X": "https://sigma-battle-royale-re9.en.softonic.com/android/download", // Video wala exact link!
+            "GTA 5 Mobile": "https://grand-theft-auto-v-gta-5.en.softonic.com/android/download",
+            "Free Fire Advance": "https://free-fire-advance.en.softonic.com/android/download",
+            "Minecraft": "https://minecraft.en.softonic.com/android/download",
+            "BGMI Mod": "https://battlegrounds-mobile-india.en.softonic.com/android/download",
+            "Fortnite Android": "https://fortnite.en.softonic.com/android/download",
+            "Call of Duty": "https://call-of-duty-mobile.en.softonic.com/android/download",
+            "PUBG KR": "https://pubg-mobile-kr.en.softonic.com/android/download",
+            "WhatsApp Plus": "https://whatsapp-plus.en.softonic.com/android/download",
+            "Roblox": "https://roblox.en.softonic.com/android/download"
+        };
+
         const games = [
-            "Sigma Battle Royale", "GTA 5 Mobile", "Free Fire Advance", "Minecraft", "BGMI Mod",
-            "Fortnite Android", "FIFA 25 Mod", "Tekken 8 Mobile", "Call of Duty", "Apex Legends",
-            "Spider-Man 2", "God of War", "Resident Evil 4", "Bully", "GTA San Andreas",
-            "PUBG KR", "Valorant Mobile", "Elden Ring", "Clash of Clans", "Roblox",
-            "Need For Speed", "Hitman", "Among Us", "Project Blood", "Cyberpunk",
-            "Total Overdose", "WWE 2K25", "Fall Guys", "Sigma Pro X", "WhatsApp Plus"
+            "Sigma Pro X", "GTA 5 Mobile", "Free Fire Advance", "Minecraft", "BGMI Mod",
+            "Fortnite Android", "Call of Duty", "PUBG KR", "WhatsApp Plus", "Roblox",
+            "FIFA 25 Mod", "Tekken 8 Mobile", "Apex Legends", "Spider-Man 2", "God of War", 
+            "Resident Evil 4", "Bully", "GTA San Andreas", "Valorant Mobile", "Elden Ring", 
+            "Clash of Clans", "Need For Speed", "Hitman", "Among Us", "Project Blood", 
+            "Cyberpunk", "Total Overdose", "WWE 2K25", "Fall Guys", "Sigma Battle"
         ];
 
         function load() {
@@ -99,10 +115,15 @@
                 document.getElementById('cr-val').innerText = credits;
                 document.getElementById('t-game').innerText = name.toUpperCase();
                 
-                // DIRECT TARGET LOGIC: Ye Google bypass karke seedha Softonic redirect karega
-                let q = name.toLowerCase().replace(/\s+/g, '-');
-                document.getElementById('f-link').href = `https://${q}.en.softonic.com/android/download`;
+                // 🚀 DIRECT TARGET INJECTION: Agar list mein link hai toh seedha wahan bhejo
+                let directUrl = gameLinks[name];
+                if (!directUrl) {
+                    // Agar link database mein nahi hai, toh automatic Softonic URL generate karo
+                    let q = name.toLowerCase().replace(/\s+/g, '-');
+                    directUrl = `https://${q}.en.softonic.com/android/download`;
+                }
                 
+                document.getElementById('f-link').href = directUrl;
                 document.getElementById('notice-page').style.display = 'flex';
             } else { alert("Coins Needed!"); }
         }
