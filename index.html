@@ -3,102 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTX BHARAT v76.0 | REAL ENGINE</title>
+    <title>RTX BHARAT v77.0 | MASSIVE DATABASE</title>
     <style>
         :root { --saffron: #FF9933; --green: #138808; --bg: #000; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background: var(--bg); color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* 📡 FIXED TOP HEADER (RTX BRANDING) */
-        .rtx-header { 
-            background: #0a0a0a; padding: 15px; text-align: center; 
-            border-bottom: 2px solid var(--saffron); z-index: 1000;
-        }
-        .rtx-header h1 { font-size: 18px; letter-spacing: 2px; }
-
-        /* 🏠 HOMEPAGE CONTENT */
-        #homepage { flex: 1; overflow-y: auto; padding: 15px; display: block; }
-        .section-title { font-size: 12px; color: var(--saffron); margin: 20px 0 10px; text-transform: uppercase; }
+        /* 📡 HEADER */
+        .rtx-header { background: #0a0a0a; padding: 15px; text-align: center; border-bottom: 2px solid var(--saffron); }
         
+        /* 🔍 SEARCH BAR (For 2000+ Apps) */
+        .search-area { padding: 10px; background: #111; }
+        #app-search { 
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; 
+            background: #000; color: white; outline: none;
+        }
+
+        /* 📱 SCROLLABLE APP LIST */
+        #app-list { flex: 1; overflow-y: auto; padding: 15px; scrollbar-width: none; }
         .app-card { 
-            background: #111; border: 1px solid #222; border-radius: 12px; 
-            padding: 15px; margin-bottom: 12px; display: flex; 
-            align-items: center; justify-content: space-between; 
+            background: #0d0d0d; border: 1px solid #222; border-radius: 12px; 
+            padding: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; 
         }
         .app-info { display: flex; align-items: center; gap: 12px; }
-        .app-info img { width: 40px; height: 40px; border-radius: 8px; }
-        
-        .btn { background: var(--green); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .app-info img { width: 40px; height: 40px; border-radius: 8px; background: #222; }
+        .app-name { font-size: 14px; font-weight: bold; }
+        .app-tag { font-size: 10px; color: #666; }
 
-        /* 🔍 REAL GOOGLE VIEW (IFRAME) */
-        #google-view { 
-            display: none; flex: 1; width: 100%; border: none; background: white;
-        }
+        .btn { background: var(--green); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 11px; font-weight: bold; }
 
-        /* 🔙 BACK BUTTON FOR GOOGLE VIEW */
-        #back-bar { 
-            display: none; background: #f2f2f2; padding: 10px; 
-            justify-content: space-between; align-items: center; color: black;
-        }
+        /* 🌐 BROWSER LAYER (Hidden by default) */
+        #browser-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:9999; flex-direction:column; }
+        #browser-nav { background:#f2f2f2; padding:10px; display:flex; justify-content:space-between; }
+        iframe { flex:1; border:none; width:100%; }
     </style>
 </head>
 <body>
 
     <div class="rtx-header">
-        <h1>RTX <span style="color:var(--saffron)">BHARAT</span></h1>
+        <h1 style="font-size:18px;">RTX <span style="color:var(--saffron)">BHARAT</span> VAULT</h1>
     </div>
 
-    <div id="homepage">
-        <div class="section-title">Premium Access</div>
-        <div class="app-card">
-            <div class="app-info">
-                <img src="https://api.dicebear.com/7.x/initials/svg?seed=SP">
-                <div><b>Spotify Premium</b><br><small style="color:gray;">Real Web Search</small></div>
-            </div>
-            <button class="btn" onclick="openRealGoogle('Spotify Premium Mod 2026')">SEARCH</button>
+    <div class="search-area">
+        <input type="text" id="app-search" placeholder="2000+ Apps mein search karein..." oninput="filterApps()">
+    </div>
+
+    <div id="app-list">
         </div>
 
-        <div class="section-title">Direct Software</div>
-        <div class="app-card">
-            <div class="app-info">
-                <img src="https://api.dicebear.com/7.x/initials/svg?seed=SB">
-                <div><b>Sigma Battle</b><br><small style="color:gray;">Direct Softonic</small></div>
-            </div>
-            <button class="btn" onclick="openDirect('https://sigma-battle-royale.en.softonic.com/android/download')">GET</button>
+    <div id="browser-overlay">
+        <div id="browser-nav">
+            <button onclick="closeBrowser()" style="font-weight:bold;">← BACK</button>
+            <span id="nav-title" style="color:black; font-size:12px;">Google Search</span>
         </div>
+        <iframe id="web-frame" src=""></iframe>
     </div>
-
-    <div id="back-bar">
-        <button onclick="closeGoogle()" style="padding: 5px 15px; font-weight: bold;">← BACK TO HOME</button>
-        <span id="current-q" style="font-size: 12px; font-weight: bold;"></span>
-    </div>
-
-    <iframe id="google-view" src=""></iframe>
 
     <script>
-        function openRealGoogle(query) {
-            const encodedQuery = encodeURIComponent(query);
-            // Asli Google Search URL load kar rahe hain
-            const googleUrl = `https://www.google.com/search?q=${encodedQuery}&igu=1`; 
-            
-            document.getElementById('homepage').style.display = 'none';
-            document.getElementById('back-bar').style.display = 'flex';
-            document.getElementById('google-view').style.display = 'block';
-            document.getElementById('google-view').src = googleUrl;
-            document.getElementById('current-q').innerText = query;
+        // 🗄️ MEGA DATABASE (Yahan tum 2000 apps ka data load kar sakte ho)
+        const massiveDatabase = [
+            { name: "Spotify Premium", type: "search", q: "Spotify Premium Mod 2026" },
+            { name: "Lucky Patcher", type: "search", q: "Lucky Patcher Official Download" },
+            { name: "Sigma Battle Royale", type: "direct", url: "https://sigma-battle-royale.en.softonic.com/android/download" },
+            { name: "MT Manager Pro", type: "search", q: "MT Manager VIP APK" },
+            { name: "Minecraft Bharat Mod", type: "direct", url: "https://minecraft.en.softonic.com/android/download" },
+            // ... Yahan tum list badhate jao, ye system hang nahi hoga
+        ];
+
+        // 🚀 DATABASE AUTO-LOADER
+        function renderApps(data) {
+            const container = document.getElementById('app-list');
+            container.innerHTML = "";
+            data.forEach(app => {
+                const html = `
+                <div class="app-card">
+                    <div class="app-info">
+                        <img src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${app.name}">
+                        <div>
+                            <div class="app-name">${app.name}</div>
+                            <div class="app-tag">${app.type === 'search' ? 'REAL GOOGLE SEARCH' : 'DIRECT SOFT-LINK'}</div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="handleAction('${app.name}')">GET</button>
+                </div>`;
+                container.innerHTML += html;
+            });
         }
 
-        function openDirect(url) {
-            // Softonic jaise links ke liye direct window
-            window.location.href = url;
+        // 🔍 FILTER ENGINE (Jo 2000 apps mein se turant dhundh nikaalega)
+        function filterApps() {
+            const term = document.getElementById('app-search').value.toLowerCase();
+            const filtered = massiveDatabase.filter(app => app.name.toLowerCase().includes(term));
+            renderApps(filtered);
         }
 
-        function closeGoogle() {
-            document.getElementById('homepage').style.display = 'block';
-            document.getElementById('back-bar').style.display = 'none';
-            document.getElementById('google-view').style.display = 'none';
-            document.getElementById('google-view').src = "";
+        function handleAction(appName) {
+            const app = massiveDatabase.find(a => a.name === appName);
+            if (app.type === "search") {
+                const url = `https://www.google.com/search?q=${encodeURIComponent(app.q)}&igu=1`;
+                document.getElementById('browser-overlay').style.display = 'flex';
+                document.getElementById('web-frame').src = url;
+                document.getElementById('nav-title').innerText = app.name;
+            } else {
+                window.location.href = app.url;
+            }
         }
+
+        function closeBrowser() {
+            document.getElementById('browser-overlay').style.display = 'none';
+            document.getElementById('web-frame').src = "";
+        }
+
+        // Initial Load
+        window.onload = () => renderApps(massiveDatabase);
     </script>
 </body>
 </html>
