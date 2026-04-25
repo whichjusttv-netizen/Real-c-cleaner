@@ -3,89 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTX BHARAT v76.0 | REAL ENGINE</title>
     <style>
-        :root { --google-gray: #f2f2f2; --blue-link: #1a0dab; --desc-gray: #4d5156; }
-        body { margin: 0; font-family: arial, sans-serif; background: #fff; }
-        
-        /* 🔍 ASLI GOOGLE LOOK HEADER */
-        .search-top { padding: 15px; border-bottom: 1px solid #ebebeb; display: flex; align-items: center; position: sticky; top: 0; background: #fff; }
-        .g-logo { font-size: 20px; font-weight: bold; margin-right: 15px; }
-        .s-box { flex: 1; background: #fff; border: 1px solid #dfe1e5; border-radius: 24px; padding: 8px 15px; box-shadow: 0 1px 6px rgba(32,33,36,0.28); font-size: 14px; }
+        :root { --saffron: #FF9933; --green: #138808; --bg: #000; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: var(--bg); color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* RESULT STYLING */
-        .results-container { padding: 10px 15px; }
-        .g-item { margin-bottom: 25px; }
-        .g-site { font-size: 12px; color: #202124; display: flex; align-items: center; margin-bottom: 4px; }
-        .g-site img { width: 16px; margin-right: 8px; border-radius: 50%; }
-        .g-title { font-size: 18px; color: var(--blue-link); text-decoration: none; display: block; margin-bottom: 3px; }
-        .g-desc { font-size: 13px; color: var(--desc-gray); line-height: 1.5; }
+        /* 📡 FIXED TOP HEADER (RTX BRANDING) */
+        .rtx-header { 
+            background: #0a0a0a; padding: 15px; text-align: center; 
+            border-bottom: 2px solid var(--saffron); z-index: 1000;
+        }
+        .rtx-header h1 { font-size: 18px; letter-spacing: 2px; }
+
+        /* 🏠 HOMEPAGE CONTENT */
+        #homepage { flex: 1; overflow-y: auto; padding: 15px; display: block; }
+        .section-title { font-size: 12px; color: var(--saffron); margin: 20px 0 10px; text-transform: uppercase; }
         
-        /* DIRECT LINK BOX (For Verified Apps) */
-        #direct-box { display:none; padding: 20px; text-align: center; background: #f8f9fa; border: 1px solid #ddd; border-radius: 10px; margin: 20px; }
-        .dl-btn { background: #000; color: #fff; padding: 15px 30px; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: bold; margin-top: 15px; }
+        .app-card { 
+            background: #111; border: 1px solid #222; border-radius: 12px; 
+            padding: 15px; margin-bottom: 12px; display: flex; 
+            align-items: center; justify-content: space-between; 
+        }
+        .app-info { display: flex; align-items: center; gap: 12px; }
+        .app-info img { width: 40px; height: 40px; border-radius: 8px; }
+        
+        .btn { background: var(--green); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+
+        /* 🔍 REAL GOOGLE VIEW (IFRAME) */
+        #google-view { 
+            display: none; flex: 1; width: 100%; border: none; background: white;
+        }
+
+        /* 🔙 BACK BUTTON FOR GOOGLE VIEW */
+        #back-bar { 
+            display: none; background: #f2f2f2; padding: 10px; 
+            justify-content: space-between; align-items: center; color: black;
+        }
     </style>
 </head>
 <body>
 
-    <div id="main-logic">
-        <div id="google-ui" style="display:none;">
-            <div class="search-top">
-                <div class="g-logo">
-                    <span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>
-                </div>
-                <div class="s-box" id="query-display">spotify premium</div>
+    <div class="rtx-header">
+        <h1>RTX <span style="color:var(--saffron)">BHARAT</span></h1>
+    </div>
+
+    <div id="homepage">
+        <div class="section-title">Premium Access</div>
+        <div class="app-card">
+            <div class="app-info">
+                <img src="https://api.dicebear.com/7.x/initials/svg?seed=SP">
+                <div><b>Spotify Premium</b><br><small style="color:gray;">Real Web Search</small></div>
             </div>
-            
-            <div class="results-container" id="res-list">
-                </div>
+            <button class="btn" onclick="openRealGoogle('Spotify Premium Mod 2026')">SEARCH</button>
         </div>
 
-        <div id="direct-box">
-            <h3 id="app-n">Software Found</h3>
-            <p style="font-size:12px; color:gray;">Verified by RTX Bharat Team</p>
-            <a href="#" id="app-l" class="dl-btn">DOWNLOAD NOW</a>
+        <div class="section-title">Direct Software</div>
+        <div class="app-card">
+            <div class="app-info">
+                <img src="https://api.dicebear.com/7.x/initials/svg?seed=SB">
+                <div><b>Sigma Battle</b><br><small style="color:gray;">Direct Softonic</small></div>
+            </div>
+            <button class="btn" onclick="openDirect('https://sigma-battle-royale.en.softonic.com/android/download')">GET</button>
         </div>
     </div>
 
+    <div id="back-bar">
+        <button onclick="closeGoogle()" style="padding: 5px 15px; font-weight: bold;">← BACK TO HOME</button>
+        <span id="current-q" style="font-size: 12px; font-weight: bold;"></span>
+    </div>
+
+    <iframe id="google-view" src=""></iframe>
+
     <script>
-        // Data logic
-        const database = {
-            "spotify": { type: "search", query: "Spotify Premium Mod 2026", results: [
-                { site: "spotify.com", title: "Spotify Premium - Get 3 Months Free", desc: "Enjoy ad-free music, offline playback, and unlimited skips. Offer available for students and individuals." },
-                { site: "softonic.com", title: "Download Spotify Premium (Premium) - Softonic", desc: "Unlock all VIP features, no ads, high quality audio. Safe and verified download." }
-            ]},
-            "sigma": { type: "direct", name: "Sigma Battle Royale", url: "https://sigma-battle.en.softonic.com/android/download" }
-        };
-
-        function route(input) {
-            const data = database[input.toLowerCase()];
-            if (!data) return;
-
-            if (data.type === "direct") {
-                document.getElementById('google-ui').style.display = 'none';
-                document.getElementById('direct-box').style.display = 'block';
-                document.getElementById('app-n').innerText = data.name;
-                document.getElementById('app-l').href = data.url;
-            } else {
-                document.getElementById('direct-box').style.display = 'none';
-                document.getElementById('google-ui').style.display = 'block';
-                document.getElementById('query-display').innerText = data.query;
-                
-                let html = "";
-                data.results.forEach(r => {
-                    html += `
-                    <div class="g-item">
-                        <div class="g-site"><span>https://www.${r.site}</span></div>
-                        <a href="https://${r.site}" class="g-title">${r.title}</a>
-                        <div class="g-desc">${r.desc}</div>
-                    </div>`;
-                });
-                document.getElementById('res-list').innerHTML = html;
-            }
+        function openRealGoogle(query) {
+            const encodedQuery = encodeURIComponent(query);
+            // Asli Google Search URL load kar rahe hain
+            const googleUrl = `https://www.google.com/search?q=${encodedQuery}&igu=1`; 
+            
+            document.getElementById('homepage').style.display = 'none';
+            document.getElementById('back-bar').style.display = 'flex';
+            document.getElementById('google-view').style.display = 'block';
+            document.getElementById('google-view').src = googleUrl;
+            document.getElementById('current-q').innerText = query;
         }
 
-        // Example trigger: Jab app khule
-        window.onload = () => route("spotify"); // Change to "sigma" for direct link test
+        function openDirect(url) {
+            // Softonic jaise links ke liye direct window
+            window.location.href = url;
+        }
+
+        function closeGoogle() {
+            document.getElementById('homepage').style.display = 'block';
+            document.getElementById('back-bar').style.display = 'none';
+            document.getElementById('google-view').style.display = 'none';
+            document.getElementById('google-view').src = "";
+        }
     </script>
 </body>
 </html>
