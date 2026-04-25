@@ -3,139 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v72.0 | IP SHIELD</title>
+    <title>RTX BHARAT v74.0 | SMART ROUTING</title>
     <style>
-        :root { --saffron: #FF9933; --green: #138808; --bg: #000; }
+        :root { --saffron: #FF9933; --green: #138808; --bg: #000; --google-blue: #1a73e8; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
         body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; justify-content: center; }
 
-        #main-container { width: 100%; max-width: 450px; height: 100vh; display: flex; flex-direction: column; position: relative; border-top: 5px solid var(--saffron); }
+        #main-container { width: 100%; max-width: 450px; height: 100vh; display: flex; flex-direction: column; position: relative; }
 
-        /* 📡 IP & SECURITY HEADER */
-        .header { padding: 15px; background: #0a0a0a; border-bottom: 1px solid #222; text-align: center; }
-        .ip-box { font-size: 10px; color: var(--saffron); margin-top: 5px; font-family: monospace; }
+        /* 📡 HEADER */
+        .header { padding: 15px; background: #0a0a0a; border-bottom: 1px solid #222; text-align: center; border-top: 4px solid var(--saffron); }
+        .status-bar { font-size: 9px; color: var(--green); margin-top: 5px; letter-spacing: 1px; }
 
-        /* 📱 SCROLLABLE PREMIUM HUB */
+        /* 📱 CONTENT AREA */
         #content { flex-grow: 1; overflow-y: auto; padding: 15px; scrollbar-width: none; }
-        .section-title { font-size: 13px; font-weight: bold; margin: 20px 0 10px; color: var(--saffron); text-transform: uppercase; letter-spacing: 1px; border-left: 3px solid var(--saffron); padding-left: 10px; }
+        .section-title { font-size: 11px; color: #555; margin: 15px 0 10px; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 5px; }
 
-        .app-list { display: flex; flex-direction: column; gap: 10px; }
-        .app-item { background: #0d0d0d; border: 1px solid #222; border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; transition: 0.3s; }
-        .app-item:active { background: #1a1a1a; }
+        .item-card { background: #0d0d0d; border: 1px solid #222; border-radius: 12px; padding: 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; border-left: 3px solid #333; }
+        .item-card.direct { border-left-color: var(--green); }
+        .item-card.search { border-left-color: var(--saffron); }
         
         .info { display: flex; align-items: center; gap: 12px; }
-        .info img { width: 40px; height: 40px; border-radius: 8px; border: 1px solid #333; }
-        .app-name { font-size: 13px; font-weight: bold; }
-        .source-tag { font-size: 9px; color: #666; background: #1a1a1a; padding: 2px 6px; border-radius: 4px; margin-top: 3px; display: inline-block; }
+        .info img { width: 35px; height: 35px; border-radius: 8px; }
+        .name { font-size: 13px; font-weight: bold; }
+        .tag { font-size: 8px; background: #222; color: #aaa; padding: 2px 5px; border-radius: 3px; margin-top: 3px; display: inline-block; }
 
-        .dl-btn { background: var(--green); color: white; border: none; padding: 8px 15px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; }
+        .action-btn { background: var(--green); color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; }
 
-        /* 🚫 BLOCK SCREEN */
-        #block-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        /* 🔍 GOOGLE PAGE SIMULATION */
+        #google-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; color: #202124; display: none; flex-direction: column; z-index: 5000; overflow-y: auto; }
+        .search-header { padding: 15px; border-bottom: 1px solid #dfe1e5; background: #fff; position: sticky; top: 0; }
+        .fake-bar { border: 1px solid #dfe1e5; border-radius: 24px; padding: 10px 15px; font-size: 13px; box-shadow: 0 1px 6px rgba(0,0,0,0.1); display: flex; align-items: center; }
 
-        /* ⚪ DIRECT NOTICE PAGE */
-        #redirect-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; color: black; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
+        .res-box { padding: 15px; border-bottom: 1px solid #f1f1f1; }
+        .res-title { font-size: 17px; color: var(--google-blue); text-decoration: none; margin-bottom: 5px; display: block; }
+        .res-desc { font-size: 12px; color: #4d5156; line-height: 1.4; }
+
+        /* ⚠️ DIRECT REDIRECT PAGE */
+        #direct-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; color: black; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 6000; padding: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div id="block-screen">
-        <h1 style="color:red; font-size: 40px;">🚫 ACCESS DENIED</h1>
-        <p style="margin-top:20px; font-size: 14px;">Your IP Address originates from a <br><b>Restricted Territory (PAK/INTL)</b>.</p>
-        <p style="color: gray; font-size: 11px; margin-top: 10px;">RTX BHARAT is only for Indian IP addresses.</p>
-        <div style="font-size: 50px; margin-top: 30px;">🇮🇳</div>
-    </div>
-
     <div id="main-container">
         <div class="header">
-            <div style="font-weight: 900; letter-spacing: 2px;">RTX <span style="color:var(--saffron)">BHARAT</span> VAULT</div>
-            <div id="user-ip" class="ip-box">FETCHING SECURE IP...</div>
+            <div style="font-weight: 900; font-size: 16px;">RTX <span style="color:var(--saffron)">BHARAT</span></div>
+            <div class="status-bar">● SMART ROUTING ACTIVE | 25-04-2026</div>
         </div>
 
         <div id="content">
-            <div class="section-title">Hacking & Mod Tools</div>
-            <div class="app-list" id="tools-list"></div>
+            <div class="section-title">Verified Direct Access (Softonic)</div>
+            <div id="direct-list"></div>
 
-            <div class="section-title">Premium Software (Bypassed)</div>
-            <div class="app-list" id="software-list"></div>
-            
-            <div class="section-title">Media & Entertainment</div>
-            <div class="app-list" id="media-list"></div>
+            <div class="section-title">Deep Scan Required (Mod/Premium)</div>
+            <div id="search-list"></div>
         </div>
     </div>
 
-    <div id="redirect-page">
-        <div style="width:100%; text-align:left; font-size:10px; margin-bottom:40px;">
-            <b style="color:red;">⚠️ EXTERNAL REDIRECT</b><br>
-            <span id="target-url" style="word-break:break-all; color:blue; text-decoration:underline;"></span>
+    <div id="google-page">
+        <div class="search-header">
+            <div class="fake-bar">🔍 <span id="q-text" style="margin-left:10px;"></span></div>
         </div>
-        <div style="border:2px solid #ddd; padding:20px; border-radius:15px; width:100%; text-align:center;">
-            <h2 id="target-name">APP NAME</h2>
-            <p style="font-size:11px; color:#666;">Source Verified by RTX Bharat Team.</p>
+        <div id="res-container"></div>
+        <button onclick="closeUI('google-page')" style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#000; color:#fff; border:none; padding:12px 30px; border-radius:50px; font-weight:bold;">BACK</button>
+    </div>
+
+    <div id="direct-page">
+        <div style="text-align:left; font-size:9px; position:absolute; top:20px; left:20px; width:80%;">
+            <b style="color:red;">⚠️ BHARAT DIRECT LINK</b><br>
+            <span id="d-url" style="color:blue; word-break:break-all;"></span>
         </div>
-        <a href="#" id="final-link" style="background:black; color:white; padding:18px; width:100%; text-align:center; display:block; margin-top:20px; text-decoration:none; border-radius:10px; font-weight:bold;">DIRECT DOWNLOAD</a>
-        <button onclick="document.getElementById('redirect-page').style.display='none'" style="margin-top:20px; border:none; background:none; text-decoration:underline;">Back to Vault</button>
+        <div style="border:1px solid #ddd; padding:30px; border-radius:15px; width:100%;">
+            <h2 id="d-name">APP</h2>
+            <p style="font-size:11px; color:#666; margin-top:10px;">Source: Softonic Official Mirror</p>
+        </div>
+        <a href="#" id="d-link" style="background:black; color:white; padding:18px; width:100%; text-align:center; display:block; margin-top:20px; text-decoration:none; border-radius:10px; font-weight:bold;">START DOWNLOAD</a>
+        <button onclick="closeUI('direct-page')" style="margin-top:20px; background:none; border:none; text-decoration:underline;">Cancel</button>
     </div>
 
     <script>
-        // 🎯 MULTI-SOURCE DATABASE
-        const database = [
-            { name: "Lucky Patcher", src: "SOFTONIC", type: "tools", url: "https://lucky-patcher.en.softonic.com/android/download" },
-            { name: "MT Manager VIP", src: "MOBILISM", type: "tools", url: "https://mt-manager.en.uptodown.com/android/download" },
-            { name: "Game Guardian", src: "OFFICIAL MIRROR", type: "tools", url: "https://gameguardian.net/download" },
-            { name: "NP Manager", src: "APK-ADMIN", type: "tools", url: "https://np-manager.en.uptodown.com/android/download" },
-            { name: "Spotify Premium", src: "MOD-YOLO", type: "software", url: "https://spotify.en.softonic.com/android/download" },
-            { name: "Kinemaster Pro", src: "MOD-ARENA", type: "software", url: "https://kinemaster.en.uptodown.com/android/download" },
-            { name: "CapCut Pro", src: "UPTODOWN", type: "software", url: "https://capcut.en.uptodown.com/android/download" },
-            { name: "Pushpa 2 Full HD", src: "BHARAT-SERVER", type: "media", url: "https://archive.org/details/pushpa-2-full-movie" },
-            { name: "Youtube Vanced", src: "VANCED-TEAM", type: "media", url: "https://youtubevanced.com/download" }
+        const directApps = [
+            { name: "Sigma Battle", url: "https://sigma-battle-royale.en.softonic.com/android/download" },
+            { name: "Minecraft", url: "https://minecraft.en.softonic.com/android/download" },
+            { name: "ZArchiver", url: "https://zarchiver.en.softonic.com/android/download" }
         ];
 
-        // 🛡️ IP CATCHER & BORDER SECURITY
-        async function checkSecurity() {
-            try {
-                const response = await fetch('https://ipapi.co/json/');
-                const data = await response.json();
-                document.getElementById('user-ip').innerText = `IP: ${data.ip} | LOC: ${data.country_name}`;
+        const searchApps = [
+            { name: "Spotify Premium", desc: "Unlock all VIP features, no ads, high quality audio." },
+            { name: "MT Manager VIP", desc: "Advanced APK editor with all pro functions enabled." },
+            { name: "Lucky Patcher", desc: "Original bypass tool for license verification." }
+        ];
 
-                // Pakistan or Non-India Block Logic
-                if (data.country_code === 'PK' || data.country_code !== 'IN') {
-                    document.getElementById('block-screen').style.display = 'flex';
-                    document.getElementById('main-container').style.display = 'none';
-                }
-            } catch (error) {
-                document.getElementById('user-ip').innerText = "IP: 192.168.1.1 (LOCAL BYPASS)";
-            }
-        }
+        function render() {
+            const dList = document.getElementById('direct-list');
+            const sList = document.getElementById('search-list');
 
-        function renderApps() {
-            database.forEach(app => {
-                const html = `
-                    <div class="app-item">
-                        <div class="info">
-                            <img src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${app.name}">
-                            <div>
-                                <div class="app-name">${app.name}</div>
-                                <div class="source-tag">SRC: ${app.src}</div>
-                            </div>
-                        </div>
-                        <button class="dl-btn" onclick="openRedirect('${app.name}', '${app.url}')">GET</button>
-                    </div>`;
-                document.getElementById(`${app.type}-list`).innerHTML += html;
+            directApps.forEach(app => {
+                dList.innerHTML += `<div class="item-card direct">
+                    <div class="info">
+                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=${app.name}">
+                        <div><div class="name">${app.name}</div><div class="tag">DIRECT LINK</div></div>
+                    </div>
+                    <button class="action-btn" onclick="openDirect('${app.name}', '${app.url}')">GET</button>
+                </div>`;
+            });
+
+            searchApps.forEach(app => {
+                sList.innerHTML += `<div class="item-card search">
+                    <div class="info">
+                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=${app.name}">
+                        <div><div class="name">${app.name}</div><div class="tag">DEEP SCAN</div></div>
+                    </div>
+                    <button class="action-btn" style="background:#444;" onclick="openSearch('${app.name}', '${app.desc}')">SCAN</button>
+                </div>`;
             });
         }
 
-        function openRedirect(name, url) {
-            document.getElementById('target-name').innerText = name.toUpperCase();
-            document.getElementById('target-url').innerText = url;
-            document.getElementById('final-link').href = url;
-            document.getElementById('redirect-page').style.display = 'flex';
+        function openDirect(name, url) {
+            document.getElementById('d-name').innerText = name.toUpperCase();
+            document.getElementById('d-url').innerText = url;
+            document.getElementById('d-link').href = url;
+            document.getElementById('direct-page').style.display = 'flex';
         }
 
-        window.onload = () => {
-            checkSecurity();
-            renderApps();
-        };
+        function openSearch(name, desc) {
+            document.getElementById('q-text').innerText = name + " Premium Mod";
+            const container = document.getElementById('res-container');
+            container.innerHTML = `
+                <div class="res-box">
+                    <span style="font-size:11px;">https://en.softonic.com › download</span>
+                    <a href="#" class="res-title">Download ${name} (Premium) - Softonic</a>
+                    <p class="res-desc">${desc}</p>
+                </div>
+                <div class="res-box">
+                    <span style="font-size:11px;">https://apkmirror.com › ${name}</span>
+                    <a href="#" class="res-title">${name} VIP Mod APK 2026</a>
+                    <p class="res-desc">Verified by Bharat Team Solid. No virus detected.</p>
+                </div>`;
+            document.getElementById('google-page').style.display = 'flex';
+        }
+
+        function closeUI(id) { document.getElementById(id).style.display = 'none'; }
+
+        window.onload = render;
     </script>
 </body>
 </html>
