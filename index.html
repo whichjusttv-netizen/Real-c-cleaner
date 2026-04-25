@@ -3,59 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v78.0 | ARCHITECT EDITION</title>
+    <title>RTX BHARAT v80.0</title>
     <style>
         :root { --saffron: #FF9933; --green: #138808; --bg: #000; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
         
-        /* 📱 MAIN STRUCTURE (Padding added for status/nav bars) */
         body { 
             background: var(--bg); 
             color: white; 
             height: 100vh; 
             display: flex; 
             flex-direction: column;
-            padding-top: 10px; /* Status bar space */
-            padding-bottom: 60px; /* Back button space */
+            overflow: hidden;
+            padding-top: env(safe-area-inset-top);
         }
 
-        /* 📡 HEADER (Compact Structure) */
+        /* 📡 COMPACT HEADER */
         .rtx-header { 
             background: #0a0a0a; 
-            padding: 10px; 
+            padding: 6px; 
             text-align: center; 
-            border-bottom: 2px solid var(--saffron);
-            margin: 0 10px;
-            border-radius: 8px;
+            border-bottom: 1px solid var(--saffron);
+            margin: 5px 10px;
+            border-radius: 4px;
         }
         
         /* 🔍 SEARCH BOX */
-        .search-container { padding: 10px 15px; }
+        .search-container { padding: 5px 15px; }
         #app-search { 
-            width: 100%; padding: 10px; border-radius: 20px; 
+            width: 100%; padding: 8px 15px; border-radius: 20px; 
             border: 1px solid #333; background: #111; color: white; 
-            outline: none; font-size: 14px;
+            outline: none; font-size: 13px;
         }
 
-        /* 📦 APP VAULT (2000 Apps Ready) */
+        /* 📦 HOME PAGE SCROLLING LIST (2000 Apps) */
         #app-list { 
             flex: 1; 
             overflow-y: auto; 
             padding: 10px 15px; 
             scrollbar-width: none; 
+            -webkit-overflow-scrolling: touch;
         }
+
+        /* ULTRA COMPACT APP CARD */
         .app-card { 
-            background: #0d0d0d; border: 1px solid #222; border-radius: 10px; 
-            padding: 10px; margin-bottom: 8px; display: flex; 
+            background: #0d0d0d; border: 1px solid #222; border-radius: 6px; 
+            padding: 6px 10px; margin-bottom: 5px; display: flex; 
             align-items: center; justify-content: space-between; 
         }
-        .app-info { display: flex; align-items: center; gap: 10px; }
-        .app-info img { width: 35px; height: 35px; border-radius: 6px; }
-        .app-name { font-size: 13px; font-weight: 600; }
+        .app-info { display: flex; align-items: center; gap: 8px; }
+        .app-info img { width: 28px; height: 28px; border-radius: 4px; }
+        .app-name { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
 
         .get-btn { 
             background: var(--green); color: white; border: none; 
-            padding: 6px 12px; border-radius: 4px; font-size: 10px; font-weight: bold; 
+            padding: 5px 12px; border-radius: 3px; font-size: 10px; font-weight: bold; 
         }
 
         /* 🌐 BROWSER OVERLAY */
@@ -69,33 +71,37 @@
 <body>
 
     <div class="rtx-header">
-        <h1 style="font-size:16px;">RTX <span style="color:var(--saffron)">BHARAT</span> <small style="font-size:10px;">v78.0</small></h1>
+        <h1 style="font-size:14px;">RTX <span style="color:var(--saffron)">BHARAT</span> <small style="font-size:8px; opacity:0.6;">v80.0</small></h1>
     </div>
 
     <div class="search-container">
-        <input type="text" id="app-search" placeholder="Search 2000+ Premium Apps..." oninput="filterApps()">
+        <input type="text" id="app-search" placeholder="Search 2000+ Apps..." oninput="filterApps()">
     </div>
 
-    <div id="app-list">
-        </div>
+    <div id="app-list"></div>
 
     <div id="browser-overlay">
-        <div style="background:#f2f2f2; padding:10px; display:flex; justify-content:space-between; align-items:center;">
-            <button onclick="closeBrowser()" style="padding:5px 15px; border:1px solid #ccc; background:#fff; font-weight:bold;">← CLOSE</button>
-            <span style="color:black; font-size:12px; font-weight:bold;">Google Search Results</span>
+        <div style="background:#f2f2f2; padding:8px; display:flex; justify-content:space-between; align-items:center;">
+            <button onclick="closeBrowser()" style="padding:4px 12px; font-size:11px; font-weight:bold;">← BACK</button>
+            <span id="nav-title" style="color:black; font-size:10px; font-weight:bold;">Loading...</span>
         </div>
         <iframe id="web-frame" src=""></iframe>
     </div>
 
     <script>
-        // 🗄️ MEGA DATABASE (Ready for 2000 entries)
+        // 🗄️ DATABASE (Yahan tum 2000 entries copy-paste kar sakte ho)
         const db = [
             { n: "Spotify Premium", t: "s", q: "Spotify Premium Mod 2026" },
-            { n: "Sigma Battle Royale", t: "d", u: "https://sigma-battle-royale.en.softonic.com/android/download" },
+            { n: "Sigma Battle Royale", t: "d", u: "https://sigma-battle.en.softonic.com/android/download" },
             { n: "ZArchiver Pro", t: "d", u: "https://zarchiver.en.softonic.com/android/download" },
-            { n: "MT Manager VIP", t: "s", q: "MT Manager VIP APK Download" },
-            { n: "Lucky Patcher", t: "s", q: "Lucky Patcher Official" }
-            // Architect Sahab, yahan aap 2000 apps copy-paste kar sakte hain
+            { n: "MT Manager VIP", t: "s", q: "MT Manager VIP APK" },
+            { n: "Lucky Patcher", t: "s", q: "Lucky Patcher Official" },
+            { n: "Minecraft Bharat", t: "d", u: "https://minecraft.en.softonic.com/android/download" },
+            { n: "Kinemaster Pro", t: "s", q: "Kinemaster No Watermark" },
+            { n: "Free Fire Mod", t: "s", q: "FF Max Mod Menu" },
+            { n: "WhatsApp Plus", t: "s", q: "WhatsApp Plus Download" },
+            { n: "CapCut Premium", t: "s", q: "CapCut VIP APK" }
+            // Is list ko 2000 tak badhao...
         ];
 
         function render(data) {
@@ -105,7 +111,7 @@
                 list.innerHTML += `
                 <div class="app-card">
                     <div class="app-info">
-                        <img src="https://api.dicebear.com/7.x/identicon/svg?seed=${app.n}">
+                        <img src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${app.n}">
                         <div class="app-name">${app.n}</div>
                     </div>
                     <button class="get-btn" onclick="handle('${app.n}')">GET</button>
@@ -117,17 +123,30 @@
             const val = document.getElementById('app-search').value.toLowerCase();
             const filtered = db.filter(a => a.n.toLowerCase().includes(val));
             render(filtered);
+            
+            // Agar search engine mein kuch na mile toh Google ka fallback
+            if(filtered.length === 0 && val.length > 2) {
+                document.getElementById('app-list').innerHTML = `
+                <div style="text-align:center; padding:20px;">
+                    <button class="get-btn" style="background:#4285F4;" onclick="openGoogle('${val}')">Search "${val}" on Google</button>
+                </div>`;
+            }
         }
 
         function handle(name) {
             const app = db.find(a => a.n === name);
             if(app.t === "s") {
-                const url = `https://www.google.com/search?q=${encodeURIComponent(app.q)}&igu=1`;
-                document.getElementById('browser-overlay').style.display = 'flex';
-                document.getElementById('web-frame').src = url;
+                openGoogle(app.q, name);
             } else {
                 window.location.href = app.u;
             }
+        }
+
+        function openGoogle(query, title = "Search") {
+            const url = `https://www.google.com/search?q=${encodeURIComponent(query)}&igu=1`;
+            document.getElementById('browser-overlay').style.display = 'flex';
+            document.getElementById('web-frame').src = url;
+            document.getElementById('nav-title').innerText = title;
         }
 
         function closeBrowser() {
