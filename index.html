@@ -2,150 +2,90 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RTX BHARAT v74.0 | SMART ROUTING</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        :root { --saffron: #FF9933; --green: #138808; --bg: #000; --google-blue: #1a73e8; }
-        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        body { background: var(--bg); color: white; height: 100vh; overflow: hidden; display: flex; justify-content: center; }
-
-        #main-container { width: 100%; max-width: 450px; height: 100vh; display: flex; flex-direction: column; position: relative; }
-
-        /* 📡 HEADER */
-        .header { padding: 15px; background: #0a0a0a; border-bottom: 1px solid #222; text-align: center; border-top: 4px solid var(--saffron); }
-        .status-bar { font-size: 9px; color: var(--green); margin-top: 5px; letter-spacing: 1px; }
-
-        /* 📱 CONTENT AREA */
-        #content { flex-grow: 1; overflow-y: auto; padding: 15px; scrollbar-width: none; }
-        .section-title { font-size: 11px; color: #555; margin: 15px 0 10px; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 5px; }
-
-        .item-card { background: #0d0d0d; border: 1px solid #222; border-radius: 12px; padding: 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; border-left: 3px solid #333; }
-        .item-card.direct { border-left-color: var(--green); }
-        .item-card.search { border-left-color: var(--saffron); }
+        :root { --google-gray: #f2f2f2; --blue-link: #1a0dab; --desc-gray: #4d5156; }
+        body { margin: 0; font-family: arial, sans-serif; background: #fff; }
         
-        .info { display: flex; align-items: center; gap: 12px; }
-        .info img { width: 35px; height: 35px; border-radius: 8px; }
-        .name { font-size: 13px; font-weight: bold; }
-        .tag { font-size: 8px; background: #222; color: #aaa; padding: 2px 5px; border-radius: 3px; margin-top: 3px; display: inline-block; }
+        /* 🔍 ASLI GOOGLE LOOK HEADER */
+        .search-top { padding: 15px; border-bottom: 1px solid #ebebeb; display: flex; align-items: center; position: sticky; top: 0; background: #fff; }
+        .g-logo { font-size: 20px; font-weight: bold; margin-right: 15px; }
+        .s-box { flex: 1; background: #fff; border: 1px solid #dfe1e5; border-radius: 24px; padding: 8px 15px; box-shadow: 0 1px 6px rgba(32,33,36,0.28); font-size: 14px; }
 
-        .action-btn { background: var(--green); color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; }
-
-        /* 🔍 GOOGLE PAGE SIMULATION */
-        #google-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; color: #202124; display: none; flex-direction: column; z-index: 5000; overflow-y: auto; }
-        .search-header { padding: 15px; border-bottom: 1px solid #dfe1e5; background: #fff; position: sticky; top: 0; }
-        .fake-bar { border: 1px solid #dfe1e5; border-radius: 24px; padding: 10px 15px; font-size: 13px; box-shadow: 0 1px 6px rgba(0,0,0,0.1); display: flex; align-items: center; }
-
-        .res-box { padding: 15px; border-bottom: 1px solid #f1f1f1; }
-        .res-title { font-size: 17px; color: var(--google-blue); text-decoration: none; margin-bottom: 5px; display: block; }
-        .res-desc { font-size: 12px; color: #4d5156; line-height: 1.4; }
-
-        /* ⚠️ DIRECT REDIRECT PAGE */
-        #direct-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; color: black; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 6000; padding: 20px; text-align: center; }
+        /* RESULT STYLING */
+        .results-container { padding: 10px 15px; }
+        .g-item { margin-bottom: 25px; }
+        .g-site { font-size: 12px; color: #202124; display: flex; align-items: center; margin-bottom: 4px; }
+        .g-site img { width: 16px; margin-right: 8px; border-radius: 50%; }
+        .g-title { font-size: 18px; color: var(--blue-link); text-decoration: none; display: block; margin-bottom: 3px; }
+        .g-desc { font-size: 13px; color: var(--desc-gray); line-height: 1.5; }
+        
+        /* DIRECT LINK BOX (For Verified Apps) */
+        #direct-box { display:none; padding: 20px; text-align: center; background: #f8f9fa; border: 1px solid #ddd; border-radius: 10px; margin: 20px; }
+        .dl-btn { background: #000; color: #fff; padding: 15px 30px; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <div id="main-container">
-        <div class="header">
-            <div style="font-weight: 900; font-size: 16px;">RTX <span style="color:var(--saffron)">BHARAT</span></div>
-            <div class="status-bar">● SMART ROUTING ACTIVE | 25-04-2026</div>
+    <div id="main-logic">
+        <div id="google-ui" style="display:none;">
+            <div class="search-top">
+                <div class="g-logo">
+                    <span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>
+                </div>
+                <div class="s-box" id="query-display">spotify premium</div>
+            </div>
+            
+            <div class="results-container" id="res-list">
+                </div>
         </div>
 
-        <div id="content">
-            <div class="section-title">Verified Direct Access (Softonic)</div>
-            <div id="direct-list"></div>
-
-            <div class="section-title">Deep Scan Required (Mod/Premium)</div>
-            <div id="search-list"></div>
+        <div id="direct-box">
+            <h3 id="app-n">Software Found</h3>
+            <p style="font-size:12px; color:gray;">Verified by RTX Bharat Team</p>
+            <a href="#" id="app-l" class="dl-btn">DOWNLOAD NOW</a>
         </div>
-    </div>
-
-    <div id="google-page">
-        <div class="search-header">
-            <div class="fake-bar">🔍 <span id="q-text" style="margin-left:10px;"></span></div>
-        </div>
-        <div id="res-container"></div>
-        <button onclick="closeUI('google-page')" style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#000; color:#fff; border:none; padding:12px 30px; border-radius:50px; font-weight:bold;">BACK</button>
-    </div>
-
-    <div id="direct-page">
-        <div style="text-align:left; font-size:9px; position:absolute; top:20px; left:20px; width:80%;">
-            <b style="color:red;">⚠️ BHARAT DIRECT LINK</b><br>
-            <span id="d-url" style="color:blue; word-break:break-all;"></span>
-        </div>
-        <div style="border:1px solid #ddd; padding:30px; border-radius:15px; width:100%;">
-            <h2 id="d-name">APP</h2>
-            <p style="font-size:11px; color:#666; margin-top:10px;">Source: Softonic Official Mirror</p>
-        </div>
-        <a href="#" id="d-link" style="background:black; color:white; padding:18px; width:100%; text-align:center; display:block; margin-top:20px; text-decoration:none; border-radius:10px; font-weight:bold;">START DOWNLOAD</a>
-        <button onclick="closeUI('direct-page')" style="margin-top:20px; background:none; border:none; text-decoration:underline;">Cancel</button>
     </div>
 
     <script>
-        const directApps = [
-            { name: "Sigma Battle", url: "https://sigma-battle-royale.en.softonic.com/android/download" },
-            { name: "Minecraft", url: "https://minecraft.en.softonic.com/android/download" },
-            { name: "ZArchiver", url: "https://zarchiver.en.softonic.com/android/download" }
-        ];
+        // Data logic
+        const database = {
+            "spotify": { type: "search", query: "Spotify Premium Mod 2026", results: [
+                { site: "spotify.com", title: "Spotify Premium - Get 3 Months Free", desc: "Enjoy ad-free music, offline playback, and unlimited skips. Offer available for students and individuals." },
+                { site: "softonic.com", title: "Download Spotify Premium (Premium) - Softonic", desc: "Unlock all VIP features, no ads, high quality audio. Safe and verified download." }
+            ]},
+            "sigma": { type: "direct", name: "Sigma Battle Royale", url: "https://sigma-battle.en.softonic.com/android/download" }
+        };
 
-        const searchApps = [
-            { name: "Spotify Premium", desc: "Unlock all VIP features, no ads, high quality audio." },
-            { name: "MT Manager VIP", desc: "Advanced APK editor with all pro functions enabled." },
-            { name: "Lucky Patcher", desc: "Original bypass tool for license verification." }
-        ];
+        function route(input) {
+            const data = database[input.toLowerCase()];
+            if (!data) return;
 
-        function render() {
-            const dList = document.getElementById('direct-list');
-            const sList = document.getElementById('search-list');
-
-            directApps.forEach(app => {
-                dList.innerHTML += `<div class="item-card direct">
-                    <div class="info">
-                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=${app.name}">
-                        <div><div class="name">${app.name}</div><div class="tag">DIRECT LINK</div></div>
-                    </div>
-                    <button class="action-btn" onclick="openDirect('${app.name}', '${app.url}')">GET</button>
-                </div>`;
-            });
-
-            searchApps.forEach(app => {
-                sList.innerHTML += `<div class="item-card search">
-                    <div class="info">
-                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=${app.name}">
-                        <div><div class="name">${app.name}</div><div class="tag">DEEP SCAN</div></div>
-                    </div>
-                    <button class="action-btn" style="background:#444;" onclick="openSearch('${app.name}', '${app.desc}')">SCAN</button>
-                </div>`;
-            });
+            if (data.type === "direct") {
+                document.getElementById('google-ui').style.display = 'none';
+                document.getElementById('direct-box').style.display = 'block';
+                document.getElementById('app-n').innerText = data.name;
+                document.getElementById('app-l').href = data.url;
+            } else {
+                document.getElementById('direct-box').style.display = 'none';
+                document.getElementById('google-ui').style.display = 'block';
+                document.getElementById('query-display').innerText = data.query;
+                
+                let html = "";
+                data.results.forEach(r => {
+                    html += `
+                    <div class="g-item">
+                        <div class="g-site"><span>https://www.${r.site}</span></div>
+                        <a href="https://${r.site}" class="g-title">${r.title}</a>
+                        <div class="g-desc">${r.desc}</div>
+                    </div>`;
+                });
+                document.getElementById('res-list').innerHTML = html;
+            }
         }
 
-        function openDirect(name, url) {
-            document.getElementById('d-name').innerText = name.toUpperCase();
-            document.getElementById('d-url').innerText = url;
-            document.getElementById('d-link').href = url;
-            document.getElementById('direct-page').style.display = 'flex';
-        }
-
-        function openSearch(name, desc) {
-            document.getElementById('q-text').innerText = name + " Premium Mod";
-            const container = document.getElementById('res-container');
-            container.innerHTML = `
-                <div class="res-box">
-                    <span style="font-size:11px;">https://en.softonic.com › download</span>
-                    <a href="#" class="res-title">Download ${name} (Premium) - Softonic</a>
-                    <p class="res-desc">${desc}</p>
-                </div>
-                <div class="res-box">
-                    <span style="font-size:11px;">https://apkmirror.com › ${name}</span>
-                    <a href="#" class="res-title">${name} VIP Mod APK 2026</a>
-                    <p class="res-desc">Verified by Bharat Team Solid. No virus detected.</p>
-                </div>`;
-            document.getElementById('google-page').style.display = 'flex';
-        }
-
-        function closeUI(id) { document.getElementById(id).style.display = 'none'; }
-
-        window.onload = render;
+        // Example trigger: Jab app khule
+        window.onload = () => route("spotify"); // Change to "sigma" for direct link test
     </script>
 </body>
 </html>
