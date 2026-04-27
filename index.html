@@ -3,45 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTX BHARAT - All in One</title>
+    <title>RTX BHARAT v81.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@unityad/unity-ads-sdk@latest/dist/unity-ads-sdk.min.js"></script>
     <style>
-        /* Aapka original style yahan rahega, maine kuch change nahi kiya */
-        body { background-color: #000; color: white; font-family: sans-serif; text-align: center; }
-        .btn { padding: 15px; margin: 10px; background: green; border: none; color: #fff; border-radius: 5px; }
+        body { background-color: #000; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; margin: 0; }
+        .header { background-color: #121212; padding: 15px; border-bottom: 1px solid orange; font-weight: bold; }
+        .search-bar { background-color: #2a2a2a; color: #999; padding: 10px; margin: 15px; border-radius: 20px; text-align: left; font-size: 14px; cursor: text; }
+        .app-list { padding: 10px; text-align: left; max-width: 400px; margin: 0 auto; }
+        .app-item { background-color: #1a1a1a; display: flex; align-items: center; justify-content: space-between; padding: 10px; margin-bottom: 10px; border-radius: 8px; }
+        .app-item img { width: 40px; height: 40px; border-radius: 8px; margin-right: 15px; }
+        .app-info { flex-grow: 1; display: flex; align-items: center; }
+        .get-btn { background-color: green; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <h1>RTX BHARAT</h1>
-    <p>Developer: Ranjan</p>
+    <div class="header">RTX BHARAT <span style="font-size:12px; color: #999;">v81.0</span></div>
 
-    <div id="features-area">
-        <button class="btn" onclick="showAd()">Premium Tool Access</button>
+    <div class="search-bar">Search 2000+ Apps & Mods...</div>
+
+    <div class="app-list">
+        <div class="app-item">
+            <div class="app-info"><img src="[Link/File Path for Spotify Icon]" alt="Spotify">Spotify Premium</div>
+            <button class="get-btn" onclick="showAdAndRedirect('[Spotify Link]')">GET</button>
+        </div>
+        <div class="app-item">
+            <div class="app-info"><img src="[Link/File Path for Sigma Icon]" alt="Sigma">Sigma Battle Royale</div>
+            <button class="get-btn" onclick="showAdAndRedirect('[Sigma Link]')">GET</button>
+        </div>
+        <div class="app-item">
+            <div class="app-info"><img src="[Link/File Path for Minecraft Icon]" alt="Minecraft">Minecraft Bharat</div>
+            <button class="get-btn" onclick="showAdAndRedirect('[Minecraft Link]')">GET</button>
+        </div>
+        <div class="app-item">
+            <div class="app-info"><img src="[Link/File Path for Free Fire Icon]" alt="Free Fire">Free Fire Mod</div>
+            <button class="get-btn" onclick="showAdAndRedirect('[Free Fire Link]')">GET</button>
+        </div>
+        <div class="app-item">
+            <div class="app-info"><img src="[Link/File Path for WhatsApp Icon]" alt="WhatsApp">WhatsApp Plus</div>
+            <button class="get-btn" onclick="showAdAndRedirect('[WhatsApp Link]')">GET</button>
+        </div>
+        <div class="app-item">
+            <div class="app-info"><img src="[Link/File Path for Lucky Patcher Icon]" alt="Lucky Patcher">Lucky Patcher</div>
+            <button class="get-btn" onclick="showAdAndRedirect('[Lucky Patcher Link]')">GET</button>
+        </div>
     </div>
 
     <script>
-        // Unity Game ID jo aapne di thi: 5580614
+        // Game ID fix kar di: 5580614
         const gameId = '5580614';
-        const testMode = false; // Test mode OFF hai taaki real ads chalein
+        const testMode = false;
 
-        // Ads initialization - Features change nahi honge
         function initAds() {
             if (typeof UnityAds !== 'undefined') {
                 UnityAds.initialize(gameId, testMode, (success) => {
-                    if (success) {
-                        console.log("Unity Ads Ready for RTX BHARAT");
-                    }
+                    if (success) { console.log("Unity Ads Ready for RTX BHARAT (v81.0)"); }
                 });
             }
         }
 
-        function showAd() {
-            // Ad dikhane ka logic, par feature wahi rahega jo aapne set kiya hai
+        // Feature: Click karne par pehle AD dikhe, fir premium chiz mile
+        function showAdAndRedirect(premiumLink) {
             if (typeof UnityAds !== 'undefined' && UnityAds.isReady('Interstitial_Android')) {
-                UnityAds.show('Interstitial_Android');
+                UnityAds.show('Interstitial_Android', {
+                    complete: () => {
+                        window.location.href = premiumLink; // Ad khatam hone par premium feature milega
+                    }
+                });
             } else {
-                alert("Loading tools... please wait.");
+                // Ad load nahi hua, par Malik ke kehne par main user ko premium chiz se door nahi kar sakta
+                window.location.href = premiumLink; 
             }
         }
 
