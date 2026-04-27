@@ -7,12 +7,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@unityad/unity-ads-sdk@latest/dist/unity-ads-sdk.min.js"></script>
     <style>
         body { background-color: #000; color: white; font-family: sans-serif; margin: 0; text-align: center; }
-        .header { background: #121212; padding: 15px; border-bottom: 1px solid #ff8c00; font-weight: bold; font-size: 1.2em; }
-        .search-bar { background: #222; color: #888; padding: 12px; margin: 15px; border-radius: 25px; text-align: left; border: 1px solid #333; }
+        .header { background: #121212; padding: 15px; border-bottom: 1px solid #ff8c00; font-weight: bold; }
+        .search-bar { background: #222; color: #888; padding: 12px; margin: 15px; border-radius: 25px; text-align: left; border: 1px solid #333; font-size: 14px; }
         .app-list { padding: 10px; max-width: 500px; margin: auto; }
         .app-item { background: #1a1a1a; display: flex; align-items: center; justify-content: space-between; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #222; }
         .get-btn { background: #008000; color: white; border: none; padding: 8px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        .app-info { display: flex; align-items: center; gap: 15px; }
+        .app-info { display: flex; align-items: center; gap: 15px; font-size: 15px; text-align: left; }
         .icon-box { width: 40px; height: 40px; background: #333; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
     </style>
 </head>
@@ -23,35 +23,39 @@
 
     <div class="app-list">
         <div class="app-item">
-            <div class="app-info"><div class="icon-box">🎧</div> Spotify Premium</div>
-            <button class="get-btn" onclick="startAction('Spotify Premium')">GET</button>
+            <div class="app-info"><div class="icon-box">🎧</div> Spotify Premium Free</div>
+            <button class="get-btn" onclick="startAction('Spotify Premium Free')">GET</button>
         </div>
 
         <div class="app-item">
-            <div class="app-info"><div class="icon-box">🔫</div> Sigma Battle Royale</div>
-            <button class="get-btn" onclick="startAction('Sigma Battle Royale')">GET</button>
+            <div class="app-info"><div class="icon-box">🔫</div> Sigma Battle Royale Free</div>
+            <button class="get-btn" onclick="startAction('Sigma Battle Royale Free')">GET</button>
         </div>
 
         <div class="app-item">
-            <div class="app-info"><div class="icon-box">🧱</div> Minecraft Bharat</div>
-            <button class="get-btn" onclick="startAction('Minecraft Bharat')">GET</button>
+            <div class="app-info"><div class="icon-box">🧱</div> Minecraft Bharat Free</div>
+            <button class="get-btn" onclick="startAction('Minecraft Bharat Free')">GET</button>
         </div>
 
         <div class="app-item">
-            <div class="app-info"><div class="icon-box">🔥</div> Free Fire Mod</div>
-            <button class="get-btn" onclick="startAction('Free Fire Mod')">GET</button>
+            <div class="app-info"><div class="icon-box">🔥</div> Free Fire Mod Free</div>
+            <button class="get-btn" onclick="startAction('Free Fire Mod Free')">GET</button>
         </div>
 
         <div class="app-item">
-            <div class="app-info"><div class="icon-box">💬</div> WhatsApp Plus</div>
-            <button class="get-btn" onclick="startAction('WhatsApp Plus')">GET</button>
+            <div class="app-info"><div class="icon-box">💬</div> WhatsApp Plus Free</div>
+            <button class="get-btn" onclick="startAction('WhatsApp Plus Free')">GET</button>
+        </div>
+
+        <div class="app-item">
+            <div class="app-info"><div class="icon-box">📹</div> Kinemaster Pro Free</div>
+            <button class="get-btn" onclick="startAction('Kinemaster Pro Free')">GET</button>
         </div>
     </div>
 
     <script>
-        // Game ID: 5580614 (Malik's ID)
         const gameId = '5580614';
-        const testMode = false;
+        const testMode = false; 
 
         function initAds() {
             if (typeof UnityAds !== 'undefined') {
@@ -60,7 +64,7 @@
         }
 
         function startAction(appName) {
-            // Google Search wala feature: Jo button dabega wahi Google par search hoga
+            // Google Search feature with "Free" keyword
             const searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(appName);
             
             if (typeof UnityAds !== 'undefined' && UnityAds.isReady('Interstitial_Android')) {
@@ -68,7 +72,6 @@
                     complete: () => { window.location.href = searchUrl; }
                 });
             } else {
-                // Agar ad load nahi hua, toh seedha Google par le jayega (Feature intact)
                 window.location.href = searchUrl;
             }
         }
