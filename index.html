@@ -8,54 +8,48 @@
     <style>
         body { background-color: #000; color: white; font-family: sans-serif; margin: 0; text-align: center; }
         .header { background: #121212; padding: 15px; border-bottom: 1px solid #ff8c00; font-weight: bold; }
-        .search-bar { background: #222; color: #888; padding: 12px; margin: 15px; border-radius: 25px; text-align: left; border: 1px solid #333; font-size: 14px; }
+        #searchInput { background: #222; color: #fff; padding: 12px; margin: 15px; border-radius: 25px; text-align: left; border: 1px solid #333; width: 80%; outline: none; }
         .app-list { padding: 10px; max-width: 500px; margin: auto; }
         .app-item { background: #1a1a1a; display: flex; align-items: center; justify-content: space-between; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #222; }
         .get-btn { background: #008000; color: white; border: none; padding: 8px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        .app-info { display: flex; align-items: center; gap: 15px; font-size: 15px; text-align: left; }
-        .icon-box { width: 40px; height: 40px; background: #333; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .app-info { display: flex; align-items: center; gap: 15px; }
+        #googleSearchArea { display: none; margin-top: 20px; padding: 20px; }
+        .google-btn { background: #4285F4; color: white; border: none; padding: 12px 30px; border-radius: 5px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="header">RTX BHARAT <span style="font-size: 12px; color: #888;">v81.0</span></div>
-    <div class="search-bar">Search 2000+ Apps & Mods...</div>
+    
+    <input type="text" id="searchInput" placeholder="Search 2000+ Apps & Mods..." onkeyup="filterApps()">
 
-    <div class="app-list">
-        <div class="app-item">
-            <div class="app-info"><div class="icon-box">🎧</div> Spotify Premium Free</div>
+    <div class="app-list" id="appList">
+        <div class="app-item" data-name="spotify premium free">
+            <div class="app-info">🎧 Spotify Premium Free</div>
             <button class="get-btn" onclick="startAction('Spotify Premium Free')">GET</button>
         </div>
-
-        <div class="app-item">
-            <div class="app-info"><div class="icon-box">🔫</div> Sigma Battle Royale Free</div>
+        <div class="app-item" data-name="sigma battle royale free">
+            <div class="app-info">🔫 Sigma Battle Royale Free</div>
             <button class="get-btn" onclick="startAction('Sigma Battle Royale Free')">GET</button>
         </div>
-
-        <div class="app-item">
-            <div class="app-info"><div class="icon-box">🧱</div> Minecraft Bharat Free</div>
+        <div class="app-item" data-name="minecraft bharat free">
+            <div class="app-info">🧱 Minecraft Bharat Free</div>
             <button class="get-btn" onclick="startAction('Minecraft Bharat Free')">GET</button>
         </div>
-
-        <div class="app-item">
-            <div class="app-info"><div class="icon-box">🔥</div> Free Fire Mod Free</div>
+        <div class="app-item" data-name="free fire mod free">
+            <div class="app-info">🔥 Free Fire Mod Free</div>
             <button class="get-btn" onclick="startAction('Free Fire Mod Free')">GET</button>
         </div>
+    </div>
 
-        <div class="app-item">
-            <div class="app-info"><div class="icon-box">💬</div> WhatsApp Plus Free</div>
-            <button class="get-btn" onclick="startAction('WhatsApp Plus Free')">GET</button>
-        </div>
-
-        <div class="app-item">
-            <div class="app-info"><div class="icon-box">📹</div> Kinemaster Pro Free</div>
-            <button class="get-btn" onclick="startAction('Kinemaster Pro Free')">GET</button>
-        </div>
+    <div id="googleSearchArea">
+        <p>Not in our list?</p>
+        <button class="google-btn" id="googleBtn" onclick="searchOnGoogle()">Search for Google</button>
     </div>
 
     <script>
         const gameId = '5580614';
-        const testMode = false; 
+        const testMode = false;
 
         function initAds() {
             if (typeof UnityAds !== 'undefined') {
@@ -63,10 +57,44 @@
             }
         }
 
+        // Search Engine Logic
+        function filterApps() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let items = document.getElementsByClassName('app-item');
+            let found = false;
+
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].getAttribute('data-name').includes(input)) {
+                    items[i].style.display = "flex";
+                    found = true;
+                } else {
+                    items[i].style.display = "none";
+                }
+            }
+
+            // Agar list mein nahi mila toh Google button dikhao
+            let googleArea = document.getElementById('googleSearchArea');
+            if (!found && input !== "") {
+                googleArea.style.display = "block";
+            } else {
+                googleArea.style.display = "none";
+            }
+        }
+
+        function searchOnGoogle() {
+            let query = document.getElementById('searchInput').value;
+            startAction(query);
+        }
+
         function startAction(appName) {
-            // Google Search feature with "Free" keyword
-            const searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(appName);
+            const searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(appName + " free");
             
+            // Network Check
+            if (!navigator.onLine) {
+                alert("Please check your internet connection.");
+                return;
+            }
+
             if (typeof UnityAds !== 'undefined' && UnityAds.isReady('Interstitial_Android')) {
                 UnityAds.show('Interstitial_Android', {
                     complete: () => { window.location.href = searchUrl; }
