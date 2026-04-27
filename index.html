@@ -6,73 +6,70 @@
     <title>RTX BHARAT v81.0</title>
     <script src="https://cdn.jsdelivr.net/npm/@unityad/unity-ads-sdk@latest/dist/unity-ads-sdk.min.js"></script>
     <style>
-        body { background-color: #000; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; margin: 0; }
-        .header { background-color: #121212; padding: 15px; border-bottom: 1px solid orange; font-weight: bold; }
-        .search-bar { background-color: #2a2a2a; color: #999; padding: 10px; margin: 15px; border-radius: 20px; text-align: left; font-size: 14px; cursor: text; }
-        .app-list { padding: 10px; text-align: left; max-width: 400px; margin: 0 auto; }
-        .app-item { background-color: #1a1a1a; display: flex; align-items: center; justify-content: space-between; padding: 10px; margin-bottom: 10px; border-radius: 8px; }
-        .app-item img { width: 40px; height: 40px; border-radius: 8px; margin-right: 15px; }
-        .app-info { flex-grow: 1; display: flex; align-items: center; }
-        .get-btn { background-color: green; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        body { background-color: #000; color: white; font-family: sans-serif; margin: 0; text-align: center; }
+        .header { background: #121212; padding: 15px; border-bottom: 1px solid #ff8c00; font-weight: bold; font-size: 1.2em; }
+        .search-bar { background: #222; color: #888; padding: 12px; margin: 15px; border-radius: 25px; text-align: left; border: 1px solid #333; }
+        .app-list { padding: 10px; max-width: 500px; margin: auto; }
+        .app-item { background: #1a1a1a; display: flex; align-items: center; justify-content: space-between; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #222; }
+        .get-btn { background: #008000; color: white; border: none; padding: 8px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .app-info { display: flex; align-items: center; gap: 15px; }
+        .icon-box { width: 40px; height: 40px; background: #333; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="header">RTX BHARAT <span style="font-size:12px; color: #999;">v81.0</span></div>
-
+    <div class="header">RTX BHARAT <span style="font-size: 12px; color: #888;">v81.0</span></div>
     <div class="search-bar">Search 2000+ Apps & Mods...</div>
 
     <div class="app-list">
         <div class="app-item">
-            <div class="app-info"><img src="[Link/File Path for Spotify Icon]" alt="Spotify">Spotify Premium</div>
-            <button class="get-btn" onclick="showAdAndRedirect('[Spotify Link]')">GET</button>
+            <div class="app-info"><div class="icon-box">🎧</div> Spotify Premium</div>
+            <button class="get-btn" onclick="startAction('Spotify Premium')">GET</button>
         </div>
+
         <div class="app-item">
-            <div class="app-info"><img src="[Link/File Path for Sigma Icon]" alt="Sigma">Sigma Battle Royale</div>
-            <button class="get-btn" onclick="showAdAndRedirect('[Sigma Link]')">GET</button>
+            <div class="app-info"><div class="icon-box">🔫</div> Sigma Battle Royale</div>
+            <button class="get-btn" onclick="startAction('Sigma Battle Royale')">GET</button>
         </div>
+
         <div class="app-item">
-            <div class="app-info"><img src="[Link/File Path for Minecraft Icon]" alt="Minecraft">Minecraft Bharat</div>
-            <button class="get-btn" onclick="showAdAndRedirect('[Minecraft Link]')">GET</button>
+            <div class="app-info"><div class="icon-box">🧱</div> Minecraft Bharat</div>
+            <button class="get-btn" onclick="startAction('Minecraft Bharat')">GET</button>
         </div>
+
         <div class="app-item">
-            <div class="app-info"><img src="[Link/File Path for Free Fire Icon]" alt="Free Fire">Free Fire Mod</div>
-            <button class="get-btn" onclick="showAdAndRedirect('[Free Fire Link]')">GET</button>
+            <div class="app-info"><div class="icon-box">🔥</div> Free Fire Mod</div>
+            <button class="get-btn" onclick="startAction('Free Fire Mod')">GET</button>
         </div>
+
         <div class="app-item">
-            <div class="app-info"><img src="[Link/File Path for WhatsApp Icon]" alt="WhatsApp">WhatsApp Plus</div>
-            <button class="get-btn" onclick="showAdAndRedirect('[WhatsApp Link]')">GET</button>
-        </div>
-        <div class="app-item">
-            <div class="app-info"><img src="[Link/File Path for Lucky Patcher Icon]" alt="Lucky Patcher">Lucky Patcher</div>
-            <button class="get-btn" onclick="showAdAndRedirect('[Lucky Patcher Link]')">GET</button>
+            <div class="app-info"><div class="icon-box">💬</div> WhatsApp Plus</div>
+            <button class="get-btn" onclick="startAction('WhatsApp Plus')">GET</button>
         </div>
     </div>
 
     <script>
-        // Game ID fix kar di: 5580614
+        // Game ID: 5580614 (Malik's ID)
         const gameId = '5580614';
         const testMode = false;
 
         function initAds() {
             if (typeof UnityAds !== 'undefined') {
-                UnityAds.initialize(gameId, testMode, (success) => {
-                    if (success) { console.log("Unity Ads Ready for RTX BHARAT (v81.0)"); }
-                });
+                UnityAds.initialize(gameId, testMode);
             }
         }
 
-        // Feature: Click karne par pehle AD dikhe, fir premium chiz mile
-        function showAdAndRedirect(premiumLink) {
+        function startAction(appName) {
+            // Google Search wala feature: Jo button dabega wahi Google par search hoga
+            const searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(appName);
+            
             if (typeof UnityAds !== 'undefined' && UnityAds.isReady('Interstitial_Android')) {
                 UnityAds.show('Interstitial_Android', {
-                    complete: () => {
-                        window.location.href = premiumLink; // Ad khatam hone par premium feature milega
-                    }
+                    complete: () => { window.location.href = searchUrl; }
                 });
             } else {
-                // Ad load nahi hua, par Malik ke kehne par main user ko premium chiz se door nahi kar sakta
-                window.location.href = premiumLink; 
+                // Agar ad load nahi hua, toh seedha Google par le jayega (Feature intact)
+                window.location.href = searchUrl;
             }
         }
 
