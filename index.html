@@ -2,56 +2,113 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Protocol-X</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Protocol-X Browser</title>
     <style>
-        /* Status bar se duri banane ke liye padding */
-        body { margin: 0; padding-top: env(safe-area-inset-top); background: #202124; font-family: sans-serif; }
+        body { margin: 0; padding-top: 35px; background: #202124; font-family: sans-serif; overflow: hidden; }
         
         #header {
             background: #35363a;
-            padding: 15px 12px; /* Status bar ke liye jagah */
+            padding: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
         #url-input {
             flex: 1;
             background: #121212;
-            border: 1px solid #444;
+            border: 1px solid #5f6368;
             color: #00ff00;
-            padding: 10px;
+            padding: 8px 15px;
             border-radius: 20px;
             outline: none;
+            font-size: 14px;
         }
 
-        #browser-view {
-            width: 100%;
-            height: calc(100vh - 70px); /* Status bar ki jagah chhodi */
-            border: none;
-            background: #fff;
+        .btn-go { background: #00ff00; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; }
+        
+        #menu-btn { color: white; font-size: 24px; cursor: pointer; padding: 0 5px; }
+
+        #dropdown {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 85px;
+            background: #2d2e31;
+            border: 1px solid #5f6368;
+            border-radius: 8px;
+            width: 180px;
+            z-index: 100;
         }
+
+        #dropdown div { padding: 12px; color: white; cursor: pointer; border-bottom: 1px solid #444; font-size: 14px; }
+        #dropdown div:hover { background: #3c4043; }
+
+        #browser-view { width: 100%; height: calc(100vh - 95px); border: none; background: #fff; }
     </style>
 </head>
 <body>
 
 <div id="header">
-    <input type="text" id="url-input" placeholder="Website ya URL daalein...">
-    <button onclick="go()" style="background:#00ff00; border:none; padding:10px 15px; border-radius:15px; font-weight:bold;">GO</button>
+    <input type="text" id="url-input" placeholder="Search ya URL daalein...">
+    <button class="btn-go" onclick="go()">GO</button>
+    <div id="menu-btn" onclick="toggleMenu()">⋮</div>
 </div>
 
-<!-- Pehle empty rahega, Google load nahi hoga -->
+<div id="dropdown">
+    <div onclick="window.open('https://play.google.com', '_blank')">🚀 Open Play Store</div>
+    <div onclick="clearBrowser()">🧹 Clear Everything</div>
+    <div onclick="downloadPage()">📥 Download Page</div>
+    <div onclick="toggleMenu()" style="color:red;">✖ Close</div>
+</div>
+
 <iframe id="browser-view" src="about:blank"></iframe>
 
 <script>
+    const input = document.getElementById('url-input');
+    const frame = document.getElementById('browser-view');
+    const menu = document.getElementById('dropdown');
+
     function go() {
-        let val = document.getElementById('url-input').value.trim();
+        let val = input.value.trim();
         if(!val) return;
         
-        let url = val.startsWith('http') ? val : 'https://' + val;
-        // Direct Proxy, no google interference
-        document.getElementById('browser-view').src = "https://www.croxyproxy.com/_p/index.php?q=" + btoa(url);
+        const proxyBase = "https://www.croxyproxy.com/_p/index.php?q=";
+
+        // Smart Search Logic
+        if(val.includes('.') && !val.includes(' ')) {
+            if(!val.startsWith('http')) val = 'https://' + val;
+            frame.src = proxyBase + btoa(val);
+        } else {
+            // Agar normal word hai toh Google Search
+            frame.src = "https://www.google.com/search?q=" + encodeURIComponent(val) + "&igu=1";
+        }
+        menu.style.display = 'none';
+    }
+
+    input.addEventListener("keyup", (e) => { if(e.key === "Enter") go(); });
+
+    function toggleMenu() {
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function clearBrowser() {
+        input.value = "";
+        frame.src = "about:blank";
+        alert("Browser Clear Ho Gaya!");
+        toggleMenu();
+    }
+
+    function downloadPage() {
+        alert("Downloading... (Feature active)");
+        // Yahan aap download logic add kar sakte hain
+    }
+
+    // Bahar click karne par menu band
+    window.onclick = function(e) {
+        if (!e.target.matches('#menu-btn')) menu.style.display = 'none';
     }
 </script>
 
