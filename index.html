@@ -2,74 +2,111 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Via Pro Hybrid</title>
+    <meta name="viewport" content="width=1280, initial-scale=1">
+    <title>Chronos Desktop Ultra</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background: #fff; }
-
-        /* Via Style Blue Loading Bar */
-        #progress {
-            position: fixed; top: 0; left: 0; height: 3px;
-            background: linear-gradient(to right, #4285f4, #34a853);
-            width: 0%; transition: 0.3s; z-index: 1000;
+        body { 
+            width: 1280px; /* Fixed Desktop Width */
+            background: #f1f3f4; 
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
         }
 
-        /* Clean Search Bar */
-        .top-nav {
-            padding: 12px; display: flex; gap: 8px;
-            border-bottom: 1px solid #f1f1f1; background: #fff;
+        /* Via + Desktop Hybrid Header */
+        .header-pro {
+            background: #fff;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        #urlBox {
-            flex: 1; padding: 10px 15px; border-radius: 20px;
-            border: 1px solid #dfe1e5; background: #f8f9fa;
-            outline: none; font-size: 15px;
+        .search-container {
+            flex: 1;
+            display: flex;
+            background: #f1f3f4;
+            border-radius: 30px;
+            padding: 10px 25px;
+            margin-right: 20px;
+            border: 1px solid #dfe1e5;
         }
 
-        /* Full Screen WebView Area */
-        #viewport {
-            width: 100%; height: calc(100vh - 65px);
+        input {
+            width: 100%;
             border: none;
+            background: transparent;
+            outline: none;
+            font-size: 18px;
+        }
+
+        .go-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Loading Bar */
+        #loader {
+            position: fixed; top: 0; left: 0; height: 4px;
+            background: #4285f4; width: 0%; transition: 0.4s;
+        }
+
+        /* Main Desktop Window */
+        #displayArea {
+            width: 100%;
+            height: calc(100vh - 80px);
+            border: none;
+            background: white;
         }
     </style>
 </head>
 <body>
 
-<div id="progress"></div>
+<div id="loader"></div>
 
-<div class="top-nav">
-    <input type="text" id="urlBox" placeholder="Google Search ya Proxy URL..." onkeydown="if(event.key==='Enter') execute()">
+<div class="header-pro">
+    <div class="search-container">
+        <input type="text" id="urlInput" placeholder="Search Google or Enter URL (Desktop Force Mode)..." onkeydown="if(event.key==='Enter') loadDesktop()">
+    </div>
+    <button class="go-btn" onclick="loadDesktop()">SEARCH</button>
 </div>
 
-<iframe id="viewport" src="https://www.google.com/search?igu=1"></iframe>
+<iframe id="displayArea" src="https://www.google.com/search?q=Ranjan+AI&igu=1"></iframe>
 
 <script>
-    function execute() {
-        let input = document.getElementById('urlBox').value;
-        let frame = document.getElementById('viewport');
-        let loader = document.getElementById('progress');
+    function loadDesktop() {
+        let val = document.getElementById('urlInput').value;
+        let frame = document.getElementById('displayArea');
+        let loader = document.getElementById('loader');
 
         loader.style.width = "40%";
 
-        // GOOGLE ALGORITHM + PROXY LOGIC
-        let finalUrl = "";
+        // ALGORITHM: Force Desktop + Proxy Bypass
+        let finalPath = "";
 
-        if (input.includes('.') && !input.includes(' ')) {
-            // PROXY MODE: Agar direct URL hai toh proxy server use karega
-            // Hum yahan 'CORS Proxy' ka algorithm join kar rahe hain
-            finalUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(input);
-            // Note: Real app mein hum 'CroxyProxy' ya personal server ka link dalte hain
+        if (val.includes('.') && !val.includes(' ')) {
+            // Agar Spotify jaisi site block ho rahi hai, toh hum Proxy-Server ka use karenge
+            // Ye server unka 'X-Frame-Options' block hata deta hai
+            finalPath = "https://api.allorigins.win/raw?url=" + encodeURIComponent(val);
         } else {
-            // GOOGLE SEARCH ALGORITHM: Direct Google results fetch
-            finalUrl = "https://www.google.com/search?q=" + encodeURIComponent(input) + "&igu=1";
+            // Google Desktop Mode Force URL
+            // &num=50 aur &tbm=isch (example) desktop features ko trigger karte hain
+            finalPath = "https://www.google.com/search?q=" + encodeURIComponent(val) + "&igu=1&pws=0&gl=us&gws_rd=cr";
         }
 
-        frame.src = finalUrl;
+        frame.src = finalPath;
 
         frame.onload = function() {
             loader.style.width = "100%";
-            setTimeout(() => { loader.style.width = "0%"; }, 400);
+            setTimeout(() => { loader.style.width = "0%"; }, 500);
         };
     }
 </script>
