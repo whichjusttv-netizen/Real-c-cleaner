@@ -2,109 +2,96 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTX BHARAT v81.0</title>
-    <script src="https://cdn.jsdelivr.net/npm/@unityad/unity-ads-sdk@latest/dist/unity-ads-sdk.min.js"></script>
+    <title>Protocol-X Proxy Browser</title>
     <style>
-        body { background-color: #000; color: white; font-family: sans-serif; margin: 0; text-align: center; }
-        .header { background: #121212; padding: 15px; border-bottom: 1px solid #ff8c00; font-weight: bold; }
-        #searchInput { background: #222; color: #fff; padding: 12px; margin: 15px; border-radius: 25px; text-align: left; border: 1px solid #333; width: 80%; outline: none; }
-        .app-list { padding: 10px; max-width: 500px; margin: auto; }
-        .app-item { background: #1a1a1a; display: flex; align-items: center; justify-content: space-between; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #222; }
-        .get-btn { background: #008000; color: white; border: none; padding: 8px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        .app-info { display: flex; align-items: center; gap: 15px; }
-        #googleSearchArea { display: none; margin-top: 20px; padding: 20px; }
-        .google-btn { background: #4285F4; color: white; border: none; padding: 12px 30px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        /* Dark Professional Theme */
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', sans-serif; background: #121212; color: #e0e0e0; }
+        
+        #top-bar {
+            background: #1f1f1f;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            gap: 15px;
+            border-bottom: 2px solid #333;
+        }
+
+        #url-input {
+            flex: 1;
+            background: #2c2c2c;
+            border: 1px solid #444;
+            color: #00ff00; /* Hacker Green Color */
+            padding: 10px 15px;
+            border-radius: 5px;
+            outline: none;
+            font-family: monospace;
+        }
+
+        #url-input:focus { border-color: #00ff00; box-shadow: 0 0 5px #00ff00; }
+
+        .btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover { background: #00ff00; color: #000; }
+
+        /* Asli Content Area */
+        #proxy-frame {
+            width: 100%;
+            height: calc(100vh - 65px);
+            border: none;
+            background: #fff;
+        }
+
+        .status-text { font-size: 12px; color: #888; margin-left: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="header">RTX BHARAT <span style="font-size: 12px; color: #888;">v81.0</span></div>
-    
-    <input type="text" id="searchInput" placeholder="Search 2000+ Apps & Mods..." onkeyup="filterApps()">
+<div id="top-bar">
+    <span style="color: #00ff00; font-weight: bold;">RANJAN-OS</span>
+    <input type="text" id="url-input" placeholder="Website ka naam likho (e.g. youtube.com)">
+    <button class="btn" onclick="launchProxy()">GO PROXY</button>
+    <span class="status-text">Status: System Online</span>
+</div>
 
-    <div class="app-list" id="appList">
-        <div class="app-item" data-name="spotify premium free">
-            <div class="app-info">🎧 Spotify Premium Free</div>
-            <button class="get-btn" onclick="startAction('Spotify Premium Free')">GET</button>
-        </div>
-        <div class="app-item" data-name="sigma battle royale free">
-            <div class="app-info">🔫 Sigma Battle Royale Free</div>
-            <button class="get-btn" onclick="startAction('Sigma Battle Royale Free')">GET</button>
-        </div>
-        <div class="app-item" data-name="minecraft bharat free">
-            <div class="app-info">🧱 Minecraft Bharat Free</div>
-            <button class="get-btn" onclick="startAction('Minecraft Bharat Free')">GET</button>
-        </div>
-        <div class="app-item" data-name="free fire mod free">
-            <div class="app-info">🔥 Free Fire Mod Free</div>
-            <button class="get-btn" onclick="startAction('Free Fire Mod Free')">GET</button>
-        </div>
-    </div>
+<!-- Yahan Proxy load hogi -->
+<iframe id="proxy-frame" src="about:blank"></iframe>
 
-    <div id="googleSearchArea">
-        <p>Not in our list?</p>
-        <button class="google-btn" id="googleBtn" onclick="searchOnGoogle()">Search for Google</button>
-    </div>
+<script>
+    function launchProxy() {
+        let targetUrl = document.getElementById('url-input').value.trim();
+        if (!targetUrl) return;
 
-    <script>
-        const gameId = '5580614';
-        const testMode = false;
-
-        function initAds() {
-            if (typeof UnityAds !== 'undefined') {
-                UnityAds.initialize(gameId, testMode);
-            }
+        // Agar user ne http nahi dala toh auto-add karo
+        if (!targetUrl.startsWith('http')) {
+            targetUrl = 'https://' + targetUrl;
         }
 
-        // Search Engine Logic
-        function filterApps() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let items = document.getElementsByClassName('app-item');
-            let found = false;
+        // Proxy Engine Link (Asli Magic)
+        // Hum yahan direct proxy gate use kar rahe hain
+        const proxyGateway = "https://www.croxyproxy.com/_p/index.php?q=";
+        const encodedUrl = btoa(targetUrl); // URL ko encode karna zaroori hai
 
-            for (let i = 0; i < items.length; i++) {
-                if (items[i].getAttribute('data-name').includes(input)) {
-                    items[i].style.display = "flex";
-                    found = true;
-                } else {
-                    items[i].style.display = "none";
-                }
-            }
+        document.getElementById('proxy-frame').src = proxyGateway + encodedUrl;
+        
+        console.log("Proxy Tunnel Created for: " + targetUrl);
+    }
 
-            // Agar list mein nahi mila toh Google button dikhao
-            let googleArea = document.getElementById('googleSearchArea');
-            if (!found && input !== "") {
-                googleArea.style.display = "block";
-            } else {
-                googleArea.style.display = "none";
-            }
+    // Enter dabate hi launch ho jaye
+    document.getElementById('url-input').addEventListener("keyup", function(event) {
+        if (event.key === "Enter") {
+            launchProxy();
         }
+    });
+</script>
 
-        function searchOnGoogle() {
-            let query = document.getElementById('searchInput').value;
-            startAction(query);
-        }
-
-        function startAction(appName) {
-            const searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(appName + " free");
-            
-            // Network Check
-            if (!navigator.onLine) {
-                alert("Please check your internet connection.");
-                return;
-            }
-
-            if (typeof UnityAds !== 'undefined' && UnityAds.isReady('Interstitial_Android')) {
-                UnityAds.show('Interstitial_Android', {
-                    complete: () => { window.location.href = searchUrl; }
-                });
-            } else {
-                window.location.href = searchUrl;
-            }
-        }
-
-        window.onload = initAds;
-    </script>
 </body>
 </html>
