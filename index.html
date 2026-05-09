@@ -2,147 +2,56 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protocol-X Chrome Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Protocol-X</title>
     <style>
-        :root {
-            --chrome-bg: #35363a;
-            --url-bg: #202124;
-            --text-color: #e8eaed;
-            --accent: #8ab4f8;
-        }
-
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--url-bg); overflow: hidden; }
-
-        /* Chrome Top Bar */
+        /* Status bar se duri banane ke liye padding */
+        body { margin: 0; padding-top: env(safe-area-inset-top); background: #202124; font-family: sans-serif; }
+        
         #header {
-            background: var(--chrome-bg);
-            padding: 8px 12px;
+            background: #35363a;
+            padding: 15px 12px; /* Status bar ke liye jagah */
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .nav-icons { color: var(--text-color); font-size: 20px; cursor: pointer; padding: 5px; border-radius: 50%; transition: 0.2s; }
-        .nav-icons:hover { background: #4a4d51; }
-
-        /* Search Bar */
-        #search-container {
-            flex: 1;
-            background: var(--url-bg);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            padding: 5px 15px;
-            border: 1px solid #5f6368;
         }
 
         #url-input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            padding: 5px;
+            flex: 1;
+            background: #121212;
+            border: 1px solid #444;
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 20px;
             outline: none;
-            font-size: 14px;
         }
 
-        /* Three Dot Menu */
-        #menu-btn { font-weight: bold; font-size: 22px; line-height: 10px; padding-bottom: 15px; }
-
-        /* Content Area */
         #browser-view {
             width: 100%;
-            height: calc(100vh - 54px);
+            height: calc(100vh - 70px); /* Status bar ki jagah chhodi */
             border: none;
-            background: white;
+            background: #fff;
         }
-
-        /* Hidden Menu Styling */
-        #dropdown {
-            display: none;
-            position: absolute;
-            right: 10px;
-            top: 50px;
-            background: #2d2e31;
-            border: 1px solid #5f6368;
-            border-radius: 8px;
-            width: 150px;
-            z-index: 100;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-
-        #dropdown div {
-            padding: 10px 15px;
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        #dropdown div:hover { background: #3c4043; }
     </style>
 </head>
 <body>
 
 <div id="header">
-    <div class="nav-icons" onclick="location.reload()">🔄</div>
-    
-    <div id="search-container">
-        <span style="margin-right:8px; color:#9aa0a6;">🔒</span>
-        <input type="text" id="url-input" placeholder="Search Google or type a URL" autocomplete="off">
-    </div>
-
-    <div class="nav-icons" id="menu-btn" onclick="toggleMenu()">⋮</div>
+    <input type="text" id="url-input" placeholder="Website ya URL daalein...">
+    <button onclick="go()" style="background:#00ff00; border:none; padding:10px 15px; border-radius:15px; font-weight:bold;">GO</button>
 </div>
 
-<!-- Dropdown Menu -->
-<div id="dropdown">
-    <div onclick="alert('Ranjan OS: Version 1.0')">About Browser</div>
-    <div onclick="window.open('https://github.com/whichjusttv-netizen', '_blank')">Developer Info</div>
-    <div onclick="location.reload()">New Tab</div>
-    <hr style="border:0.5px solid #5f6368; margin:0;">
-    <div onclick="toggleMenu()" style="color:#ff6b6b;">Close Menu</div>
-</div>
-
-<iframe id="browser-view" src="https://www.google.com/search?igu=1"></iframe>
+<!-- Pehle empty rahega, Google load nahi hoga -->
+<iframe id="browser-view" src="about:blank"></iframe>
 
 <script>
-    const input = document.getElementById('url-input');
-    const frame = document.getElementById('browser-view');
-    const dropdown = document.getElementById('dropdown');
-
-    function launch() {
-        let val = input.value.trim();
+    function go() {
+        let val = document.getElementById('url-input').value.trim();
         if(!val) return;
-
-        let finalUrl = "";
-        const proxyBase = "https://www.croxyproxy.com/_p/index.php?q=";
-
-        // Agar URL hai (jaise .com, .net)
-        if(val.includes('.') && !val.includes(' ')) {
-            if(!val.startsWith('http')) val = 'https://' + val;
-            finalUrl = proxyBase + btoa(val);
-        } else {
-            // Agar normal search hai
-            finalUrl = "https://www.google.com/search?q=" + encodeURIComponent(val) + "&igu=1";
-        }
-
-        frame.src = finalUrl;
-        dropdown.style.display = 'none';
-    }
-
-    input.addEventListener("keyup", (e) => { if(e.key === "Enter") launch(); });
-
-    function toggleMenu() {
-        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-    }
-
-    // Bahar click karne par menu band ho jaye
-    window.onclick = function(event) {
-        if (!event.target.matches('#menu-btn')) {
-            dropdown.style.display = 'none';
-        }
+        
+        let url = val.startsWith('http') ? val : 'https://' + val;
+        // Direct Proxy, no google interference
+        document.getElementById('browser-view').src = "https://www.croxyproxy.com/_p/index.php?q=" + btoa(url);
     }
 </script>
 
