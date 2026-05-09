@@ -2,102 +2,37 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280">
-    <title>Ranjan Infinity Browser</title>
+    <meta name="viewport" content="width=1280"> <title>Ranjan Stealth Pro</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { width: 1280px; background: #202124; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
-
-        /* Top Bar - Via Style Clean Interface */
-        .search-header {
-            background: #2b2c2f;
-            padding: 15px 40px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        #mainSearch {
-            flex: 1;
-            padding: 12px 25px;
-            border-radius: 30px;
-            border: 1px solid #5f6368;
-            background: #3c4043;
-            color: white;
-            font-size: 18px;
-            outline: none;
-        }
-
-        .btn-go {
-            background: #8ab4f8;
-            color: #202124;
-            border: none;
-            padding: 10px 35px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* Full Desktop Viewport */
-        #webDisplay {
-            width: 100%;
-            height: calc(100vh - 75px);
-            border: none;
-            background: white;
-        }
-
-        /* Blue Loading Bar */
-        #loader {
-            position: fixed; top: 0; left: 0; height: 4px;
-            background: #4285f4; width: 0%; transition: 0.3s; z-index: 1000;
-        }
+        body { width: 1280px; margin: 0; background: #121212; overflow: hidden; }
+        .top-bar { padding: 15px; display: flex; background: #1f1f1f; gap: 10px; }
+        input { flex: 1; padding: 10px; border-radius: 20px; border: none; outline: none; background: #333; color: white; }
+        button { padding: 10px 25px; background: #00e676; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        #output { width: 100%; height: calc(100vh - 70px); border: none; background: white; }
     </style>
 </head>
 <body>
 
-<div id="loader"></div>
-
-<div class="search-header">
-    <input type="text" id="mainSearch" placeholder="Google Search ya Blocked URL daalein..." oninput="syncWithGoogle(this.value)" onkeydown="if(event.key==='Enter') startEngine()">
-    <button class="btn-go" onclick="startEngine()">GO</button>
+<div class="top-bar">
+    <input type="text" id="targetUrl" placeholder="Bina kisi rukawat ke search karein..." onkeydown="if(event.key==='Enter') unblock()">
+    <button onclick="unblock()">OPEN</button>
 </div>
 
-<iframe id="webDisplay" src="https://www.google.com/search?igu=1"></iframe>
+<iframe id="output" src="https://www.google.com/search?igu=1"></iframe>
 
 <script>
-    // 1. INPUT SYNC LOGIC: Ye function future mein AI sync ke liye kaam aayega
-    function syncWithGoogle(val) {
-        console.log("Syncing: " + val); 
-        // Yahan hum real-time suggestion logic bhi jod sakte hain
-    }
+    function unblock() {
+        let val = document.getElementById('targetUrl').value;
+        let output = document.getElementById('output');
 
-    // 2. PROXY & DESKTOP ALGORITHM
-    function startEngine() {
-        let query = document.getElementById('mainSearch').value;
-        let display = document.getElementById('webDisplay');
-        let loader = document.getElementById('progress');
-        
-        document.getElementById('loader').style.width = "50%";
-
-        let finalUrl = "";
-
-        if (query.includes('.') && !query.includes(' ')) {
-            // PROXY TUNNEL: Ye Spotify aur blocked sites ke security headers tod deta hai
-            // Hum 'Cloudflare Worker' ya 'AllOrigins' ka advanced raw fetch use kar rahe hain
-            finalUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(query.startsWith('http') ? query : 'https://' + query);
+        if (val.includes('.') && !val.includes(' ')) {
+            // PROXY LOGIC: Ye 'allorigins' ka proxy raste mein security headers ko tod deta hai
+            let proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(val.startsWith('http') ? val : 'https://' + val);
+            output.src = proxyUrl;
         } else {
-            // GOOGLE DESKTOP ENGINE SYNC
-            // '&igu=1' Google ko majboor karta hai aapke interface mein khulne ke liye
-            finalUrl = "https://www.google.com/search?q=" + encodeURIComponent(query) + "&igu=1&pws=0&gl=us";
+            // GOOGLE DESKTOP SYNC
+            output.src = "https://www.google.com/search?q=" + encodeURIComponent(val) + "&igu=1&pws=0";
         }
-
-        display.src = finalUrl;
-
-        display.onload = function() {
-            document.getElementById('loader').style.width = "100%";
-            setTimeout(() => { document.getElementById('loader').style.width = "0%"; }, 500);
-        };
     }
 </script>
 
