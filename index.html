@@ -2,113 +2,75 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Protocol-X Browser</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Via Pro Hybrid</title>
     <style>
-        body { margin: 0; padding-top: 35px; background: #202124; font-family: sans-serif; overflow: hidden; }
-        
-        #header {
-            background: #35363a;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #fff; }
+
+        /* Via Style Blue Loading Bar */
+        #progress {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(to right, #4285f4, #34a853);
+            width: 0%; transition: 0.3s; z-index: 1000;
         }
 
-        #url-input {
-            flex: 1;
-            background: #121212;
-            border: 1px solid #5f6368;
-            color: #00ff00;
-            padding: 8px 15px;
-            border-radius: 20px;
-            outline: none;
-            font-size: 14px;
+        /* Clean Search Bar */
+        .top-nav {
+            padding: 12px; display: flex; gap: 8px;
+            border-bottom: 1px solid #f1f1f1; background: #fff;
         }
 
-        .btn-go { background: #00ff00; border: none; padding: 8px 15px; border-radius: 15px; font-weight: bold; cursor: pointer; }
-        
-        #menu-btn { color: white; font-size: 24px; cursor: pointer; padding: 0 5px; }
-
-        #dropdown {
-            display: none;
-            position: absolute;
-            right: 10px;
-            top: 85px;
-            background: #2d2e31;
-            border: 1px solid #5f6368;
-            border-radius: 8px;
-            width: 180px;
-            z-index: 100;
+        #urlBox {
+            flex: 1; padding: 10px 15px; border-radius: 20px;
+            border: 1px solid #dfe1e5; background: #f8f9fa;
+            outline: none; font-size: 15px;
         }
 
-        #dropdown div { padding: 12px; color: white; cursor: pointer; border-bottom: 1px solid #444; font-size: 14px; }
-        #dropdown div:hover { background: #3c4043; }
-
-        #browser-view { width: 100%; height: calc(100vh - 95px); border: none; background: #fff; }
+        /* Full Screen WebView Area */
+        #viewport {
+            width: 100%; height: calc(100vh - 65px);
+            border: none;
+        }
     </style>
 </head>
 <body>
 
-<div id="header">
-    <input type="text" id="url-input" placeholder="Search ya URL daalein...">
-    <button class="btn-go" onclick="go()">GO</button>
-    <div id="menu-btn" onclick="toggleMenu()">⋮</div>
+<div id="progress"></div>
+
+<div class="top-nav">
+    <input type="text" id="urlBox" placeholder="Google Search ya Proxy URL..." onkeydown="if(event.key==='Enter') execute()">
 </div>
 
-<div id="dropdown">
-    <div onclick="window.open('https://play.google.com', '_blank')">🚀 Open Play Store</div>
-    <div onclick="clearBrowser()">🧹 Clear Everything</div>
-    <div onclick="downloadPage()">📥 Download Page</div>
-    <div onclick="toggleMenu()" style="color:red;">✖ Close</div>
-</div>
-
-<iframe id="browser-view" src="about:blank"></iframe>
+<iframe id="viewport" src="https://www.google.com/search?igu=1"></iframe>
 
 <script>
-    const input = document.getElementById('url-input');
-    const frame = document.getElementById('browser-view');
-    const menu = document.getElementById('dropdown');
+    function execute() {
+        let input = document.getElementById('urlBox').value;
+        let frame = document.getElementById('viewport');
+        let loader = document.getElementById('progress');
 
-    function go() {
-        let val = input.value.trim();
-        if(!val) return;
-        
-        const proxyBase = "https://www.croxyproxy.com/_p/index.php?q=";
+        loader.style.width = "40%";
 
-        // Smart Search Logic
-        if(val.includes('.') && !val.includes(' ')) {
-            if(!val.startsWith('http')) val = 'https://' + val;
-            frame.src = proxyBase + btoa(val);
+        // GOOGLE ALGORITHM + PROXY LOGIC
+        let finalUrl = "";
+
+        if (input.includes('.') && !input.includes(' ')) {
+            // PROXY MODE: Agar direct URL hai toh proxy server use karega
+            // Hum yahan 'CORS Proxy' ka algorithm join kar rahe hain
+            finalUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(input);
+            // Note: Real app mein hum 'CroxyProxy' ya personal server ka link dalte hain
         } else {
-            // Agar normal word hai toh Google Search
-            frame.src = "https://www.google.com/search?q=" + encodeURIComponent(val) + "&igu=1";
+            // GOOGLE SEARCH ALGORITHM: Direct Google results fetch
+            finalUrl = "https://www.google.com/search?q=" + encodeURIComponent(input) + "&igu=1";
         }
-        menu.style.display = 'none';
-    }
 
-    input.addEventListener("keyup", (e) => { if(e.key === "Enter") go(); });
+        frame.src = finalUrl;
 
-    function toggleMenu() {
-        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function clearBrowser() {
-        input.value = "";
-        frame.src = "about:blank";
-        alert("Browser Clear Ho Gaya!");
-        toggleMenu();
-    }
-
-    function downloadPage() {
-        alert("Downloading... (Feature active)");
-        // Yahan aap download logic add kar sakte hain
-    }
-
-    // Bahar click karne par menu band
-    window.onclick = function(e) {
-        if (!e.target.matches('#menu-btn')) menu.style.display = 'none';
+        frame.onload = function() {
+            loader.style.width = "100%";
+            setTimeout(() => { loader.style.width = "0%"; }, 400);
+        };
     }
 </script>
 
