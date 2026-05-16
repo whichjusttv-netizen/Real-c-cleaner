@@ -2,90 +2,132 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280"> <title>Ranjan Desktop Mega Engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranjans.app store</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0a0a0a; color: #fff; overflow: hidden; width: 1280px; }
-
-        /* Navigation Bar */
-        .nav-system { 
-            height: 60px; 
-            background: linear-gradient(90deg, #121212, #1f1f1f); 
-            display: flex; 
-            align-items: center; 
-            padding: 0 20px; 
-            border-bottom: 3px solid #00e676;
-            gap: 15px;
-        }
-
-        #urlBox { 
-            flex: 1; 
-            background: #2a2a2a; 
-            border: 1px solid #444; 
-            padding: 12px; 
-            color: #00e676; 
-            border-radius: 8px; 
-            font-family: 'Courier New', monospace;
-            outline: none;
-        }
-
-        .desktop-btn { 
-            background: #00e676; 
-            color: #000; 
-            padding: 10px 25px; 
-            border: none; 
-            border-radius: 8px; 
-            font-weight: 900; 
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        /* Desktop Container */
-        #frameWrapper {
-            width: 1280px;
-            height: calc(100vh - 63px);
-            overflow: auto;
-            background: #fff;
-        }
-
-        #desktopFrame {
-            width: 100%; /* Full PC Width */
-            height: 100%;
-            border: none;
-        }
+        /* प्रो-गेमिंग डार्क थीम */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0c10; color: #c5c6c7; padding: 20px; text-align: center; }
+        
+        .store-title { color: #ff4500; font-size: 26px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-top: 40px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(255, 69, 0, 0.5); }
+        .store-subtitle { color: #45f3ff; font-size: 13px; margin-bottom: 40px; }
+        
+        .store-container { max-width: 400px; margin: 0 auto; }
+        
+        /* विडमेट कार्ड डिज़ाइन */
+        .app-card { background: #1f2833; border: 2px solid #ff4500; border-radius: 15px; padding: 20px; text-align: left; box-shadow: 0 6px 12px rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: space-between; }
+        .app-icon { font-size: 40px; padding-right: 15px; }
+        .app-info { flex-grow: 1; }
+        .app-name { font-size: 20px; font-weight: bold; color: #ffffff; }
+        .app-status { font-size: 12px; color: #45f3ff; margin-top: 4px; }
+        
+        /* इंस्टॉल बटन */
+        .install-btn { background: linear-gradient(45deg, #ff4500, #ff8c00); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.3s; box-shadow: 0 0 10px rgba(255, 69, 0, 0.4); }
+        .install-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(255, 69, 0, 0.8); }
+        .install-btn:disabled { background: #333; cursor: not-allowed; box-shadow: none; }
+        
+        /* लाइव प्रोग्रेस बार और MB काउंटर */
+        .progress-container { width: 100%; max-width: 400px; margin: 20px auto 0 auto; display: none; background: #1f2833; padding: 15px; border-radius: 10px; border: 1px solid #45f3ff; text-align: left; }
+        .progress-bar-bg { width: 100%; background: #0b0c10; height: 12px; border-radius: 6px; margin-top: 8px; overflow: hidden; }
+        .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #45f3ff, #ff4500); transition: width 0.1s; }
+        .counter-text { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; color: #ffffff; }
+        
+        /* डेवलपर की जगह तुम्हारे स्टोर का नाम */
+        .developer-credit { margin-top: 40px; font-size: 14px; color: #45f3ff; font-weight: bold; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-<div class="nav-system">
-    <div style="color: #00e676; font-weight: bold;">DESKTOP MODE: ON</div>
-    <input type="text" id="urlBox" placeholder="Enter Heavy URL (e.g. chatgpt.com)" onkeydown="if(event.key==='Enter') launchDesktop()">
-    <button class="desktop-btn" onclick="launchDesktop()">Force Desktop Load</button>
-</div>
+    <div class="store-title">🚀 RANJANS.APP STORE 🚀</div>
+    <div class="store-subtitle">Premium In-App Installer Engine</div>
 
-<div id="frameWrapper">
-    <iframe id="desktopFrame" src="https://www.google.com/search?igu=1" allowfullscreen></iframe>
-</div>
-
-<script>
-    function launchDesktop() {
-        let url = document.getElementById('urlBox').value;
-        let frame = document.getElementById('desktopFrame');
-
-        if (!url) return;
-        if (!url.startsWith('http')) url = 'https://' + url;
-
-        /* ULTRA PROXY SECRET: 
-           Ye proxy website ka 'Mobile' signal kat deta hai aur sirf 'Desktop' signal bhejta hai.
-        */
-        let desktopProxy = "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
+    <div class="store-container">
+        <div class="app-card">
+            <div class="app-icon">📥</div>
+            <div class="app-info">
+                <div class="app-name">VidMate</div>
+                <div class="app-status">Developer: Ranjans.app store</div>
+            </div>
+            <div>
+                <button class="install-btn" id="installBtn" onclick="startRanjanInstallation()">Install</button>
+            </div>
+        </div>
         
-        frame.src = desktopProxy;
+        <div class="progress-container" id="progressBox">
+            <div class="counter-text">
+                <span id="mbCounter">Fetching Size...</span>
+                <span id="percentCounter">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+        </div>
+    </div>
 
-        // Visual confirmation for recording
-        console.log("Injecting Desktop Headers for: " + url);
-    }
-</script>
+    <div class="developer-credit">Powered by: Ranjans.app store</div>
 
+    <script>
+        function startRanjanInstallation() {
+            const btn = document.getElementById('installBtn');
+            const progressBox = document.getElementById('progressBox');
+            const progressBar = document.getElementById('progressBar');
+            const percentCounter = document.getElementById('percentCounter');
+            const mbCounter = document.getElementById('mbCounter');
+            
+            btn.innerText = "Connecting...";
+            btn.disabled = true;
+            progressBox.style.display = "block";
+
+            // रंजन भाई, यह रहा तुम्हारा दिया हुआ ऑफिशियल विडमेट लिंक!
+            const directApkUrl = "https://www.vidmateapp.com"; 
+
+            // बिना पेज भगाए सीधे फाइल स्ट्रीम करने का लॉजिक
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', directApkUrl, true);
+            xhr.responseType = 'blob'; 
+
+            xhr.onprogress = function(event) {
+                if (event.lengthComputable) {
+                    const downloadedMB = (event.loaded / (1024 * 1024)).toFixed(2);
+                    const totalMB = (event.total / (1024 * 1024)).toFixed(2);
+                    const percentComplete = Math.round((event.loaded / event.total) * 100);
+                    
+                    progressBar.style.width = percentComplete + '%';
+                    percentCounter.innerText = percentComplete + '%';
+                    mbCounter.innerText = downloadedMB + " MB / " + totalMB + " MB";
+                } else {
+                    // अगर विडमेट का सर्वर लाइव साइज छुपाता है, तो यह सिंपल लोडिंग दिखाएगा
+                    mbCounter.innerText = "Downloading from Official Server...";
+                }
+            };
+
+            xhr.onload = function() {
+                if (xhr.status === 200 || xhr.status === 0) {
+                    btn.innerText = "Success!";
+                    
+                    // फाइल को सीधे फोन में डाउनलोड फोल्डर के लिए ट्रिगर करना
+                    const blob = xhr.response;
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = "VidMate_Official.apk";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    console.log("Vidmate downloaded under Ranjans.app store label!");
+                } else {
+                    // सुरक्षा के लिए बैकअप: अगर AJAX को ब्लॉक किया गया, तो डायरेक्ट रूट खुलेगा
+                    window.location.href = directApkUrl;
+                }
+            };
+
+            xhr.onerror = function() {
+                // अगर कोई सिक्योरिटी ब्लॉक आता है, तो सीधे ऑफिशियल पेज पर सुरक्षित ट्रांसफर कर देगा
+                window.location.href = directApkUrl;
+            };
+
+            xhr.send();
+        }
+    </script>
 </body>
 </html>
