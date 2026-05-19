@@ -2,119 +2,59 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranjans.app store</title>
+    <title>ज्ञान-सागर स्कैनर</title>
     <style>
-        /* प्रो-गेमिंग डार्क थीम */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0c10; color: #c5c6c7; padding: 20px; text-align: center; }
-        
-        .store-title { color: #ff4500; font-size: 26px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-top: 40px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(255, 69, 0, 0.5); }
-        .store-subtitle { color: #45f3ff; font-size: 13px; margin-bottom: 40px; }
-        
-        .store-container { max-width: 450px; margin: 0 auto; }
-        
-        /* प्ले स्टोर स्टाइल ऐप कार्ड */
-        .app-card { background: #1f2833; border: 2px solid #45f3ff; border-radius: 15px; padding: 20px; text-align: left; box-shadow: 0 6px 12px rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: space-between; }
-        .app-icon { font-size: 40px; padding-right: 15px; }
-        .app-info { flex-grow: 1; }
-        .app-name { font-size: 18px; font-weight: bold; color: #ffffff; }
-        
-        .app-developer { font-size: 13px; color: #ff4500; font-weight: bold; margin-top: 2px; }
-        .app-status { font-size: 11px; color: #888; margin-top: 4px; }
-        
-        /* कड़क इंस्टॉल बटन */
-        .install-btn { background: linear-gradient(45deg, #00ffcc, #0099ff); color: black; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.3s; box-shadow: 0 0 10px rgba(0, 255, 204, 0.4); }
-        .install-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(0, 255, 204, 0.8); }
-        .install-btn:disabled { background: #333; color: #666; cursor: not-allowed; box-shadow: none; }
-        
-        /* लाइव प्रोग्रेस बार और 25 MB का काउंटर */
-        .progress-container { width: 100%; max-width: 450px; margin: 20px auto 0 auto; display: none; background: #1f2833; padding: 15px; border-radius: 10px; border: 1px solid #ff4500; text-align: left; }
-        .progress-bar-bg { width: 100%; background: #0b0c10; height: 12px; border-radius: 6px; margin-top: 8px; overflow: hidden; }
-        .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #ff4500, #ff8c00); }
-        .counter-text { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; color: #ffffff; }
-        
-        .developer-credit { margin-top: 40px; font-size: 14px; color: #45f3ff; font-weight: bold; letter-spacing: 1px; }
+        body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #f4f4f9; }
+        #result { margin-top: 20px; padding: 15px; background: white; border-radius: 8px; border: 1px solid #ddd; min-height: 100px; text-align: left; }
     </style>
 </head>
 <body>
 
-    <div class="store-title">🚀 RANJANS.APP STORE 🚀</div>
-    <div class="store-subtitle">Official Smart Downloader Engine</div>
-
-    <div class="store-container">
-        <div class="app-card">
-            <div class="app-icon">🎬</div>
-            <div class="app-info">
-                <div class="app-name">Video Editor & Maker - InShot</div>
-                <div class="app-developer">By: ranjan.app store</div>
-                <div class="app-status">ID: com.camerasideas.trimmer</div>
-            </div>
-            <div>
-                <button class="install-btn" id="installBtn" onclick="startRanjanSmartInstall()">Install</button>
-            </div>
-        </div>
-        
-        <div class="progress-container" id="progressBox">
-            <div class="counter-text">
-                <span id="mbCounter">0.00 MB / 25.00 MB</span>
-                <span id="percentCounter">0%</span>
-            </div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="progressBar"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="developer-credit">Powered by: ranjan.app store</div>
+    <h1>ज्ञान-सागर स्कैनर</h1>
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="processImage()">स्कैन करें</button>
+    
+    <div id="result">यहाँ जवाब दिखाई देगा...</div>
 
     <script>
-        function startRanjanSmartInstall() {
-            const btn = document.getElementById('installBtn');
-            const progressBox = document.getElementById('progressBox');
-            const progressBar = document.getElementById('progressBar');
-            const percentCounter = document.getElementById('percentCounter');
-            const mbCounter = document.getElementById('mbCounter');
+        async function processImage() {
+            // 1. अपनी नई API Key यहाँ डालें (जो आपने AI Studio से बनाई है)
+            const API_KEY = "अपनी_नई_वाली_API_KEY_यहाँ_पेस्ट_करें"; 
             
-            btn.innerText = "Processing...";
-            btn.disabled = true;
-            progressBox.style.display = "block";
-
-            // प्ले स्टोर का ओरिजिनल पैकेज नाम जो तुमने दिया था
-            const packageId = "com.camerasideas.trimmer";
-            const totalMB = 25.00;
+            const fileInput = document.getElementById('imageInput');
+            const file = fileInput.files[0];
             
-            // यह एक ओपन-सोर्स एपीके जनरेटर लिंक है जो सीधे प्ले स्टोर की फाइल को खींचने की कोशिश करता है
-            const directApkUrl = `https://apkpure.net/apk-download?id=${packageId}`;
+            if (!file) { alert("कृपया पहले फोटो चुनें!"); return; }
 
-            let currentPercent = 0;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const base64Data = e.target.result.split(',')[1];
+                document.getElementById('result').innerText = "AI स्कैन कर रहा है, कृपया प्रतीक्षा करें...";
 
-            // स्मार्ट डाउनलोड टाइमर इंजन (यह बिना किसी एक्स्ट्रा काम के सीधे प्रोसेस शुरू कर देगा)
-            const downloadEngine = setInterval(function() {
-                if (currentPercent >= 100) {
-                    clearInterval(downloadEngine);
-                    btn.innerText = "Success!";
+                const modelName = "gemini-3-flash-preview"; 
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`;
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ inline_data: { mime_type: "image/jpeg", data: base64Data } }] }]
+                        })
+                    });
+
+                    const data = await response.json();
                     
-                    // बिना पेज बदले सीधे फाइल मैनेजर या डाउनलोडर को फाइल ट्रिगर करना
-                    const hiddenLink = document.createElement('a');
-                    hiddenLink.href = directApkUrl;
-                    hiddenLink.target = "_blank"; // बैकग्राउंड में डाउनलोड विंडो खोलने के लिए
-                    hiddenLink.download = "Video_Editor_25MB.apk";
-                    
-                    document.body.appendChild(hiddenLink);
-                    hiddenLink.click();
-                    document.body.removeChild(hiddenLink);
-                    
-                    alert("प्रोसेस पूरा हुआ रंजन भाई! फाइल आपके फोन में डाउनलोड होना शुरू हो गई है।");
-                } else {
-                    currentPercent += 5; // डाउनलोड स्पीड का विज़ुअल प्रोग्रेस
-                    const currentMB = ((currentPercent / 100) * totalMB).toFixed(2);
-                    
-                    progressBar.style.width = currentPercent + '%';
-                    percentCounter.innerText = currentPercent + '%';
-                    mbCounter.innerText = currentMB + " MB / " + totalMB + " MB";
+                    if (data.candidates) {
+                        document.getElementById('result').innerText = data.candidates[0].content.parts[0].text;
+                    } else {
+                        document.getElementById('result').innerText = "त्रुटि: जवाब नहीं मिला। क्या आपकी API Key सही है?";
+                    }
+                } catch (error) {
+                    document.getElementById('result').innerText = "नेटवर्क एरर: " + error.message;
                 }
-            }, 150); // स्मूथ स्पीड एनिमेशन
+            };
+            reader.readAsDataURL(file);
         }
     </script>
 </body>
