@@ -2,60 +2,61 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>ज्ञान-सागर स्कैनर</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gyan Sagar - Simple Math AI</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #f4f4f9; }
-        #result { margin-top: 20px; padding: 15px; background: white; border-radius: 8px; border: 1px solid #ddd; min-height: 100px; text-align: left; }
-    </style>
-</head>
-<body>
-
-    <h1>ज्ञान-सागर स्कैनर</h1>
-    <input type="file" id="imageInput" accept="image/*">
-    <button onclick="processImage()">स्कैन करें</button>
-    
-    <div id="result">यहाँ जवाब दिखाई देगा...</div>
-
-    <script>
-        async function processImage() {
-            // 1. अपनी नई API Key यहाँ डालें (जो आपने AI Studio से बनाई है)
-            const API_KEY = "अपनी_नई_वाली_API_KEY_यहाँ_पेस्ट_करें"; 
-            
-            const fileInput = document.getElementById('imageInput');
-            const file = fileInput.files[0];
-            
-            if (!file) { alert("कृपया पहले फोटो चुनें!"); return; }
-
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                const base64Data = e.target.result.split(',')[1];
-                document.getElementById('result').innerText = "AI स्कैन कर रहा है, कृपया प्रतीक्षा करें...";
-
-                const modelName = "gemini-3-flash-preview"; 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`;
-
-                try {
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ inline_data: { mime_type: "image/jpeg", data: base64Data } }] }]
-                        })
-                    });
-
-                    const data = await response.json();
-                    
-                    if (data.candidates) {
-                        document.getElementById('result').innerText = data.candidates[0].content.parts[0].text;
-                    } else {
-                        document.getElementById('result').innerText = "त्रुटि: जवाब नहीं मिला। क्या आपकी API Key सही है?";
-                    }
-                } catch (error) {
-                    document.getElementById('result').innerText = "नेटवर्क एरर: " + error.message;
-                }
-            };
-            reader.readAsDataURL(file);
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #0d0e15;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            margin: 0;
         }
-    </script>
-</body>
-</html>
+        .main-card {
+            max-width: 460px;
+            margin: 30px auto;
+            background: linear-gradient(145deg, #151828, #0f111d);
+            padding: 30px 20px;
+            border-radius: 24px;
+            box-shadow: 0px 12px 40px rgba(0,0,0,0.7);
+            border: 1px solid #22273f;
+        }
+        .app-logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #00ffcc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 13px;
+            color: #798bb4;
+            margin-bottom: 25px;
+        }
+
+        /* बड़ा इनपुट बॉक्स जहाँ सवाल टाइप करना है */
+        .math-input-box {
+            width: 90%;
+            height: 100px;
+            background-color: #090a10;
+            border: 2px solid #22273f;
+            border-radius: 14px;
+            color: #00ffcc;
+            font-size: 22px;
+            padding: 15px;
+            text-align: center;
+            outline: none;
+            resize: none;
+            font-family: 'Courier New', monospace;
+            transition: 0.3s;
+        }
+        .math-input-box:focus {
+            border-color: #00ffcc;
+            box-shadow: 0 0 15px rgba(0,255,204,0.2);
+        }
+
+        /* हल करने वाला बटन */
+        .solve-btn {
+            background: linear-gradient(1
