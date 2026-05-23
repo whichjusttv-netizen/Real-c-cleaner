@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gyan Sagar - Simple Math AI</title>
+    <title>Gyan Sagar - Offline Math AI</title>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -36,7 +36,7 @@
             margin-bottom: 25px;
         }
 
-        /* बड़ा इनपुट बॉक्स जहाँ सवाल टाइप करना है */
+        /* बड़ा इनपुट बॉक्स जहाँ छात्र सवाल लिखेंगे */
         .math-input-box {
             width: 90%;
             height: 100px;
@@ -57,6 +57,157 @@
             box-shadow: 0 0 15px rgba(0,255,204,0.2);
         }
 
-        /* हल करने वाला बटन */
+        /* जादुई बटन */
         .solve-btn {
-            background: linear-gradient(1
+            background: linear-gradient(135deg, #00ffcc, #00b399);
+            color: #0d0e15;
+            border: none;
+            width: 96%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(0,255,204,0.2);
+            transition: 0.2s;
+        }
+        .solve-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ज्ञान सागर रिस्पांस बॉक्स (बड़ा आउटपुट) */
+        .gyan-box {
+            margin-top: 30px;
+            background-color: #090a10;
+            padding: 20px;
+            border-radius: 16px;
+            border-top: 4px solid #ff007f;
+            text-align: left;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
+        }
+        .box-header {
+            font-size: 14px;
+            color: #ff007f;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #1f263d;
+            padding-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* तीन भाषाओं के सेक्शन */
+        .lang-section {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-right: 8px;
+            color: #fff;
+        }
+        .bg-eng { background-color: #2563eb; }
+        .bg-hin { background-color: #dc2626; }
+        .bg-asm { background-color: #16a34a; }
+
+        .answer-text {
+            font-size: 16px;
+            color: #f1f5f9;
+        }
+        .final-answer {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 18px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-card">
+    <div class="app-logo">📖 জ্ঞান সাগৰ / ज्ञान सागर 📖</div>
+    <div class="subtitle">Offline JavaScript Math AI Engine</div>
+    
+    <textarea class="math-input-box" id="math-question" placeholder="Type here: e.g., 25 * 4 + 50"></textarea>
+    
+    <button class="solve-btn" onclick="solveMathOffline()">हल करें / উত্তৰ উলিওৱা</button>
+    
+    <div class="gyan-box">
+        <div class="box-header">📚 জ্ঞানৰ উত্তৰ / ज्ञान का हल:</div>
+        <div id="gyan-output">
+            <p style="color: #4b5563; text-align: center; margin: 15px 0;">ऊपर बॉक्स में मैथ का सवाल लिखकर बटन दबाएं...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function solveMathOffline() {
+        let inputQuestion = document.getElementById("math-question").value.trim();
+        let outputDiv = document.getElementById("gyan-output");
+
+        if (inputQuestion === "") {
+            alert("रंजन भाई, पहले बॉक्स में कोई मैथ का सवाल तो टाइप करो!");
+            return;
+        }
+
+        try {
+            // जावास्क्रिप्ट का जादुई इन-बिल्ट मैथ टूल (eval) जो बिना इंटरनेट कैलकुलेशन करता है
+            // सुरक्षा के लिए हम सिर्फ नंबर्स और मैथ सिग्नल्स (+, -, *, /, (, )) को ही चलने देंगे
+            let cleanFormula = inputQuestion.replace(/[^0-9+\-*/().\s]/g, '');
+            
+            if(cleanFormula === "") {
+                throw new Error("Invalid characters");
+            }
+
+            let result = eval(cleanFormula);
+
+            // अगर रिजल्ट नंबर नहीं है या गड़बड़ है
+            if (isNaN(result) || !isFinite(result)) {
+                throw new Error("Calculation error");
+            }
+
+            // तीन स्क्रिप्ट्स (English, हिंदी, असमीज़) में जावास्क्रिप्ट का ऑफलाइन जवाब
+            outputDiv.innerHTML = `
+                <div class="lang-section">
+                    <span class="badge bg-eng">ENG</span>
+                    <span class="answer-text">The answer for your question is: <span class="final-answer">${result}</span></span>
+                </div>
+                <div class="lang-section">
+                    <span class="badge bg-hin">HIN</span>
+                    <span class="answer-text">आपके सवाल का सही जवाब है: <span class="final-answer">${result}</span></span>
+                </div>
+                <div class="lang-section">
+                    <span class="badge bg-asm">ASM</span>
+                    <span class="answer-text">আপোনাৰ প্ৰশ্নটোৰ সঠিক উত্তৰ হ’ল: <span class="final-answer">${result}</span></span>
+                </div>
+            `;
+
+        } catch (error) {
+            // अगर छात्र ने गलत मैथ टाइप किया हो
+            outputDiv.innerHTML = `
+                <p style="color: #ef4444; font-weight: bold; text-align: center; margin: 10px 0;">
+                    ❌ भूल कोड / गलत इनपुट! <br>
+                    <span style="font-size: 13px; color: #9ca3af; font-weight: normal;">कृपया सही गणितीय समीकरण लिखें (उदा: 50 + 20 * 2)</span>
+                </p>
+            `;
+        }
+    }
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page title</title>
+</head>
+<body>
+    
+</body>
+</html>
